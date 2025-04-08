@@ -5,12 +5,12 @@
   },
   "name": "backend",
   "version": "1.0.0",
+  "description": "Full Stack E-Commerce Web App Backend by Express JS",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
   "author": "Rifah Sajida Deya",
-  "license": "ISC",
-  "description": ""
+  "license": "ISC"
 }
