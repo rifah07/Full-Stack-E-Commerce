@@ -18,6 +18,7 @@ Steps:
 5. In app.js (for reference)[->
 
 const express = require("express");
+
 const app = express();
 
 app.use(express.json());
@@ -32,4 +33,4 @@ app.listen(3000, () => {
 ]
 
 6. In terminal type "npm start" now go to "http://localhost:3000/" you should see message of app.get.
-7. 
+7. Add "models" folder.
