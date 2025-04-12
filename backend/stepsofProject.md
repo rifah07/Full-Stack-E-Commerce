@@ -15,7 +15,9 @@ Steps:
 2. Go to "package.json" and in "scripts" add "," at end of 'test" line and add new line for start as-> "start": "nodemon app.js".
 3. Install number 5,6,7 command above, in your terminal.
 4. Create an express app(const app, app.listen...), the code is in app.js 
-5. In app.js (for reference)[-> const express = require("express");
+5. In app.js (for reference)[->
+
+const express = require("express");
 const app = express();
 
 app.use(express.json());
