@@ -36,3 +36,5 @@ app.listen(3000, () => {
 7. Add "models" folder.
 8. Go to 'app.js' and import "dotenv" (of npt previous;y imported).
 9. Import mongoose, write codes in app.js to connect database, add api in the .env file showed as example.env file.
+10. Create a new folder named "handler" and a file inside it as "errorHandler.js" and write code for it, see in the file.
+11. 
