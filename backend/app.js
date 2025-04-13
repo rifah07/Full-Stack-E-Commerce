@@ -1,6 +1,7 @@
 const express = require("express");
 //const cors = require("cors");
 const mongoose = require("mongoose");
+const errorHandler= require("./handler/errorHandler")
 
 require("dotenv").config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
   res.send("Assalamu Alaikum");
 });
 
+app.use(errorHandler);
 app.listen(3000, () => {
   console.log("Server started successfully");
 });

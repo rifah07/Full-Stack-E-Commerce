@@ -1,3 +1,6 @@
 node_modules/
 //Environmental Variable
 .env
+
+//vs code extention
+.vscode
