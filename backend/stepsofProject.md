@@ -40,3 +40,6 @@ backend/
 ├── nodemon.json
 ├── tsconfig.json
 └── package.json
+
+5. Add codes in nodemon.json as you see here.
+6. Add codes in server.ts, app.ts,.env, config>db.ts as you see here.
