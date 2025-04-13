@@ -34,3 +34,5 @@ app.listen(3000, () => {
 
 6. In terminal type "npm start" now go to "http://localhost:3000/" you should see message of app.get.
 7. Add "models" folder.
+8. Go to 'app.js' and import "dotenv" (of npt previous;y imported).
+9. Import mongoose, write codes in app.js to connect database, add api in the .env file showed as example.env file.
