@@ -1,5 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+//IUser is an object that must have all the fields we
+// define (name, email, etc), and it also includes everything
+// a normal Mongoose Document has (like _id, createdAt, etc).
+
 export interface IUser extends Document {
   name: string;
   email: string;
@@ -22,5 +26,11 @@ const userSchema = new Schema<IUser>(
   },
   { timestamps: true }
 );
+
+//this part formats role in lowarcase to maintain if entered in different case formates
+userSchema.pre<IUser>("save", function (next) {
+  this.role = this.role.toLowerCase() as IUser["role"];
+  next();
+});
 
 export default mongoose.model<IUser>("User", userSchema);

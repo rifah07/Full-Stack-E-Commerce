@@ -44,4 +44,5 @@ backend/
 5. Add codes in nodemon.json as you see here.
 6. Add codes in server.ts, app.ts,.env, config>db.ts as you see here.
 7. Set up user model-> src/models/User.ts:src/models/User.ts.
-8. 
+8. Update User.ts as necessary, see in code file.
+9. 
