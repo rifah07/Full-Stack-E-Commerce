@@ -53,5 +53,5 @@ backend/
 12. src> services/email.service.ts,
 13. src> utils/validateEmail.ts.
 14. Install 6, 7 commands in your terminal.
-15. 
-
+15. [implementetion of registration/sign up part is pending]
+16. 
