@@ -5,7 +5,9 @@ Installation commands:
 3. npm install --save-dev typescript ts-node-dev @types/node @types/express @types/cors @types/bcryptjs @types/jsonwebtoken
 4. npx tsc --init
 5. npm install --save-dev nodemon ts-node
-6. 
+6. npm install nodemailer
+7. npm install --save-dev @types/nodemailer
+
 
 Steps:
 
@@ -49,5 +51,7 @@ backend/
 10. src> routes/auth.route.ts, 
 11. src>controllers auth.controller.ts,
 12. src> services/email.service.ts,
-13. src> utils/validateEmail.ts
+13. src> utils/validateEmail.ts.
+14. Install 6, 7 commands in your terminal.
+15. 
 
