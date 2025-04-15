@@ -1,5 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+//In TypeScript, an interface defines the shape (or structure) of an object —
+// like what properties it has and what their types are.
+
+//In this case, the interface IUser is telling TypeScript what a User document
+//  should look like in MongoDB.
+
 //IUser is an object that must have all the fields we
 // define (name, email, etc), and it also includes everything
 // a normal Mongoose Document has (like _id, createdAt, etc).
@@ -11,6 +17,8 @@ export interface IUser extends Document {
   role: "admin" | "seller" | "buyer";
   isBanned: boolean; //Flag to block a user if needed
 }
+
+//So any object that says it’s an IUser must have those fields above.
 
 const userSchema = new Schema<IUser>(
   {

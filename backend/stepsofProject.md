@@ -45,4 +45,9 @@ backend/
 6. Add codes in server.ts, app.ts,.env, config>db.ts as you see here.
 7. Set up user model-> src/models/User.ts:src/models/User.ts.
 8. Update User.ts as necessary, see in code file.
-9. 
+9. Add 4 files for Sign Up feature see next 4 steps.
+10. src> routes/auth.route.ts, 
+11. src>controllers auth.controller.ts,
+12. src> services/email.service.ts,
+13. src> utils/validateEmail.ts
+
