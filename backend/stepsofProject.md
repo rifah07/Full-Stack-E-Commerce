@@ -52,4 +52,19 @@ backend/
 11. Add email sending code in managers/emailManager.ts and update env as inj .example.env (those info are in your mailtrap account; go https://mailtrap.io/inboxes/3556852/messages and see in 'Integration' part).
 12. Add new folder names modules/users/controller folders for users controller.
 13. Inside above folder add register.ts and add code in it.
-14.   
+14. Add users.routes.ts file inside users folder and write route in it.
+15. Update app.ts with route.
+16. Go to postman and create new collection, add new request GET methode and check with "http://localhost:5000/"
+17. Add new request POST with "http://localhost:5000/api/users/register" and test with these values :{
+    "name": "Testing" ,
+
+    "email": "testing@gmail.com",
+
+    "password": "testing",
+
+    "confirm_password": "testing",
+
+    "role": "admin"
+}
+
+18. 

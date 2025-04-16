@@ -36,7 +36,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     await emailManager(
       createdUser.email,
       "Welcome! You have successfully registered to E-Commerce. Thanks for choosing our platform.",
-      `<h1>Welcome, ${createdUser.name}!</h1><p>Thanks for registering at E-Commerce Pro.</p>`,
+      `<h1>Welcome, ${createdUser.name}!</h1><p>Thanks for registering at E-Commerce.</p>`,
       "Greetings from E-Commerce"
     );
 
