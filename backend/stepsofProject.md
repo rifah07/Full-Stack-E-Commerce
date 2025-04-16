@@ -53,5 +53,5 @@ backend/
 12. src> services/email.service.ts,
 13. src> utils/validateEmail.ts.
 14. Install 6, 7 commands in your terminal.
-15. [implementetion of registration/sign up part is pending]
-16. 
+15. Add email sending code in email.services.ts and update env as inj .example.env (those info are in your mailtrap account; go https://mailtrap.io/inboxes/3556852/messages and see in 'Integration' part).
+16.  
