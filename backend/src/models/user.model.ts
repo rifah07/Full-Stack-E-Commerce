@@ -41,4 +41,7 @@ userSchema.pre<IUser>("save", function (next) {
   next();
 });
 
+//Below line creates the model named "User" from the schema userSchema
+//It exports it as the default export
 export default mongoose.model<IUser>("User", userSchema);
+

@@ -47,11 +47,9 @@ backend/
 6. Add codes in server.ts, app.ts,.env, config>db.ts as you see here.
 7. Set up user model-> src/models/User.ts:src/models/User.ts.
 8. Update User.ts as necessary, see in code file.
-9. Add 4 files for Sign Up feature see next 4 steps.
-10. src> routes/auth.route.ts, 
-11. src>controllers auth.controller.ts,
-12. src> services/email.service.ts,
-13. src> utils/validateEmail.ts.
-14. Install 6, 7 commands in your terminal.
-15. Add email sending code in email.services.ts and update env as inj .example.env (those info are in your mailtrap account; go https://mailtrap.io/inboxes/3556852/messages and see in 'Integration' part).
-16.  
+9. Install 6, 7 commands in your terminal.
+10. Add files for Sign Up feature.
+11. Add email sending code in managers/emailManager.ts and update env as inj .example.env (those info are in your mailtrap account; go https://mailtrap.io/inboxes/3556852/messages and see in 'Integration' part).
+12. Add new folder names modules/users/controller folders for users controller.
+13. Inside above folder add register.ts and add code in it.
+14.   
