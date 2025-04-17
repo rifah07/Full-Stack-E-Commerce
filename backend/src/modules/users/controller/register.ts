@@ -24,22 +24,32 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const emailVerificationToken = crypto.randomBytes(32).toString("hex");
-    const emailVerificationTokenExpires = new Date(
-      Date.now() + 1000 * 60 * 60 * 24
-    ); // 24 hours
+    const emailVerificationExpires = new Date(Date.now() + 60 * 60 * 1000 * 24); // 1 hour
 
     const createdUser = await User.create({
       name,
       email,
       password: hashedPassword,
       role,
-      isVerified: false,
-      verifyToken: emailVerificationToken,
-      verifyTokenExpires: emailVerificationTokenExpires,
+      emailVerificationToken,
+      emailVerificationExpires,
     });
 
     // Send verification email
-    const verificationUrl = `http://localhost:3000/verify-email?token=${emailVerificationToken}`;
+    await emailManager(
+      createdUser.email,
+      `Welcome ${createdUser.name}! You have successfully registered to E-Commerce.\n\nYour verification code is: ${emailVerificationToken}\n\nThis code will expire in 1 hour.`,
+      `<h1>Welcome, ${createdUser.name}!</h1>
+      <p>Thanks for registering at E-Commerce.</p>
+      <p><strong>Your Email Verification Code:</strong></p>
+      <h2>${emailVerificationToken}</h2>
+      <p>This code will expire in 24 hour. Please visit the <code>/verify-email</code> endpoint and pass the code as a query parameter.</p>`,
+      "Verify Your E-Commerce Account"
+    );
+
+    //For front later: http://yourdomain.com/verify-email?token=xyz
+
+    /*const verificationUrl = `http://localhost:3000/verify-email?token=${emailVerificationToken}`;
 
     await emailManager(
       createdUser.email,
@@ -50,6 +60,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
        <p>This link will expire in 24 hours.</p>`,
       "Verify Your Email - E-Commerce"
     );
+    */
 
     res.status(201).json({
       status:

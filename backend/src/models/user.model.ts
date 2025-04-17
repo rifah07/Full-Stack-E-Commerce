@@ -15,10 +15,10 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: "admin" | "seller" | "buyer";
-  emailVerified: boolean; 
+  isBanned: boolean;
   emailVerificationToken?: string;
-  emailVerificationTokenExpires?: Date;
-  isBanned: boolean; //Flag to block a user if needed
+  emailVerified?: boolean;
+  emailVerificationExpires?: Date;
 }
 
 //So any object that says it’s an IUser must have those fields above.
@@ -34,13 +34,12 @@ const userSchema = new Schema<IUser>(
       default: "buyer",
     },
     isBanned: { type: Boolean, default: false },
-    emailVerified: { type: Boolean, default: false },
     emailVerificationToken: { type: String },
-    emailVerificationTokenExpires: { type: Date },
+    emailVerified: { type: Boolean, default: false },
+    emailVerificationExpires: { type: Date },
   },
   { timestamps: true }
 );
-
 
 //this part formats role in lowarcase to maintain if entered in different case formates
 userSchema.pre<IUser>("save", function (next) {
@@ -51,4 +50,3 @@ userSchema.pre<IUser>("save", function (next) {
 //Below line creates the model named "User" from the schema userSchema
 //It exports it as the default export
 export default mongoose.model<IUser>("User", userSchema);
-
