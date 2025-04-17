@@ -67,4 +67,5 @@ backend/
     "role": "admin"
 }
 
-18. 
+18. Update the users mode again and rehistration.ts, so that to verify he e-mail a code is sent in the email
+19. 
