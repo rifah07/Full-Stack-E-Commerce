@@ -15,6 +15,9 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: "admin" | "seller" | "buyer";
+  emailVerified: boolean; 
+  emailVerificationToken?: string;
+  emailVerificationTokenExpires?: Date;
   isBanned: boolean; //Flag to block a user if needed
 }
 
@@ -31,9 +34,13 @@ const userSchema = new Schema<IUser>(
       default: "buyer",
     },
     isBanned: { type: Boolean, default: false },
+    emailVerified: { type: Boolean, default: false },
+    emailVerificationToken: { type: String },
+    emailVerificationTokenExpires: { type: Date },
   },
   { timestamps: true }
 );
+
 
 //this part formats role in lowarcase to maintain if entered in different case formates
 userSchema.pre<IUser>("save", function (next) {

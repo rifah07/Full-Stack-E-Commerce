@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import User from "../../../models/user.model";
-//import jwtManager from "../../../managers/jwtManager";
 import emailManager from "../../../managers/emailManager";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,26 +23,37 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    const emailVerificationToken = crypto.randomBytes(32).toString("hex");
+    const emailVerificationTokenExpires = new Date(
+      Date.now() + 1000 * 60 * 60 * 24
+    ); // 24 hours
+
     const createdUser = await User.create({
       name,
       email,
       password: hashedPassword,
       role,
+      isVerified: false,
+      verifyToken: emailVerificationToken,
+      verifyTokenExpires: emailVerificationTokenExpires,
     });
 
-    //const accessToken = await jwtManager(createdUser);
+    // Send verification email
+    const verificationUrl = `http://localhost:3000/verify-email?token=${emailVerificationToken}`;
 
-    // Send registration email
     await emailManager(
       createdUser.email,
-      "Welcome! You have successfully registered to E-Commerce. Thanks for choosing our platform.",
-      `<h1>Welcome, ${createdUser.name}!</h1><p>Thanks for registering at E-Commerce.</p>`,
-      "Greetings from E-Commerce"
+      "Please verify your email address to complete registration.",
+      `<h1>Hello ${createdUser.name},</h1>
+       <p>Click the link below to verify your email address:</p>
+       <a href="${verificationUrl}">${verificationUrl}</a>
+       <p>This link will expire in 24 hours.</p>`,
+      "Verify Your Email - E-Commerce"
     );
 
     res.status(201).json({
-      status: "Congratulations! You've registered successfully!",
-      //accessToken,
+      status:
+        "Registration successful! Please check your email to verify your account.",
     });
   } catch (error) {
     next(error);
