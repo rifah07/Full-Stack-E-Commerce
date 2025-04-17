@@ -24,7 +24,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const emailVerificationToken = crypto.randomBytes(32).toString("hex");
-    const emailVerificationExpires = new Date(Date.now() + 60 * 60 * 1000 * 24); // 1 hour
+    const emailVerificationExpires = new Date(Date.now() + 60 * 60 * 1000 * 24); // 24 hour
 
     const createdUser = await User.create({
       name,
