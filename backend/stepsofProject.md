@@ -74,4 +74,5 @@ backend/
 22. Add login.ts to implement login, code as in the file.
 23. Add login in userRoutes and save all, test in postman with this- "http://localhost:5000/api/users/login".
 24. In middlewares folder add authMiddleware.ts to authenticate with access token add codes.
-25. 
+25. authMiddleware is added in routes but commented as we have not implemented following parts of it.
+26. 

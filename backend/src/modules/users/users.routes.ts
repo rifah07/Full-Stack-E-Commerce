@@ -3,6 +3,7 @@ import User from "../../models/user.model";
 import register from "./controller/register";
 import verifyEmail from "./controller/verifyEmail";
 import login from "./controller/login";
+import auth from "../../middlewares/authMiddleware";
 
 const userRoutes = express.Router();
 
@@ -10,5 +11,10 @@ const userRoutes = express.Router();
 userRoutes.post("/register", register);
 userRoutes.get("/verify-email", verifyEmail);
 userRoutes.post("/login", login)
+
+
+// 🔐 Protected routes (require auth middleware)
+//userRoutes.use(auth);
+
 
 export default userRoutes;
