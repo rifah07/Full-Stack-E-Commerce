@@ -71,5 +71,6 @@ backend/
 19. Add verifyEmail.ts to verify the code for registration.
 20. Add verifyEmail in user routes and check with api in postman "http://localhost:5000/api/users/verify-email?token=Your-Token-In-Mail-Here"
 21. Add jwtManager.ts in managers folder and write cosde in it for accesstoken.
-22. Add login.ts to implement login.
-23. 
+22. Add login.ts to implement login, code as in the file.
+23. Add login in userRoutes and save all, test in postman with this- "http://localhost:5000/api/users/login".
+24. 

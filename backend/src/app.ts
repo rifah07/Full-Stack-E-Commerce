@@ -1,10 +1,9 @@
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
-import { errorHandler } from './handler/errorHandler';
-import  userRoutes  from './modules/users/users.routes';
-
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import { errorHandler } from "./handler/errorHandler";
+import userRoutes from "./modules/users/users.routes";
 
 dotenv.config();
 
@@ -17,15 +16,28 @@ app.use(cookieParser());
 //models initialization
 //require("./models/users.model");
 
-
 //add routes here
 app.use("/api/users", userRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Server started successfully!');
+//end of routes
+
+/*
+app.all("*", (req, res, next) => {
+  res.status(404).json({
+    status: "failed",
+    message: "Not Found!",
+  });
+});
+*/
+
+app.use(errorHandler);
+
+app.get("/", (req, res) => {
+  res.send("Server started successfully!");
 });
 
-// Error handler middleware
-app.use(errorHandler);
+app.listen(5000, () => {
+  console.log("Server started successfully");
+});
 
 export default app;
