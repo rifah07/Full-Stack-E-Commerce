@@ -73,4 +73,5 @@ backend/
 21. Add jwtManager.ts in managers folder and write cosde in it for accesstoken.
 22. Add login.ts to implement login, code as in the file.
 23. Add login in userRoutes and save all, test in postman with this- "http://localhost:5000/api/users/login".
-24. 
+24. In middlewares folder add authMiddleware.ts to authenticate with access token add codes.
+25. 
