@@ -75,4 +75,6 @@ backend/
 23. Add login in userRoutes and save all, test in postman with this- "http://localhost:5000/api/users/login".
 24. In middlewares folder add authMiddleware.ts to authenticate with access token add codes.
 25. authMiddleware is added in routes but commented as we have not implemented following parts of it.
-26. 
+26. Add resendVerification.ts to resent verification token if missed previously. And add in routes.
+27. Check this api for 26 point implementetion: "http://localhost:5000/api/users/resend-verification".
+28. 
