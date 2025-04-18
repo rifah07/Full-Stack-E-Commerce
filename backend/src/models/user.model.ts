@@ -17,7 +17,7 @@ export interface IUser extends Document {
   role: "admin" | "seller" | "buyer";
   isBanned: boolean;
   emailVerificationToken?: string;
-  emailVerified?: boolean;
+  isVerified?: boolean;
   emailVerificationExpires?: Date;
 }
 
@@ -35,8 +35,9 @@ const userSchema = new Schema<IUser>(
     },
     isBanned: { type: Boolean, default: false },
     emailVerificationToken: { type: String },
-    emailVerified: { type: Boolean, default: false },
     emailVerificationExpires: { type: Date },
+    isVerified: { type: Boolean, default: false },
+
   },
   { timestamps: true }
 );

@@ -20,6 +20,7 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
 
     user.emailVerificationToken = undefined;
     user.emailVerificationExpires = undefined;
+    user.isVerified = true;
     await user.save();
 
     res
