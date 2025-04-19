@@ -21,7 +21,7 @@ userRoutes.post("/reset-password", resetPassword);
 
 
 //Protected routes (require auth middleware)
-//userRoutes.use(auth);
+userRoutes.use(auth);
 
 
 export default userRoutes;

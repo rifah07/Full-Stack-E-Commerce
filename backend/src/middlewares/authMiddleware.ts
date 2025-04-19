@@ -10,10 +10,11 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     const accessToken = req.headers.authorization?.replace("Bearer ", "");
 
     if (!accessToken) {
-      return res.status(401).json({
+       res.status(401).json({
         status: "Failed",
         message: "Unauthorized - No token provided",
       });
+      return;
     }
 
     const jwt_payload = jwt.verify(
@@ -22,10 +23,11 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     ) as JwtPayload;
     req.user = jwt_payload;
   } catch (e) {
-    return res.status(401).json({
+     res.status(401).json({
       status: "Failed",
       message: "Unauthorized - Invalid token",
     });
+    return;
   }
 
   next();
