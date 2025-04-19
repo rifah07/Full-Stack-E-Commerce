@@ -6,6 +6,7 @@ import login from "./controller/login";
 import auth from "../../middlewares/authMiddleware";
 import resendVerification from "./controller/resendVerification";
 import forgotPassword from "./controller/forgotPassword";
+import resetPassword from "./controller/resetPassword";
 
 const userRoutes = express.Router();
 
@@ -15,6 +16,7 @@ userRoutes.get("/verify-email", verifyEmail);
 userRoutes.post("/resend-verification",resendVerification);
 userRoutes.post("/login", login);
 userRoutes.post("/forgot-password", forgotPassword);
+userRoutes.post("/reset-password", resetPassword);
 
 
 

@@ -82,3 +82,6 @@ backend/
 30. Add new file in controllers as forgotPassword.ts and write code in it.
 31. Add in routes, test with api, POST "http://localhost:5000/api/users/forgot-password"
 32. It should be working now.
+33. To reset password with code in email create new file as: 'resetPassword.ts"
+34. Add in routes and check with api as POST: "http://localhost:5000/api/users/reset-password?token=2e77cf91799958c14a5cdbc6f57776ee9854b0a93f55947b9fad5e91979cf8d8", body: newPassword.
+35. 
