@@ -19,6 +19,8 @@ export interface IUser extends Document {
   emailVerificationToken?: string;
   isVerified?: boolean;
   emailVerificationExpires?: Date;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 //So any object that says it’s an IUser must have those fields above.
@@ -37,7 +39,8 @@ const userSchema = new Schema<IUser>(
     emailVerificationToken: { type: String },
     emailVerificationExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
-
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
   },
   { timestamps: true }
 );

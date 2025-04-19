@@ -77,4 +77,8 @@ backend/
 25. authMiddleware is added in routes but commented as we have not implemented following parts of it.
 26. Add resendVerification.ts to resent verification token if missed previously. And add in routes.
 27. Check this api for 26 point implementetion: "http://localhost:5000/api/users/resend-verification".
-28. 
+28. So now, implement forgot password problem.
+29. Add 2 nre variables in users.model.
+30. Add new file in controllers as forgotPassword.ts and write code in it.
+31. Add in routes, test with api, POST "http://localhost:5000/api/users/forgot-password"
+32. It should be working now.

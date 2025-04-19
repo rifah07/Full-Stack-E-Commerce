@@ -5,6 +5,7 @@ import verifyEmail from "./controller/verifyEmail";
 import login from "./controller/login";
 import auth from "../../middlewares/authMiddleware";
 import resendVerification from "./controller/resendVerification";
+import forgotPassword from "./controller/forgotPassword";
 
 const userRoutes = express.Router();
 
@@ -13,9 +14,11 @@ userRoutes.post("/register", register);
 userRoutes.get("/verify-email", verifyEmail);
 userRoutes.post("/resend-verification",resendVerification);
 userRoutes.post("/login", login);
+userRoutes.post("/forgot-password", forgotPassword);
 
 
-// 🔐 Protected routes (require auth middleware)
+
+//Protected routes (require auth middleware)
 //userRoutes.use(auth);
 
 
