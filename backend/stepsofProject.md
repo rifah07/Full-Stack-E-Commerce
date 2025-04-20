@@ -95,4 +95,6 @@ backend/
 41. Now Schema Validation: Zod or Yup.
 42. Install point 8/9 above, as you prefer, I choose 8.
 43. Update users.model.ts with zod or yup, I'm using Zod.
-44. Next, view profile, add more info in profile as image or address, delete password and logout.
+44. Update register.ts with zod schema and check again. It should work.
+45. Other parts with zod in  **pending**
+46. Next, view profile, add more info in profile as image or address, delete password and logout.
