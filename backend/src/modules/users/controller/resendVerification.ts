@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
-import User from "../../../models/user.model";
+import User, { ResendVerificationZodSchema } from "../../../models/user.model";
 import emailManager from "../../../managers/emailManager";
 
 const resendVerification = async (
@@ -9,21 +9,26 @@ const resendVerification = async (
   next: NextFunction
 ) => {
   try {
-    const { email } = req.body;
+    const validatedData = await ResendVerificationZodSchema.safeParseAsync(
+      req.body
+    );
 
-    if (!email) {
-      throw new Error("Email must be provided.");
+    if (!validatedData.success) {
+      return res.status(400).json({ errors: validatedData.error.issues });
     }
+
+    const { email } = validatedData.data;
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new Error("No user found with this email.");
+      return res
+        .status(404)
+        .json({ message: "No user found with this email." });
     }
 
     if (user.isVerified) {
-      res.status(400).json({ message: "Email is already verified." });
-      return;
+      return res.status(400).json({ message: "Email is already verified." });
     }
 
     const emailVerificationToken = crypto.randomBytes(32).toString("hex");

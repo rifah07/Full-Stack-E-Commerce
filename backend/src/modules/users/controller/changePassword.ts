@@ -2,7 +2,6 @@ import { Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import User, { ChangePasswordZodSchema } from "../../../models/user.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-//import { z } from "zod";
 
 const changePassword = async (
   req: AuthRequest,
@@ -11,7 +10,7 @@ const changePassword = async (
 ) => {
   try {
     const userId = req.user?._id;
-    // Validate request body using Zod schema
+
     const validatedData = await ChangePasswordZodSchema.safeParseAsync(
       req.body
     );

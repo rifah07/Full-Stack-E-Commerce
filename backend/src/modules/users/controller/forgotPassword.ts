@@ -9,7 +9,6 @@ const forgotPassword = async (
   next: NextFunction
 ) => {
   try {
-    // Validate request body using Zod schema
     const validatedData = await ForgotPasswordZodSchema.safeParseAsync(
       req.body
     );

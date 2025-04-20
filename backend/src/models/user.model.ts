@@ -119,6 +119,11 @@ export const RegisterZodSchema = z
     path: ["confirm_password"],
   });
 
+// Zod schema for resend verification
+export const ResendVerificationZodSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid e-mail address." }),
+});
+
 // Zod schema for login
 export const LoginZodSchema = z.object({
   email: z.string().email({ message: "Please enter a valid e-mail address." }),
