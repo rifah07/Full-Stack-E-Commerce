@@ -96,7 +96,7 @@ backend/
 42. Install point 8/9 above, as you prefer, I choose 8.
 43. Update users.model.ts with zod or yup, I'm using Zod.
 44. Update register.ts with zod schema and check again. It should work.
-45. To cestralize schemas, add all zod schemas in users.model.ts too.
-46. Add register schema, login schema ... in users.model.
-47. Other parts with zod in  **pending**
+45. To cestralize schemas, add all zod schemas in validator>user.validator.ts .
+46. Add register schema, login schema ... in user.validator.
+47. Change parts with zodSchema(s).
 48. Next, view profile, add more info in profile as image or address, delete password and logout.
