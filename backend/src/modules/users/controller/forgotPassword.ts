@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
-import User from "../../../models/user.model";
+import User, { ForgotPasswordZodSchema } from "../../../models/user.model";
 import emailManager from "../../../managers/emailManager";
 
 const forgotPassword = async (
@@ -9,11 +9,22 @@ const forgotPassword = async (
   next: NextFunction
 ) => {
   try {
-    const { email } = req.body;
-    if (!email) throw new Error("Email is required.");
+    // Validate request body using Zod schema
+    const validatedData = await ForgotPasswordZodSchema.safeParseAsync(
+      req.body
+    );
+
+    if (!validatedData.success) {
+      return res.status(400).json({ errors: validatedData.error.issues });
+    }
+
+    const { email } = validatedData.data;
 
     const user = await User.findOne({ email });
-    if (!user) throw new Error("No user found with this email.");
+    if (!user) {
+      res.status(404).json({ message: "No user found with this email." });
+      return;
+    }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
@@ -29,7 +40,7 @@ const forgotPassword = async (
       user.email,
       "Password Reset - E-Commerce",
       `<p>You requested to reset your password.</p>
-      <p>Paste this code to reset password: ${resetToken}</p>      
+      <p>Paste this code to reset password: ${resetToken}</p>
       <p>This code will expire in 1 hour.</p>`,
       "Password Reset"
     );

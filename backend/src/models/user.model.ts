@@ -119,11 +119,16 @@ export const RegisterZodSchema = z
     path: ["confirm_password"],
   });
 
-// specific Zod schema for login
-
+// Zod schema for login
 export const LoginZodSchema = z.object({
   email: z.string().email({ message: "Please enter a valid e-mail address." }),
   password: z.string().min(1, { message: "Password cannot be empty." }),
+});
+
+
+//Zod schema for forgot password
+export const ForgotPasswordZodSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid e-mail address." }),
 });
 
 // Zod schema for change password
