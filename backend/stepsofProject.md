@@ -7,6 +7,8 @@ Installation commands:
 5. npm install --save-dev nodemon ts-node
 6. npm install nodemailer
 7. npm install --save-dev @types/nodemailer
+8. npm install zod  # For Zod
+9. npm install yup  # For Yup
 
 
 Steps:
@@ -90,4 +92,6 @@ backend/
 38. Save and check in postman with api: POST: "http://localhost:5000/api/users/change-password".
 39. In POSTMAN, select "Authorization"> 'Bearer Token"(paste token from login) to test.
 40. So, user registration, verification, verification resend if while registration not verified, login, reset forgotten password, change password are working perfectly now, Alhamdulillah.
-41. Next, view profile, add more info in profile as image or address, delete password and logout.
+41. Now Schema Validation: Zod or Yup.
+42. Install point 8/9 above, as you prefer, I choose 8.
+43. Next, view profile, add more info in profile as image or address, delete password and logout.
