@@ -94,4 +94,5 @@ backend/
 40. So, user registration, verification, verification resend if while registration not verified, login, reset forgotten password, change password are working perfectly now, Alhamdulillah.
 41. Now Schema Validation: Zod or Yup.
 42. Install point 8/9 above, as you prefer, I choose 8.
-43. Next, view profile, add more info in profile as image or address, delete password and logout.
+43. Update users.model.ts with zod or yup, I'm using Zod.
+44. Next, view profile, add more info in profile as image or address, delete password and logout.
