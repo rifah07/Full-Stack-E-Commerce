@@ -130,16 +130,26 @@ export const LoginZodSchema = z.object({
   password: z.string().min(1, { message: "Password cannot be empty." }),
 });
 
-
 //Zod schema for forgot password
 export const ForgotPasswordZodSchema = z.object({
   email: z.string().email({ message: "Please enter a valid e-mail address." }),
 });
 
+// Zod schema for reset password request body
+export const ResetPasswordZodSchema = z.object({
+  newPassword: z
+    .string()
+    .min(6, { message: "New password must be at least 6 characters long." }),
+});
+
 // Zod schema for change password
 export const ChangePasswordZodSchema = z.object({
-  currentPassword: z.string().min(6, { message: "Current password is required." }),
-  newPassword: z.string().min(6, { message: "New password must be at least 6 characters long." }),
+  currentPassword: z
+    .string()
+    .min(6, { message: "Current password is required." }),
+  newPassword: z
+    .string()
+    .min(6, { message: "New password must be at least 6 characters long." }),
 });
 
 // Below line creates the model named "User" from the schema userSchema
