@@ -7,6 +7,7 @@ import auth from "../../middlewares/authMiddleware";
 import resendVerification from "./controller/resendVerification";
 import forgotPassword from "./controller/forgotPassword";
 import resetPassword from "./controller/resetPassword";
+import changePassword from "./controller/changePassword";
 
 const userRoutes = express.Router();
 
@@ -22,6 +23,9 @@ userRoutes.post("/reset-password", resetPassword);
 
 //Protected routes (require auth middleware)
 userRoutes.use(auth);
+
+userRoutes.post("/change-password", changePassword);
+
 
 
 export default userRoutes;
