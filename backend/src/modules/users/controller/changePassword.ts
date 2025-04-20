@@ -10,13 +10,19 @@ const changePassword = async (
 ) => {
   try {
     const userId = req.user?._id;
-
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
       res
         .status(400)
         .json({ message: "Both current and new passwords are required." });
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      res
+        .status(400)
+        .json({ message: "New password cannot be same as the old password." });
       return;
     }
 

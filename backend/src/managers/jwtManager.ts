@@ -7,7 +7,7 @@ dotenv.config();
 const jwtManager = (user: IUser): string => {
   const payload = {
     _id: user._id,
-    id: user._id,
+   //id: user._id,
     email: user.email,
     role: user.role,
   };
