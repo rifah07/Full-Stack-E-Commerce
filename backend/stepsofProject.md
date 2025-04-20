@@ -85,4 +85,9 @@ backend/
 33. To reset password with code in email create new file as: 'resetPassword.ts"
 34. Add in routes and check with api as POST: "http://localhost:5000/api/users/reset-password?token=2e77cf91799958c14a5cdbc6f57776ee9854b0a93f55947b9fad5e91979cf8d8", body: newPassword.
 35. Add authMiddleware in routes, after uodating the auth file.
-36. Change password is pending.
+36. Update in jwtManager, authMiddleware and implement changePassword.
+37. Add in routes, add changePassword route after auth route.
+38. Save and check in postman with api: POST: "http://localhost:5000/api/users/change-password".
+39. In POSTMAN, select "Authorization"> 'Bearer Token"(paste token from login) to test.
+40. So, user registration, verification, verification resend if while registration not verified, login, reset forgotten password, change password are working perfectly now, Alhamdulillah.
+41. Next, view profile, add more info in profile as image or address, delete password and logout.
