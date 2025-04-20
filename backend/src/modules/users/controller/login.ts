@@ -1,35 +1,43 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import User from "../../../models/user.model";
+import User, { LoginZodSchema } from "../../../models/user.model";
 import jwtManager from "../../../managers/jwtManager";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body;
+    // Validate request body using the LoginZodSchema
+    const validatedData = await LoginZodSchema.safeParseAsync(req.body);
 
-    // Input validation
-    if (!email || !password) {
-      throw new Error("Email and password are required.");
+    if (!validatedData.success) {
+      return res.status(400).json({ errors: validatedData.error.issues });
     }
+
+    const { email, password } = validatedData.data;
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new Error("User not found with this email.");
+      return res
+        .status(404)
+        .json({ message: "User not found with this email." });
     }
 
     if (!user.isVerified) {
-      throw new Error("Please verify your email before logging in.");
+      return res
+        .status(401)
+        .json({ message: "Please verify your email before logging in." });
     }
 
     if (user.isBanned) {
-      throw new Error("Your account has been banned. Contact support.");
+      return res
+        .status(403)
+        .json({ message: "Your account has been banned. Contact support." });
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      throw new Error("Incorrect password.");
+      return res.status(401).json({ message: "Incorrect password." });
     }
 
     const accessToken = await jwtManager(user);
@@ -38,7 +46,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       status: "Login successful!",
       accessToken,
     });
-
   } catch (error) {
     next(error);
   }
