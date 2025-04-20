@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import User, { LoginZodSchema } from "../../../models/user.model";
+import User from "../../../models/user.model";
+import { LoginZodSchema } from "../../../validators/user.validator";
 import jwtManager from "../../../managers/jwtManager";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +10,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = await LoginZodSchema.safeParseAsync(req.body);
 
     if (!validatedData.success) {
-      return res.status(400).json({ errors: validatedData.error.issues });
+      res.status(400).json({ errors: validatedData.error.issues });
+      return;
     }
 
     const { email, password } = validatedData.data;
@@ -17,27 +19,29 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found with this email." });
+      res.status(404).json({ message: "User not found with this email." });
+      return;
     }
 
     if (!user.isVerified) {
-      return res
+      res
         .status(401)
         .json({ message: "Please verify your email before logging in." });
+      return;
     }
 
     if (user.isBanned) {
-      return res
+      res
         .status(403)
         .json({ message: "Your account has been banned. Contact support." });
+      return;
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(401).json({ message: "Incorrect password." });
+      res.status(401).json({ message: "Incorrect password." });
+      return;
     }
 
     const accessToken = await jwtManager(user);

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import User, { ResetPasswordZodSchema } from "../../../models/user.model";
+import User from "../../../models/user.model";
+import { ResetPasswordZodSchema } from "../../../validators/user.validator";
 
 const resetPassword = async (
   req: Request,

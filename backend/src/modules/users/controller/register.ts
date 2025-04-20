@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import User, { RegisterZodSchema } from "../../../models/user.model";
+import User from "../../../models/user.model";
+import { RegisterZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
-//import { z } from "zod";
-
-
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
-import User, { ForgotPasswordZodSchema } from "../../../models/user.model";
+import User from "../../../models/user.model";
+import { ForgotPasswordZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
 
 const forgotPassword = async (
@@ -14,7 +15,8 @@ const forgotPassword = async (
     );
 
     if (!validatedData.success) {
-      return res.status(400).json({ errors: validatedData.error.issues });
+      res.status(400).json({ errors: validatedData.error.issues });
+      return;
     }
 
     const { email } = validatedData.data;
