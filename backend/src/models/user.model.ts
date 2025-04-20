@@ -126,6 +126,12 @@ export const LoginZodSchema = z.object({
   password: z.string().min(1, { message: "Password cannot be empty." }),
 });
 
+// Zod schema for change password
+export const ChangePasswordZodSchema = z.object({
+  currentPassword: z.string().min(6, { message: "Current password is required." }),
+  newPassword: z.string().min(6, { message: "New password must be at least 6 characters long." }),
+});
+
 // Below line creates the model named "User" from the schema userSchema
 // It exports it as the default export
 export default mongoose.model<IUser>("User", userSchema);

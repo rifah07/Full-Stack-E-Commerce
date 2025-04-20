@@ -1,7 +1,8 @@
 import { Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import User from "../../../models/user.model";
+import User, { ChangePasswordZodSchema } from "../../../models/user.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
+//import { z } from "zod";
 
 const changePassword = async (
   req: AuthRequest,
@@ -10,34 +11,35 @@ const changePassword = async (
 ) => {
   try {
     const userId = req.user?._id;
-    const { currentPassword, newPassword } = req.body;
+    // Validate request body using Zod schema
+    const validatedData = await ChangePasswordZodSchema.safeParseAsync(
+      req.body
+    );
 
-    if (!currentPassword || !newPassword) {
-      res
-        .status(400)
-        .json({ message: "Both current and new passwords are required." });
-      return;
+    if (!validatedData.success) {
+      return res.status(400).json({ errors: validatedData.error.issues });
     }
 
+    const { currentPassword, newPassword } = validatedData.data;
+
     if (currentPassword === newPassword) {
-      res
+      return res
         .status(400)
         .json({ message: "New password cannot be same as the old password." });
-      return;
     }
 
     const user = await User.findById(userId).select("+password");
     console.log("User ID from token:", userId);
 
     if (!user) {
-      res.status(404).json({ message: "User not found." });
-      return;
+      return res.status(404).json({ message: "User not found." });
     }
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      res.status(400).json({ message: "Current password is incorrect." });
-      return;
+      return res
+        .status(400)
+        .json({ message: "Current password is incorrect." });
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
