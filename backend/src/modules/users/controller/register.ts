@@ -1,38 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import User from "../../../models/user.model";
+import User, { RegisterZodSchema } from "../../../models/user.model";
 import emailManager from "../../../managers/emailManager";
-import { z } from "zod";
+//import { z } from "zod";
 
-// specific Zod schema for registration
-const RegisterZodSchema = z
-  .object({
-    name: z
-      .string()
-      .min(2, { message: "Full name must be at least 2 characters long." })
-      .max(100, { message: "Full name cannot exceed 100 characters." }),
-    email: z
-      .string()
-      .email({ message: "Please enter a valid e-mail address." }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters long." }),
-    confirm_password: z.string(),
-    role: z
-      .string()
-      .optional()
-      .default("buyer")
-      .transform((val) => val.toLowerCase())
-      .pipe(z.enum(["admin", "seller", "buyer"] as const))
-      .describe(
-        "User role during registration (optional, defaults to buyer, will be stored in lowercase)"
-      ),
-  })
-  .refine((data) => data.password === data.confirm_password, {
-    message: "Passwords do not match.",
-    path: ["confirm_password"],
-  });
+
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
