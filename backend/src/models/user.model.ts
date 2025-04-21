@@ -18,7 +18,7 @@ export interface IUser extends Document {
   isBanned: boolean;
   image?: string;
   address?: string;
-  gender?: "male" | "female";
+  gender?: "male" | "female"| "other";
   dateOfBirth?: Date;
   emailVerificationToken?: string;
   isVerified?: boolean;
@@ -43,7 +43,7 @@ const userSchema = new Schema<IUser>(
     isBanned: { type: Boolean, default: false },
     image: { type: String },
     address: { type: String },
-    gender: { type: String, enum: ["male", "female"] },
+    gender: { type: String, enum: ["male", "female", "other"] },
     dateOfBirth: { type: Date },
     emailVerificationToken: { type: String },
     emailVerificationExpires: { type: Date },

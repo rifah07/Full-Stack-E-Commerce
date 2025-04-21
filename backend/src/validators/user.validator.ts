@@ -104,4 +104,6 @@ export const UpdateProfileZodSchema = z.object({
   name: z.string().min(2).max(100).optional(),
   address: z.string().max(255).optional(),
   image: z.string().optional(), // base64 or URL
+  gender: z.enum(["male", "female", "other"]).optional(),
+  dateOfBirth: z.coerce.date().optional()
 });
