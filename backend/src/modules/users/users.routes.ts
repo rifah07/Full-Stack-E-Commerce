@@ -8,6 +8,7 @@ import resendVerification from "./controller/resendVerification";
 import forgotPassword from "./controller/forgotPassword";
 import resetPassword from "./controller/resetPassword";
 import changePassword from "./controller/changePassword";
+import getProfile from "./controller/profile";
 
 const userRoutes = express.Router();
 
@@ -25,6 +26,7 @@ userRoutes.post("/reset-password", resetPassword);
 userRoutes.use(auth);
 
 userRoutes.post("/change-password", changePassword);
+userRoutes.get("/profile", getProfile);
 
 
 
