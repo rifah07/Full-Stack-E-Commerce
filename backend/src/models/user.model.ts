@@ -18,6 +18,8 @@ export interface IUser extends Document {
   isBanned: boolean;
   image?: string;
   address?: string;
+  gender?: "male" | "female";
+  dateOfBirth?: Date;
   emailVerificationToken?: string;
   isVerified?: boolean;
   emailVerificationExpires?: Date;
@@ -41,6 +43,8 @@ const userSchema = new Schema<IUser>(
     isBanned: { type: Boolean, default: false },
     image: { type: String },
     address: { type: String },
+    gender: { type: String, enum: ["male", "female"] },
+    dateOfBirth: { type: Date },
     emailVerificationToken: { type: String },
     emailVerificationExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
@@ -55,7 +59,6 @@ userSchema.pre<IUser>("save", function (next) {
   this.role = this.role.toLowerCase() as IUser["role"];
   next();
 });
-
 
 // Below line creates the model named "User" from the schema userSchema
 // It exports it as the default export
