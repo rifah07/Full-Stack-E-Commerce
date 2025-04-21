@@ -9,6 +9,7 @@ import forgotPassword from "./controller/forgotPassword";
 import resetPassword from "./controller/resetPassword";
 import changePassword from "./controller/changePassword";
 import getProfile from "./controller/profile";
+import updateProfile from "./controller/updateProfile";
 
 const userRoutes = express.Router();
 
@@ -27,6 +28,7 @@ userRoutes.use(auth);
 
 userRoutes.post("/change-password", changePassword);
 userRoutes.get("/profile", getProfile);
+userRoutes.patch("/editProfile", updateProfile);
 
 
 

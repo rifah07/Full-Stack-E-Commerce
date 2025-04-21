@@ -98,3 +98,10 @@ export const ChangePasswordZodSchema = z.object({
     .string()
     .min(6, { message: "New password must be at least 6 characters long." }),
 });
+
+// Zod schema for updating profile
+export const UpdateProfileZodSchema = z.object({
+  name: z.string().min(2).max(100).optional(),
+  address: z.string().max(255).optional(),
+  image: z.string().optional(), // base64 or URL
+});

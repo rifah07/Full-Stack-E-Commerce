@@ -99,4 +99,5 @@ backend/
 45. To cestralize schemas, add all zod schemas in validator>user.validator.ts .
 46. Add register schema, login schema ... in user.validator.
 47. Change parts with zodSchema(s).
-48. Next, view profile, add more info in profile as image or address, delete password and logout.
+48. View profile , edit profile added.
+49. Next, delete password and logout.
