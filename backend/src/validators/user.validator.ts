@@ -101,9 +101,35 @@ export const ChangePasswordZodSchema = z.object({
 
 // Zod schema for updating profile
 export const UpdateProfileZodSchema = z.object({
-  name: z.string().min(2).max(100).optional(),
-  address: z.string().max(255).optional(),
-  image: z.string().optional(), // base64 or URL
-  gender: z.enum(["male", "female", "other"]).optional(),
-  dateOfBirth: z.coerce.date().optional()
+  name: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters long." })
+    .max(100, { message: "Name cannot exceed 100 characters." })
+    .optional(),
+
+  address: z
+    .string()
+    .max(255, { message: "Address cannot exceed 255 characters." })
+    .optional(),
+
+  image: z
+    .string({
+      required_error: "Image must be a valid URL or base64 string.",
+      invalid_type_error: "Image must be a string.",
+    })
+    .optional(),
+
+  gender: z
+    .enum(["male", "female", "other"], {
+      required_error: "Gender must be one of: male, female, or other.",
+      invalid_type_error: "Please enter a valid gender.",
+    })
+    .optional(),
+
+  dateOfBirth: z.coerce
+    .date({
+      invalid_type_error:
+        "Date of birth must be a valid date in YYYY-MM-DD format.",
+    })
+    .optional(),
 });
