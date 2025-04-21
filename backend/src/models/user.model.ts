@@ -16,6 +16,8 @@ export interface IUser extends Document {
   password: string;
   role: "admin" | "seller" | "buyer";
   isBanned: boolean;
+  image?: string;
+  address?: string;
   emailVerificationToken?: string;
   isVerified?: boolean;
   emailVerificationExpires?: Date;
@@ -37,6 +39,8 @@ const userSchema = new Schema<IUser>(
       default: "buyer",
     },
     isBanned: { type: Boolean, default: false },
+    image: { type: String },
+    address: { type: String },
     emailVerificationToken: { type: String },
     emailVerificationExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
