@@ -43,7 +43,7 @@ const userSchema = new Schema<IUser>(
     isBanned: { type: Boolean, default: false },
     image: { type: String },
     address: { type: String },
-    gender: { type: String, enum: ["male", "female", "other"] },
+    gender: { type: String, enum: ["male", "female", "other"]},
     dateOfBirth: { type: Date },
     emailVerificationToken: { type: String },
     emailVerificationExpires: { type: Date },
@@ -54,11 +54,13 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// this part formats role in lowarcase to maintain if entered in different case formates
+// this part formats variable value in lowarcase to maintain if entered in different case formates
 userSchema.pre<IUser>("save", function (next) {
   this.role = this.role.toLowerCase() as IUser["role"];
+  //this.gender = this.gender.toLowerCase() as IUser["gender"];
   next();
 });
+
 
 // Below line creates the model named "User" from the schema userSchema
 // It exports it as the default export

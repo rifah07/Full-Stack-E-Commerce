@@ -21,7 +21,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
 
     res.status(200).json({
       message:
-        "Your account has been permanently deleted. We’re sad to see you go 😢",
+        "Your account has been permanently deleted. We’re sad to see you go 💔",
       farewellNote: "If you change your mind, you're always welcome to rejoin!",
     });
     return;
