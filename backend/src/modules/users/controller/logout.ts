@@ -1,13 +1,38 @@
-import { Response } from "express";
-import { AuthRequest } from "../../../middlewares/authMiddleware";
+import { Request, Response } from "express";
+import mongoose from "mongoose";
 
-export const logoutUser = async (req: AuthRequest, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({ message: "User logged out successfully." });
+    const RefreshToken = mongoose.model("refresh_tokens");
+    const refreshToken = req.cookies.refreshToken;
+
+    if (refreshToken) {
+      await RefreshToken.deleteOne({ token: refreshToken });
+    }
+
+    // Clear tokens from cookies
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.status(200).json({
+      status: "Success",
+      message: "Logged out successfully 💔",
+    });
     return;
-  } catch (error) {
-    console.error("Logout Error:", error);
-    res.status(500).json({ message: "Server error during logout." });
+  } catch (error: any) {
+    res.status(500).json({
+      status: "Failed",
+      message: error?.message || "Something went wrong during logout",
+    });
     return;
   }
 };
