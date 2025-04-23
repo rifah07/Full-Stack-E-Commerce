@@ -3,10 +3,11 @@ import bcrypt from "bcryptjs";
 import User from "../../../models/user.model";
 import { LoginZodSchema } from "../../../validators/user.validator";
 import jwtManager from "../../../managers/jwtManager";
+import RefreshToken from "../../../models/refreshToken.model";
+import jwt from "jsonwebtoken";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Validate request body using the LoginZodSchema
     const validatedData = await LoginZodSchema.safeParseAsync(req.body);
 
     if (!validatedData.success) {
@@ -24,16 +25,16 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (!user.isVerified) {
-      res
-        .status(401)
-        .json({ message: "Please verify your email before logging in." });
+      res.status(401).json({
+        message: "Please verify your email before logging in.",
+      });
       return;
     }
 
     if (user.isBanned) {
-      res
-        .status(403)
-        .json({ message: "Your account has been banned. Contact support." });
+      res.status(403).json({
+        message: "Your account has been banned. Contact support.",
+      });
       return;
     }
 
@@ -44,11 +45,38 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
+    //Generate Access Token
     const accessToken = await jwtManager(user);
+
+    //Generate Refresh Token (valid for 7 days)
+    const refreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.REFRESH_TOKEN_SECRET as string,
+      { expiresIn: "7d" }
+    );
+
+    // store refresh token in database
+    await RefreshToken.create({
+      token: refreshToken,
+      user: user._id,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    });
+
+    // Set cookies
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
     res.status(200).json({
       status: "Login successful!",
-      accessToken,
     });
   } catch (error) {
     next(error);
