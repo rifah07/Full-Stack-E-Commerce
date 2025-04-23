@@ -11,18 +11,18 @@ import changePassword from "./controller/changePassword";
 import getProfile from "./controller/profile";
 import updateProfile from "./controller/updateProfile";
 import { deleteUser } from "./controller/deleteUser";
+import refreshAccessToken from "./controller/refreshAccessToken";
 
 const userRoutes = express.Router();
 
 // Public routes (no auth required)
 userRoutes.post("/register", register);
 userRoutes.get("/verify-email", verifyEmail);
-userRoutes.post("/resend-verification",resendVerification);
+userRoutes.post("/resend-verification", resendVerification);
 userRoutes.post("/login", login);
 userRoutes.post("/forgot-password", forgotPassword);
 userRoutes.post("/reset-password", resetPassword);
-
-
+userRoutes.post("/refresh-token", refreshAccessToken);
 
 //Protected routes (require auth middleware)
 userRoutes.use(auth);
@@ -31,8 +31,5 @@ userRoutes.post("/change-password", changePassword);
 userRoutes.get("/profile", getProfile);
 userRoutes.patch("/editProfile", updateProfile);
 userRoutes.delete("/delete-account", deleteUser);
-
-
-
 
 export default userRoutes;
