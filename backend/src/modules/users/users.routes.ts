@@ -12,6 +12,7 @@ import getProfile from "./controller/profile";
 import updateProfile from "./controller/updateProfile";
 import { deleteUser } from "./controller/deleteUser";
 import refreshAccessToken from "./controller/refreshAccessToken";
+import logout from "./controller/logout";
 
 const userRoutes = express.Router();
 
@@ -30,6 +31,8 @@ userRoutes.use(auth);
 userRoutes.post("/change-password", changePassword);
 userRoutes.get("/profile", getProfile);
 userRoutes.patch("/editProfile", updateProfile);
+userRoutes.post("/logout", logout);
 userRoutes.delete("/delete-account", deleteUser);
+
 
 export default userRoutes;
