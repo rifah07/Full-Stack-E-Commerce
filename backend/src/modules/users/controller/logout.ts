@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
+import RefreshToken from "../../../models/refreshToken.model";
 
-export const logout = async (req: Request, res: Response) => {
+const logout = async (req: Request, res: Response) => {
   try {
-    const RefreshToken = mongoose.model("refresh_tokens");
     const refreshToken = req.cookies.refreshToken;
 
     if (refreshToken) {
       await RefreshToken.deleteOne({ token: refreshToken });
     }
 
-    // Clear tokens from cookies
     res.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -25,14 +23,16 @@ export const logout = async (req: Request, res: Response) => {
 
     res.status(200).json({
       status: "Success",
-      message: "Logged out successfully 💔",
+      message: "💔 Logged out successfully.",
     });
     return;
   } catch (error: any) {
     res.status(500).json({
       status: "Failed",
-      message: error?.message || "Something went wrong during logout",
+      message: error.message || "Logout failed",
     });
     return;
   }
 };
+
+export default logout;
