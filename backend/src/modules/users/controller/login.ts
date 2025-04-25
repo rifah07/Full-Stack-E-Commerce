@@ -5,6 +5,8 @@ import { LoginZodSchema } from "../../../validators/user.validator";
 import jwtManager from "../../../managers/jwtManager";
 import RefreshToken from "../../../models/refreshToken.model";
 import jwt from "jsonwebtoken";
+import logger from "../../../utils/logger"
+
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -19,10 +21,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await User.findOne({ email });
 
-    if (!user) {
-      res.status(404).json({ message: "User not found with this email." });
-      return;
-    }
+    if (!user) throw "User not found with this email.";
 
     if (!user.isVerified) {
       res.status(401).json({
@@ -81,6 +80,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       // refreshToken
     });
   } catch (error) {
+    logger.error(`Something went wrong: ${error}`);
     next(error);
   }
 };
