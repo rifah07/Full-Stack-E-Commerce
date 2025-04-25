@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import morgan from "morgan";
+import { morganStream } from "./utils/logger";
 import { errorHandler } from "./handler/errorHandler";
 import userRoutes from "./modules/users/users.routes";
 
@@ -12,6 +14,9 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+// Morgan HTTP logging into Winston
+app.use(morgan("combined", { stream: morganStream }));
 
 //models initialization
 //require("./models/users.model");
