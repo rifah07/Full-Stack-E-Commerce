@@ -100,4 +100,5 @@ backend/
 46. Add register schema, login schema ... in user.validator.
 47. Change parts with zodSchema(s).
 48. View profile , edit profile, delete profile added.
-49. Next, logout.
+49. Middleware updated, now chose "No auth" instead of "Bearer toekn" in authorization in postman.
+50. Logout updated, all are working now, Alhamdulillah.
