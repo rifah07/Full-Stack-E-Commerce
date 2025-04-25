@@ -5,8 +5,7 @@ import { LoginZodSchema } from "../../../validators/user.validator";
 import jwtManager from "../../../managers/jwtManager";
 import RefreshToken from "../../../models/refreshToken.model";
 import jwt from "jsonwebtoken";
-import logger from "../../../utils/logger"
-
+import logger from "../../../utils/logger";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -21,7 +20,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await User.findOne({ email });
 
-    if (!user) throw "User not found with this email.";
+    if (!user) {
+       res.status(404).json({ message: "User not found with this email." });
+       return;
+      //throw "User not found with this email.";
+    }
 
     if (!user.isVerified) {
       res.status(401).json({
@@ -44,17 +47,17 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    //Generate Access Token
+    // Generate Access Token
     const accessToken = await jwtManager(user);
 
-    //Generate Refresh Token (valid for 7 days)
+    // Generate Refresh Token (valid for 7 days)
     const refreshToken = jwt.sign(
       { userId: user._id },
       process.env.REFRESH_TOKEN_SECRET as string,
       { expiresIn: "7d" }
     );
 
-    // store refresh token in database
+    // Store refresh token in database
     await RefreshToken.create({
       token: refreshToken,
       user: user._id,
@@ -76,12 +79,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json({
       status: "Login successful!",
-      //accessToken,
-      // refreshToken
+      // accessToken,
+      // refreshToken,
     });
   } catch (error) {
     logger.error(`Something went wrong: ${error}`);
-    //next(error);
+    next(error);
   }
 };
 

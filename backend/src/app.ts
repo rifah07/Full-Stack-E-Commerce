@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import { morganStream } from "./utils/logger";
-import { errorHandler } from "./handler/errorHandler";
+import errorHandler from "./handler/errorHandler";
 import userRoutes from "./modules/users/users.routes";
 
 dotenv.config();

@@ -1,6 +1,7 @@
 import { Response } from "express";
 import User from "../../../models/user.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
+import logger from "../../../utils/logger";
 
 export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
@@ -12,10 +13,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
     }
 
     const user = await User.findById(userId);
-    if (!user) {
-      res.status(404).json({ message: "User not found." });
-      return;
-    }
+    if (!user) throw "User not found";
 
     await User.findByIdAndDelete(userId);
 
@@ -26,7 +24,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
     });
     return;
   } catch (error) {
-    console.error("Error deleting account:", error);
+    logger.error(`Error deleting account: ${error}`);
     res
       .status(500)
       .json({ message: "Something went wrong. Please try again later." });

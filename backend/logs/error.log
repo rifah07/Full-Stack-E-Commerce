@@ -2,3 +2,7 @@
 [2025-04-25 23:53:16] ERROR: Something went wrong: User not found with this email.
 [2025-04-25 23:53:52] ERROR: Something went wrong: User not found with this email.
 [2025-04-25 23:55:32] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:13:05] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:13:42] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:25:44] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:25:44] ERROR: [POST] /api/users/login - User not found with this email.

@@ -107,4 +107,5 @@ backend/
 51. In terminal, type point-10 above.
 52. Install winston like 51 point and add logger.ts file in utils folder.
 53. In terminal, type point-11 above.
-54. Install morgan like 53 point.
+54. Morgan is a HTTP request logger middleware for Node.js that provides clear visibility into the incoming HTTP traffic. Combined with winston: Save HTTP request logs to files, Separate info, error, and warning logs.
+55. Install morgan like 53 point.

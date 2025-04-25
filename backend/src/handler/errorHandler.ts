@@ -1,23 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
+import logger from '../utils/logger';
 
-export const errorHandler = (
+const errorHandler = (
   error: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  //console.error('Error caught:', error);
+  const statusCode = error.status || error.statusCode || 500;
+  const message = error.message || error || "Internal Server Error";
 
-  if (error?.message) {
-    res.status(400).json({
-      status: 'failed',
-      error: error.message,
-    });
-  } else {
-    res.status(400).json({
-      status: 'failed',
-      error,
-    });
-  }
+  // Log the full error for debugging
+  logger.error(`[${req.method}] ${req.originalUrl} - ${message}`);
+
+  res.status(statusCode).json({
+    status: "failed",
+    message,
+  });
 };
-//export default errorHandler;
+
+export default errorHandler;

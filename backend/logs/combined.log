@@ -2,3 +2,9 @@
 [2025-04-25 23:53:16] ERROR: Something went wrong: User not found with this email.
 [2025-04-25 23:53:52] ERROR: Something went wrong: User not found with this email.
 [2025-04-25 23:55:32] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:13:05] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:13:42] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:13:42] INFO: ::1 - - [25/Apr/2025:18:13:42 +0000] "POST /api/users/login HTTP/1.1" 400 61 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 00:25:44] ERROR: Something went wrong: User not found with this email.
+[2025-04-26 00:25:44] ERROR: [POST] /api/users/login - User not found with this email.
+[2025-04-26 00:25:44] INFO: ::1 - - [25/Apr/2025:18:25:44 +0000] "POST /api/users/login HTTP/1.1" 500 63 "-" "PostmanRuntime/7.43.3"
