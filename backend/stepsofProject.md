@@ -10,7 +10,7 @@ Installation commands:
 8. npm install zod  # For Zod
 9. npm install yup  # For Yup
 10. npm install winston
-11. npm install morgan
+11. npm install --save-dev @types/morgan
 
 
 Steps:
