@@ -6,3 +6,13 @@
 [2025-04-26 00:13:42] ERROR: Something went wrong: User not found with this email.
 [2025-04-26 00:25:44] ERROR: Something went wrong: User not found with this email.
 [2025-04-26 00:25:44] ERROR: [POST] /api/users/login - User not found with this email.
+[2025-04-26 00:48:59] ERROR: Something went wrong: Error: User not found with this email.
+[2025-04-26 00:48:59] ERROR: [POST] /api/users/login - User not found with this email.
+[2025-04-26 00:53:30] ERROR: Something went wrong: Error: Incorrect password.
+[2025-04-26 00:53:30] ERROR: [POST] /api/users/login - Incorrect password.
+[2025-04-26 00:54:19] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.
+[2025-04-26 00:54:29] ERROR: [POST] /api/users/change-password - urrent password is incorrect.
+[2025-04-26 00:54:56] ERROR: [POST] /api/users/change-password - Current password is incorrect.
+[2025-04-26 00:55:03] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.
+[2025-04-26 00:55:15] ERROR: Something went wrong: Error: Incorrect password.
+[2025-04-26 00:55:15] ERROR: [POST] /api/users/login - Incorrect password.

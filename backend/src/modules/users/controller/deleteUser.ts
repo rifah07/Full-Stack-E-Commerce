@@ -8,10 +8,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?._id;
 
-    if (!userId) {
-      res.status(401).json({ message: "Unauthorized - Invalid token." });
-      return;
-    }
+    if (!userId) throw new AppError("Unauthorized - Invalid token.", 401);
 
     const user = await User.findById(userId);
     if (!user) throw new AppError("User not found with this email.", 404);

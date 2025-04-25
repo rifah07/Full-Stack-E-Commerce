@@ -38,7 +38,7 @@ const changePassword = async (
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      throw new AppError("urrent password is incorrect.", 400);
+      throw new AppError("Current password is incorrect.", 400);
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
