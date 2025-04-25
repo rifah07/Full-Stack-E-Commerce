@@ -109,3 +109,6 @@ backend/
 53. In terminal, type point-11 above.
 54. Morgan is a HTTP request logger middleware for Node.js that provides clear visibility into the incoming HTTP traffic. Combined with winston: Save HTTP request logs to files, Separate info, error, and warning logs.
 55. Install morgan like 53 point.
+56. Add a new code AppError.ts, to centralize error with message and status code
+57. Ass AppError in files to lessen res.status much.
+58. Update errorandler too.
