@@ -2,6 +2,7 @@ import { Response } from "express";
 import User from "../../../models/user.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 import logger from "../../../utils/logger";
+import AppError from "../../../utils/AppError";
 
 export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
@@ -13,7 +14,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
     }
 
     const user = await User.findById(userId);
-    if (!user) throw "User not found";
+    if (!user) throw new AppError("User not found with this email.", 404);
 
     await User.findByIdAndDelete(userId);
 

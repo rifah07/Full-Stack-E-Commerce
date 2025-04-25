@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../../../models/user.model";
 import { ChangePasswordZodSchema } from "../../../validators/user.validator";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
+import AppError from "../../../utils/AppError";
 
 const changePassword = async (
   req: AuthRequest,
@@ -17,33 +18,27 @@ const changePassword = async (
     );
 
     if (!validatedData.success) {
-       res.status(400).json({ errors: validatedData.error.issues });
-       return;
+      res.status(400).json({ errors: validatedData.error.issues });
+      return;
     }
 
     const { currentPassword, newPassword } = validatedData.data;
 
     if (currentPassword === newPassword) {
-       res
-        .status(400)
-        .json({ message: "New password cannot be same as the old password." });
-        return;
+      throw new AppError(
+        "New password cannot be same as the old password.",
+        400
+      );
     }
 
     const user = await User.findById(userId).select("+password");
     //console.log("User ID from token:", userId);
 
-    if (!user) {
-       res.status(404).json({ message: "User not found." });
-       return;
-    }
+    if (!user) throw new AppError("User not found with this email.", 404);
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-       res
-        .status(400)
-        .json({ message: "Current password is incorrect." });
-        return;
+      throw new AppError("urrent password is incorrect.", 400);
     }
 
     user.password = await bcrypt.hash(newPassword, 10);

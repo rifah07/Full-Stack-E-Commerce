@@ -8,7 +8,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   const statusCode = error.status || error.statusCode || 500;
-  const message = error.message || error || "Internal Server Error";
+  const message = error?.message || error || "Internal Server Error";
 
   // Log the full error for debugging
   logger.error(`[${req.method}] ${req.originalUrl} - ${message}`);

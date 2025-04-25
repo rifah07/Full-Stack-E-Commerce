@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../../../models/user.model";
+import AppError from "../../../utils/AppError";
 
 const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,9 +15,7 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
       emailVerificationExpires: { $gt: new Date() },
     });
 
-    if (!user) {
-      throw new Error("Invalid or expired token.");
-    }
+    if (!user) throw new AppError("User not found with this email.", 404);
 
     user.emailVerificationToken = undefined;
     user.emailVerificationExpires = undefined;
@@ -25,7 +24,10 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
 
     res
       .status(200)
-      .json({ message: "Your email has been successfully verified! You can now login." });
+      .json({
+        message:
+          "Your email has been successfully verified! You can now login.",
+      });
   } catch (error) {
     next(error);
   }

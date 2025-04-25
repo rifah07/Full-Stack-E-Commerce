@@ -3,6 +3,7 @@ import crypto from "crypto";
 import User from "../../../models/user.model";
 import { ResendVerificationZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
+import AppError from "../../../utils/AppError";
 
 const resendVerification = async (
   req: Request,
@@ -23,10 +24,7 @@ const resendVerification = async (
 
     const user = await User.findOne({ email });
 
-    if (!user) {
-      res.status(404).json({ message: "No user found with this email." });
-      return;
-    }
+    if (!user) throw new AppError("User not found with this email.", 404);
 
     if (user.isVerified) {
       res.status(400).json({ message: "Email is already verified." });

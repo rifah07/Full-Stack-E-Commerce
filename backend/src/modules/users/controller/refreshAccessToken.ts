@@ -4,23 +4,18 @@ import jwt from "jsonwebtoken";
 import RefreshToken from "../../../models/refreshToken.model";
 import jwtManager from "../../../managers/jwtManager";
 import User from "../../../models/user.model";
+import AppError from "../../../utils/AppError";
 
 const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     const refreshToken = req.cookies.refreshToken;
 
-    if (!refreshToken) {
-      res.status(401).json({ message: "No refresh token provided" });
-      return;
-    }
+    if (!refreshToken) throw new AppError("No refresh token provided", 401);
 
     // Verify refresh token and find in DB
     const foundToken = await RefreshToken.findOne({ token: refreshToken });
 
-    if (!foundToken) {
-      res.status(403).json({ message: "Invalid refresh token" });
-      return;
-    }
+    if (!foundToken) throw new AppError("Invalid refresh token", 403);
 
     // Check expiration manually
     if (foundToken.expiresAt < new Date()) {
@@ -35,10 +30,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
     ) as { userId: string };
 
     const user = await User.findById(decoded.userId);
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
+    if (!user) throw new AppError("User not found with this email.", 404);
 
     // Generate a new access token
     const newAccessToken = await jwtManager(user);

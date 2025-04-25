@@ -6,6 +6,7 @@ import jwtManager from "../../../managers/jwtManager";
 import RefreshToken from "../../../models/refreshToken.model";
 import jwt from "jsonwebtoken";
 import logger from "../../../utils/logger";
+import AppError from "../../../utils/AppError";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,31 +21,20 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await User.findOne({ email });
 
-    if (!user) {
-       res.status(404).json({ message: "User not found with this email." });
-       return;
-      //throw "User not found with this email.";
-    }
+    if (!user) throw new AppError("User not found with this email.", 404);
 
     if (!user.isVerified) {
-      res.status(401).json({
-        message: "Please verify your email before logging in.",
-      });
-      return;
+      throw new AppError("Please verify your email before logging in.", 401);
     }
 
     if (user.isBanned) {
-      res.status(403).json({
-        message: "Your account has been banned. Contact support.",
-      });
-      return;
+      throw new AppError("Your account has been banned. Contact support.", 403);
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      res.status(401).json({ message: "Incorrect password." });
-      return;
+      throw new AppError("Incorrect password.", 401);
     }
 
     // Generate Access Token
