@@ -6,7 +6,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error('Error caught:', error);
+  //console.error('Error caught:', error);
 
   if (error?.message) {
     res.status(400).json({

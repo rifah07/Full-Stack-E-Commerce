@@ -34,5 +34,4 @@ userRoutes.patch("/editProfile", updateProfile);
 userRoutes.post("/logout", logout);
 userRoutes.delete("/delete-account", deleteUser);
 
-
 export default userRoutes;

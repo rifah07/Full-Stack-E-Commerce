@@ -9,6 +9,7 @@ Installation commands:
 7. npm install --save-dev @types/nodemailer
 8. npm install zod  # For Zod
 9. npm install yup  # For Yup
+10. npm install winston
 
 
 Steps:
@@ -102,3 +103,5 @@ backend/
 48. View profile , edit profile, delete profile added.
 49. Middleware updated, now chose "No auth" instead of "Bearer toekn" in authorization in postman.
 50. Logout updated, all are working now, Alhamdulillah.
+51. In terminal, type point-10 above.
+52. Install winston like 51 point and add logger.ts file in utils folder.
