@@ -81,7 +81,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     });
   } catch (error) {
     logger.error(`Something went wrong: ${error}`);
-    next(error);
+    //next(error);
   }
 };
 

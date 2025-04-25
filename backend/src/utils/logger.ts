@@ -1,5 +1,11 @@
 import winston from "winston";
 import path from "path";
+import fs from "fs";
+
+const logDir = path.join(__dirname, "../../logs");
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
 
 //Define log format
 const logFormat = winston.format.combine(
@@ -14,20 +20,17 @@ const logger = winston.createLogger({
   level: "info",
   format: logFormat,
   transports: [
-    //Write all logs to combined.log
     new winston.transports.File({
-      filename: path.join(__dirname, "../../logs/combined.log"),
+      filename: path.join(logDir, "combined.log"),
     }),
-
-    //Write errors to error.log
     new winston.transports.File({
-      filename: path.join(__dirname, "../../logs/error.log"),
+      filename: path.join(logDir, "error.log"),
       level: "error",
     }),
   ],
 });
 
-//log to console in development
+//Log to console in development
 if (process.env.NODE_ENV !== "production") {
   logger.add(
     new winston.transports.Console({
@@ -38,6 +41,13 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 }
+
+// Morgan-compatible stream for HTTP logging
+export const morganStream = {
+  write: (message: string) => {
+    logger.info(message.trim());
+  },
+};
 
 export default logger;
 

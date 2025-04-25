@@ -10,6 +10,7 @@ Installation commands:
 8. npm install zod  # For Zod
 9. npm install yup  # For Yup
 10. npm install winston
+11. npm install morgan
 
 
 Steps:
@@ -105,3 +106,5 @@ backend/
 50. Logout updated, all are working now, Alhamdulillah.
 51. In terminal, type point-10 above.
 52. Install winston like 51 point and add logger.ts file in utils folder.
+53. In terminal, type point-11 above.
+54. Install morgan like 53 point.
