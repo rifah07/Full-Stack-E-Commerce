@@ -7,7 +7,10 @@ export interface AuthRequest extends Request {
 
 const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const accessToken = req.headers.authorization?.replace("Bearer ", "");
+    const accessToken = req.cookies.accessToken;
+
+    // Bearer method
+    // const accessToken = req.headers.authorization?.replace("Bearer ", "");
 
     if (!accessToken) {
       res.status(401).json({
@@ -37,6 +40,7 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
       status: "Failed",
       message: "Unauthorized - Invalid token",
     });
+    return;
   }
 };
 

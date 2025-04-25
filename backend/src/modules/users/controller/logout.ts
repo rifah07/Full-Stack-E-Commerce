@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import RefreshToken from "../../../models/refreshToken.model";
 
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const refreshToken = req.cookies.refreshToken;
 
@@ -23,15 +23,10 @@ const logout = async (req: Request, res: Response) => {
 
     res.status(200).json({
       status: "Success",
-      message: "💔 Logged out successfully.",
+      message: "Logged out successfully",
     });
-    return;
-  } catch (error: any) {
-    res.status(500).json({
-      status: "Failed",
-      message: error.message || "Logout failed",
-    });
-    return;
+  } catch (error) {
+    next(error);
   }
 };
 
