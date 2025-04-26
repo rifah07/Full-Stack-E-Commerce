@@ -2,9 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import User from "../../../models/user.model";
 import { UpdateProfileZodSchema } from "../../../validators/user.validator";
 import { NotFoundError } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-const updateProfile = async (req: any, res: Response, next: NextFunction) => {
-  try {
+const updateProfile = catchAsync(
+  async (req: any, res: Response, next: NextFunction) => {
     const { success, data, error } = UpdateProfileZodSchema.safeParse(req.body);
     if (!success) {
       res.status(400).json({ message: error.errors[0].message });
@@ -32,9 +33,7 @@ const updateProfile = async (req: any, res: Response, next: NextFunction) => {
       },
     });
     return;
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default updateProfile;

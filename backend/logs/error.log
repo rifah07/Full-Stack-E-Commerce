@@ -17,3 +17,6 @@
 [2025-04-26 00:55:15] ERROR: Something went wrong: Error: Incorrect password.
 [2025-04-26 00:55:15] ERROR: [POST] /api/users/login - Incorrect password.
 [2025-04-26 13:57:38] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.
+[2025-04-26 15:09:19] ERROR: [POST] /api/users/login - User not found with this email.
+[2025-04-26 15:09:30] ERROR: [POST] /api/users/login - Incorrect password.
+[2025-04-26 15:11:40] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.

@@ -4,9 +4,10 @@ import { AuthRequest } from "../../../middlewares/authMiddleware";
 import logger from "../../../utils/logger";
 //import AppError from "../../../utils/AppError";
 import { NotFoundError, UnauthorizedError } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-export const deleteUser = async (req: AuthRequest, res: Response) => {
-  try {
+export const deleteUser = catchAsync(
+  async (req: AuthRequest, res: Response) => {
     const userId = req.user?._id;
 
     if (!userId) throw new UnauthorizedError("Unauthorized - Invalid token.");
@@ -22,11 +23,5 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
       farewellNote: "If you change your mind, you're always welcome to rejoin!",
     });
     return;
-  } catch (error) {
-    logger.error(`Error deleting account: ${error}`);
-    res
-      .status(500)
-      .json({ message: "Something went wrong. Please try again later." });
-    return;
   }
-};
+);

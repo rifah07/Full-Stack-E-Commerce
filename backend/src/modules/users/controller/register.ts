@@ -4,9 +4,11 @@ import crypto from "crypto";
 import User from "../../../models/user.model";
 import { RegisterZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
+import catchAsync from "../../../utils/catchAsync";
 
-const register = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+const register = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    
     // Validations
 
     const validatedData = await RegisterZodSchema.safeParseAsync(req.body);
@@ -71,9 +73,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
       status:
         "Registration successful! Please check your email to verify your account.",
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default register;

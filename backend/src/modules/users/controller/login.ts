@@ -12,9 +12,10 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = await LoginZodSchema.safeParseAsync(req.body);
 
     if (!validatedData.success) {
@@ -77,10 +78,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       // accessToken,
       // refreshToken,
     });
-  } catch (error) {
-    logger.error(`Something went wrong: ${error}`);
-    next(error);
   }
-};
+);
 
 export default login;

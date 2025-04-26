@@ -4,13 +4,10 @@ import User from "../../../models/user.model";
 import { ResetPasswordZodSchema } from "../../../validators/user.validator";
 //import AppError from "../../../utils/AppError";
 import { BadRequestError } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-const resetPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+const resetPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.query;
 
     const validatedData = await ResetPasswordZodSchema.safeParseAsync(req.body);
@@ -38,9 +35,7 @@ const resetPassword = async (
     await user.save();
 
     res.status(200).json({ message: "Password has been reset successfully." });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default resetPassword;

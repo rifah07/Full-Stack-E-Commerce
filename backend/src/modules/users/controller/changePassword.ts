@@ -5,13 +5,10 @@ import { ChangePasswordZodSchema } from "../../../validators/user.validator";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 //import AppError from "../../../utils/AppError";
 import { BadRequestError, NotFoundError } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-const changePassword = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+const changePassword = catchAsync(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
     const userId = req.user?._id;
 
     const validatedData = await ChangePasswordZodSchema.safeParseAsync(
@@ -42,9 +39,7 @@ const changePassword = async (
     await user.save();
 
     res.status(200).json({ message: "Password updated successfully." });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default changePassword;

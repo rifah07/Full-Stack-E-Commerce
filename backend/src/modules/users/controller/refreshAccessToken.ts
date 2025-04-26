@@ -25,8 +25,7 @@ const refreshAccessToken = async (req: Request, res: Response) => {
     // Check expiration manually
     if (foundToken.expiresAt < new Date()) {
       await foundToken.deleteOne(); // Cleanup expired
-      res.status(403).json({ message: "Refresh token expired" });
-      return;
+      throw new ForbiddenError("Refresh token expired");
     }
 
     const decoded = jwt.verify(

@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import RefreshToken from "../../../models/refreshToken.model";
+import catchAsync from "../../../utils/catchAsync";
 
-const logout = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+const logout = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (refreshToken) {
@@ -25,9 +26,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
       status: "Success",
       message: "Logged out successfully",
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default logout;

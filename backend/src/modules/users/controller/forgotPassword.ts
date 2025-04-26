@@ -5,13 +5,10 @@ import { ForgotPasswordZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
 //import AppError from "../../../utils/AppError";
 import { NotFoundError } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-const forgotPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+const forgotPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = await ForgotPasswordZodSchema.safeParseAsync(
       req.body
     );
@@ -48,9 +45,7 @@ const forgotPassword = async (
     res
       .status(200)
       .json({ message: "Password reset code sent to your email." });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default forgotPassword;

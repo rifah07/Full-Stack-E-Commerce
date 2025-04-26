@@ -56,3 +56,13 @@
 [2025-04-26 13:57:10] INFO: ::1 - - [26/Apr/2025:07:57:10 +0000] "GET /api/users/profile HTTP/1.1" 200 385 "-" "PostmanRuntime/7.43.3"
 [2025-04-26 13:57:38] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.
 [2025-04-26 13:57:38] INFO: ::1 - - [26/Apr/2025:07:57:38 +0000] "POST /api/users/change-password HTTP/1.1" 400 80 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:09:13] INFO: ::1 - - [26/Apr/2025:09:09:13 +0000] "POST /api/users/login HTTP/1.1" 200 30 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:09:19] ERROR: [POST] /api/users/login - User not found with this email.
+[2025-04-26 15:09:19] INFO: ::1 - - [26/Apr/2025:09:09:19 +0000] "POST /api/users/login HTTP/1.1" 404 63 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:09:26] INFO: ::1 - - [26/Apr/2025:09:09:26 +0000] "POST /api/users/login HTTP/1.1" 200 30 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:09:30] ERROR: [POST] /api/users/login - Incorrect password.
+[2025-04-26 15:09:30] INFO: ::1 - - [26/Apr/2025:09:09:30 +0000] "POST /api/users/login HTTP/1.1" 401 51 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:09:42] INFO: ::1 - - [26/Apr/2025:09:09:42 +0000] "POST /api/users/login HTTP/1.1" 400 120 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:09:52] INFO: ::1 - - [26/Apr/2025:09:09:52 +0000] "POST /api/users/login HTTP/1.1" 200 30 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 15:11:40] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.
+[2025-04-26 15:11:40] INFO: ::1 - - [26/Apr/2025:09:11:40 +0000] "POST /api/users/change-password HTTP/1.1" 400 80 "-" "PostmanRuntime/7.43.3"

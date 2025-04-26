@@ -5,13 +5,10 @@ import { ResendVerificationZodSchema } from "../../../validators/user.validator"
 import emailManager from "../../../managers/emailManager";
 //import AppError from "../../../utils/AppError";
 import { BadRequestError, NotFoundError } from "../../../utils/errors";
+import catchAsync from "../../../utils/catchAsync";
 
-const resendVerification = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+const resendVerification = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = await ResendVerificationZodSchema.safeParseAsync(
       req.body
     );
@@ -48,9 +45,7 @@ const resendVerification = async (
     res.status(200).json({
       message: "A new verification code has been sent to your email.",
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
 export default resendVerification;
