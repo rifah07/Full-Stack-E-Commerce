@@ -6,7 +6,12 @@ import jwtManager from "../../../managers/jwtManager";
 import RefreshToken from "../../../models/refreshToken.model";
 import jwt from "jsonwebtoken";
 import logger from "../../../utils/logger";
-import AppError from "../../../utils/AppError";
+//import AppError from "../../../utils/AppError";
+import {
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../../../utils/errors";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -21,21 +26,21 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await User.findOne({ email });
 
-    if (!user) throw new AppError("User not found with this email.", 404);
+    if (!user) throw new NotFoundError("User not found with this email.");
 
-    if (!user.isVerified) {
-      throw new AppError("Please verify your email before logging in.", 401);
-    }
+    if (!user.isVerified)
+      throw new UnauthorizedError(
+        "Please verify your email before logging in."
+      );
 
-    if (user.isBanned) {
-      throw new AppError("Your account has been banned. Contact support.", 403);
-    }
+    if (user.isBanned)
+      throw new ForbiddenError(
+        "Your account has been banned. Contact support."
+      );
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordCorrect) {
-      throw new AppError("Incorrect password.", 401);
-    }
+    if (!isPasswordCorrect) throw new UnauthorizedError("Incorrect password.");
 
     // Generate Access Token
     const accessToken = await jwtManager(user);
