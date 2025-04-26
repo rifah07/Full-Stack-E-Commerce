@@ -2,16 +2,17 @@ import { Response } from "express";
 import User from "../../../models/user.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 import logger from "../../../utils/logger";
-import AppError from "../../../utils/AppError";
+//import AppError from "../../../utils/AppError";
+import { NotFoundError, UnauthorizedError } from "../../../utils/errors";
 
 export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?._id;
 
-    if (!userId) throw new AppError("Unauthorized - Invalid token.", 401);
+    if (!userId) throw new UnauthorizedError("Unauthorized - Invalid token.");
 
     const user = await User.findById(userId);
-    if (!user) throw new AppError("User not found with this email.", 404);
+    if (!user) throw new NotFoundError("User not found with this email.");
 
     await User.findByIdAndDelete(userId);
 

@@ -3,7 +3,8 @@ import crypto from "crypto";
 import User from "../../../models/user.model";
 import { ForgotPasswordZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
-import AppError from "../../../utils/AppError";
+//import AppError from "../../../utils/AppError";
+import { NotFoundError } from "../../../utils/errors";
 
 const forgotPassword = async (
   req: Request,
@@ -23,7 +24,7 @@ const forgotPassword = async (
     const { email } = validatedData.data;
 
     const user = await User.findOne({ email });
-    if (!user) throw new AppError("User not found with this email.", 404);
+    if (!user) throw new NotFoundError("User not found with this email.");
 
     const resetToken = crypto.randomBytes(32).toString("hex");
     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour

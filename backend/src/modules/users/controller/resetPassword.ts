@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import User from "../../../models/user.model";
 import { ResetPasswordZodSchema } from "../../../validators/user.validator";
-import AppError from "../../../utils/AppError";
+//import AppError from "../../../utils/AppError";
+import { BadRequestError } from "../../../utils/errors";
 
 const resetPassword = async (
   req: Request,
@@ -21,13 +22,13 @@ const resetPassword = async (
 
     const { newPassword } = validatedData.data;
 
-    if (!token) throw new AppError("Token is required.", 400);
+    if (!token) throw new BadRequestError("Token is required.");
 
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: new Date() },
     });
-    if (!user) throw new AppError("Invalid or expired reset token.", 400);
+    if (!user) throw new BadRequestError("Invalid or expired reset token.");
 
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     user.password = hashedPassword;

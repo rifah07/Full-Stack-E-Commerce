@@ -3,7 +3,8 @@ import crypto from "crypto";
 import User from "../../../models/user.model";
 import { ResendVerificationZodSchema } from "../../../validators/user.validator";
 import emailManager from "../../../managers/emailManager";
-import AppError from "../../../utils/AppError";
+//import AppError from "../../../utils/AppError";
+import { BadRequestError, NotFoundError } from "../../../utils/errors";
 
 const resendVerification = async (
   req: Request,
@@ -24,12 +25,10 @@ const resendVerification = async (
 
     const user = await User.findOne({ email });
 
-    if (!user) throw new AppError("User not found with this email.", 404);
+    if (!user) throw new NotFoundError("User not found with this email.");
 
-    if (user.isVerified) {
-      res.status(400).json({ message: "Email is already verified." });
-      return;
-    }
+    if (user.isVerified)
+      throw new BadRequestError("Email is already verified.");
 
     const emailVerificationToken = crypto.randomBytes(32).toString("hex");
     const emailVerificationExpires = new Date(Date.now() + 60 * 60 * 1000 * 24); // 24 hours

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../../../models/user.model";
 import { UpdateProfileZodSchema } from "../../../validators/user.validator";
+import { NotFoundError } from "../../../utils/errors";
 
 const updateProfile = async (req: any, res: Response, next: NextFunction) => {
   try {
@@ -12,7 +13,7 @@ const updateProfile = async (req: any, res: Response, next: NextFunction) => {
 
     const userId = req.user?._id;
     const user = await User.findById(userId);
-    if (!user) throw "User not found";
+    if (!user) throw new NotFoundError("User not found");
 
     Object.assign(user, data); // updates only provided fields
     await user.save();

@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../../../models/user.model";
 import { ChangePasswordZodSchema } from "../../../validators/user.validator";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-import AppError from "../../../utils/AppError";
+//import AppError from "../../../utils/AppError";
 import { BadRequestError, NotFoundError } from "../../../utils/errors";
 
 const changePassword = async (
