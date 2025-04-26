@@ -50,3 +50,9 @@
 [2025-04-26 00:57:03] INFO: ::1 - - [25/Apr/2025:18:57:03 +0000] "POST /api/users/login HTTP/1.1" 200 30 "-" "PostmanRuntime/7.43.3"
 [2025-04-26 00:57:07] INFO: ::1 - - [25/Apr/2025:18:57:07 +0000] "GET /api/users/profile HTTP/1.1" 200 385 "-" "PostmanRuntime/7.43.3"
 [2025-04-26 00:57:13] INFO: ::1 - - [25/Apr/2025:18:57:13 +0000] "POST /api/users/logout HTTP/1.1" 200 56 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 13:56:52] INFO: ::1 - - [26/Apr/2025:07:56:52 +0000] "GET /api/users/profile HTTP/1.1" 401 64 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 13:57:00] INFO: ::1 - - [26/Apr/2025:07:57:00 +0000] "POST /api/users/login HTTP/1.1" 200 30 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 13:57:08] INFO: ::1 - - [26/Apr/2025:07:57:08 +0000] "POST /api/users/login HTTP/1.1" 200 30 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 13:57:10] INFO: ::1 - - [26/Apr/2025:07:57:10 +0000] "GET /api/users/profile HTTP/1.1" 200 385 "-" "PostmanRuntime/7.43.3"
+[2025-04-26 13:57:38] ERROR: [POST] /api/users/change-password - New password cannot be same as the old password.
+[2025-04-26 13:57:38] INFO: ::1 - - [26/Apr/2025:07:57:38 +0000] "POST /api/users/change-password HTTP/1.1" 400 80 "-" "PostmanRuntime/7.43.3"
