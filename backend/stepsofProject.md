@@ -118,3 +118,4 @@ backend/
 62. Update errorHandler, catchAsync and some files.
 63. Auth middleware updared and authorize.ts added for checking role.
 64. Implement ban , unban User by admin after role authenticating.
+65. Implement get all users to see admin all users.

@@ -16,6 +16,7 @@ import refreshAccessToken from "./controller/refreshAccessToken";
 import logout from "./controller/logout";
 import banUser from "./controller/banUser";
 import unbanUser from "./controller/unbanUser";
+import getAllUsers from "./controller/getAllUsers";
 
 const userRoutes = express.Router();
 
@@ -38,10 +39,9 @@ userRoutes.patch("/editProfile", updateProfile);
 userRoutes.post("/logout", logout);
 userRoutes.delete("/delete-account", deleteUser);
 
-
 // Admin-only actions
 userRoutes.patch("/ban/:userId", authorize("admin"), banUser);
 userRoutes.patch("/unban/:userId", authorize("admin"), unbanUser);
-
+userRoutes.get("/all", authorize("admin"), getAllUsers);
 
 export default userRoutes;
