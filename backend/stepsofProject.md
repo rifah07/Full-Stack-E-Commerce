@@ -124,4 +124,15 @@ backend/
 68. Create a new folder insile modules as 'products', add products.route.ts and controllers foder inside products.
 69. Insilde products>controllers add createProduct.ts to add a new product.
 70. Also add a zod validator inside validators folder for products.
-71. Add the create product in product routes and add routes file in app.ts
+71. Add the create product in product routes and add routes file in app.ts.
+72. You can check postman with api: "http://localhost:5000/api/products/addProduct" to add product after login in as admin or seller.
+73. To add a new product add these in req.body: {
+    "name": "Iron" ,
+    "description": "An Iron made with metal",
+    "price":"50",
+    "category":"Accessories",
+    "stock":"3",
+    "images":"https://tse4.mm.bing.net/th?id=OIP.RnrRwDlaPer9OhWnJvWCNgHaGD&pid=Api&P=0&h=220"
+}
+
+74. Add getAllProducts.ts and write code to simply see all products and this does not need login in. Add in routes without auth.

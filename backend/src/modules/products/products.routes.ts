@@ -2,10 +2,12 @@ import express from "express";
 import createProduct from "./controller/createProduct";
 import auth from "../../middlewares/authMiddleware";
 import authorize from "../../middlewares/authorize";
+import getAllProducts from "./controller/getAllProducts";
 
 const productRoutes = express.Router();
 
 // Public routes
+productRoutes.get("/allProducts", getAllProducts);
 
 
 // Protected - Only sellers/admins can create/delete
