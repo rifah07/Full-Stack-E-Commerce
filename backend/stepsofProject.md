@@ -142,3 +142,4 @@ backend/
 78.  Add UPDATE PRODUCT TO EDIT ANY PRODUCT INFO.
 79.  Update product schema with default error message.
 80.  Implement product soft delete so that the product remains in DB afrer deletion just not showing.
+81.  getFilteredProducts is not properly working.

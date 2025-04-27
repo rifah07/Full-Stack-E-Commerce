@@ -7,11 +7,13 @@ import getSingleProduct from "./controller/getSingleProduct";
 import deleteProduct from "./controller/deleteProduct";
 import updateProduct from "./controller/updateProduct";
 import softDeleteProduct from "./controller/softDeleteProduct";
+import getFilteredProducts from "./controller/getFilteredProducts";
 
 const productRoutes = express.Router();
 
 // Public routes
 productRoutes.get("/", getAllProducts);
+productRoutes.post("/filteredProducts", getFilteredProducts);
 productRoutes.get("/:productId", getSingleProduct);
 
 // Protected - Only sellers/admins can create/delete
