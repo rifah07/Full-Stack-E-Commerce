@@ -6,6 +6,8 @@ import morgan from "morgan";
 import { morganStream } from "./utils/logger";
 import errorHandler from "./handler/errorHandler";
 import userRoutes from "./modules/users/users.routes";
+import productRoutes from "./modules/products/products.routes";
+
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use(morgan("combined", { stream: morganStream }));
 
 //add routes here
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
+
 
 //end of routes
 

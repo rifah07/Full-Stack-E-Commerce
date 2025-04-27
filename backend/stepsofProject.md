@@ -124,3 +124,4 @@ backend/
 68. Create a new folder insile modules as 'products', add products.route.ts and controllers foder inside products.
 69. Insilde products>controllers add createProduct.ts to add a new product.
 70. Also add a zod validator inside validators folder for products.
+71. Add the create product in product routes and add routes file in app.ts

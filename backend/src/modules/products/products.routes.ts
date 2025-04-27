@@ -1,0 +1,16 @@
+import express from "express";
+import createProduct from "./controller/createProduct";
+import auth from "../../middlewares/authMiddleware";
+import authorize from "../../middlewares/authorize";
+
+const productRoutes = express.Router();
+
+// Public routes
+
+
+// Protected - Only sellers/admins can create/delete
+productRoutes.use(auth);
+
+productRoutes.post("/", authorize("seller", "admin"), createProduct);
+
+export default productRoutes;
