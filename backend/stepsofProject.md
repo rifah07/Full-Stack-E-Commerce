@@ -116,4 +116,4 @@ backend/
 60. Update codes of controllers now with updated error.ts extended from AppError.
 61. Add catchAsync.ts in utils to centralize errors of try catch and updae controller codes in users by removing try,catch and update eith catchAsync.
 62. Update errorHandler, catchAsync and some files.
-63. User is almost complete.
+63. Auth middleware updared and authorize.ts added for checking role.
