@@ -119,3 +119,5 @@ backend/
 63. Auth middleware updared and authorize.ts added for checking role.
 64. Implement ban , unban User by admin after role authenticating.
 65. Implement get all users to see admin all users.
+66. Now move to product module. 
+67. In models folder add products.model.ts. And write code in it with DB schema
