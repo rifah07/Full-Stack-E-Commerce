@@ -11,6 +11,6 @@ const productRoutes = express.Router();
 // Protected - Only sellers/admins can create/delete
 productRoutes.use(auth);
 
-productRoutes.post("/", authorize("seller", "admin"), createProduct);
+productRoutes.post("/addProduct", authorize("seller", "admin"), createProduct);
 
 export default productRoutes;
