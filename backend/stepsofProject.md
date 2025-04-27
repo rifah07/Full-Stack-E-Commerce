@@ -139,3 +139,5 @@ backend/
 75.  Add getSingleProducts.ts and write code to simply see 1 specific product and this does not need login in. Add in routes without auth.
 76.  Implement Delete Product and add in protected routes.
 77.  Add product validator while adding a new product in DB.
+78.  Add UPDATE PRODUCT TO EDIT ANY PRODUCT INFO.
+79.  Update product schema with default error message.

@@ -5,6 +5,7 @@ import authorize from "../../middlewares/authorize";
 import getAllProducts from "./controller/getAllProducts";
 import getSingleProduct from "./controller/getSingleProduct";
 import deleteProduct from "./controller/deleteProduct";
+import updateProduct from "./controller/updateProduct";
 
 const productRoutes = express.Router();
 
@@ -17,6 +18,7 @@ productRoutes.use(auth);
 productRoutes.use(authorize("seller", "admin"));
 
 productRoutes.post("/addProduct", createProduct);
+productRoutes.patch("/:productId", updateProduct);
 productRoutes.delete("/:productId", deleteProduct);
 
 export default productRoutes;
