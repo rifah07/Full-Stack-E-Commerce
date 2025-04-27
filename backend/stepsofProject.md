@@ -120,4 +120,7 @@ backend/
 64. Implement ban , unban User by admin after role authenticating.
 65. Implement get all users to see admin all users.
 66. Now move to product module. 
-67. In models folder add products.model.ts. And write code in it with DB schema
+67. In models folder add products.model.ts. And write code in it with DB schema.
+68. Create a new folder insile modules as 'products', add products.route.ts and controllers foder inside products.
+69. Insilde products>controllers add createProduct.ts to add a new product.
+70. Also add a zod validator inside validators folder for products.
