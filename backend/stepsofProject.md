@@ -137,3 +137,4 @@ backend/
 
 74.  Add getAllProducts.ts and write code to simply see all products and this does not need login in. Add in routes without auth.
 75.  Add getSingleProducts.ts and write code to simply see 1 specific product and this does not need login in. Add in routes without auth.
+76.  Implement Delete Product and add in protected routes.

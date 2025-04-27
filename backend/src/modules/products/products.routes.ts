@@ -4,6 +4,7 @@ import auth from "../../middlewares/authMiddleware";
 import authorize from "../../middlewares/authorize";
 import getAllProducts from "./controller/getAllProducts";
 import getSingleProduct from "./controller/getSingleProduct";
+import deleteProduct from "./controller/deleteProduct";
 
 const productRoutes = express.Router();
 
@@ -11,10 +12,11 @@ const productRoutes = express.Router();
 productRoutes.get("/", getAllProducts);
 productRoutes.get("/:productId", getSingleProduct);
 
-
 // Protected - Only sellers/admins can create/delete
 productRoutes.use(auth);
+productRoutes.use(authorize("seller", "admin"));
 
-productRoutes.post("/addProduct", authorize("seller", "admin"), createProduct);
+productRoutes.post("/addProduct", createProduct);
+productRoutes.delete("/:productId", deleteProduct);
 
 export default productRoutes;
