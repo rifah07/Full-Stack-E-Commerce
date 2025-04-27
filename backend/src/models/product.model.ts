@@ -7,10 +7,8 @@ export interface IProduct extends Document {
   category: string;
   stock: number;
   images: string[];
-  isDeleted: {
-    type: Boolean;
-    default: false;
-  };
+  isDeleted: Boolean;
+
   seller: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;

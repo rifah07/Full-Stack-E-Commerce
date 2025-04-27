@@ -6,6 +6,7 @@ import getAllProducts from "./controller/getAllProducts";
 import getSingleProduct from "./controller/getSingleProduct";
 import deleteProduct from "./controller/deleteProduct";
 import updateProduct from "./controller/updateProduct";
+import softDeleteProduct from "./controller/softDeleteProduct";
 
 const productRoutes = express.Router();
 
@@ -19,6 +20,6 @@ productRoutes.use(authorize("seller", "admin"));
 
 productRoutes.post("/addProduct", createProduct);
 productRoutes.patch("/:productId", updateProduct);
-productRoutes.delete("/:productId", deleteProduct);
+productRoutes.delete("/:productId", softDeleteProduct); //or deleteProduct for hard delete
 
 export default productRoutes;
