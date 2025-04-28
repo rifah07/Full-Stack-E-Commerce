@@ -142,4 +142,6 @@ backend/
 78.  Add UPDATE PRODUCT TO EDIT ANY PRODUCT INFO.
 79.  Update product schema with default error message.
 80.  Implement product soft delete so that the product remains in DB afrer deletion just not showing.
-81.  getFilteredProducts is not properly working.
+81.  getFilteredProducts is properly working now Alhamdulillah. Query example: "http://localhost:5000/api/products/filteredProducts?search=Towel&category=Accessories&priceMin=10&priceMax=10000&page=1&limit=10".
+82.  I kept both soft and hard delete in routes with differeny route names.
+83.  Product part is also almost complete.
