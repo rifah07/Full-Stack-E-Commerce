@@ -13,7 +13,7 @@ const productRoutes = express.Router();
 
 // Public routes
 productRoutes.get("/", getAllProducts);
-productRoutes.post("/filteredProducts", getFilteredProducts);
+productRoutes.get("/filteredProducts", getFilteredProducts);
 productRoutes.get("/:productId", getSingleProduct);
 
 // Protected - Only sellers/admins can create/delete
@@ -22,6 +22,7 @@ productRoutes.use(authorize("seller", "admin"));
 
 productRoutes.post("/addProduct", createProduct);
 productRoutes.patch("/:productId", updateProduct);
-productRoutes.delete("/:productId", softDeleteProduct); //or deleteProduct for hard delete
+productRoutes.delete("/:productId", softDeleteProduct); 
+productRoutes.delete("/completeDelete/:productId", deleteProduct);
 
 export default productRoutes;

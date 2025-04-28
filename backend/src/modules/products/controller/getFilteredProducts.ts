@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+ import { Request, Response, NextFunction } from "express";
 import Product from "../../../models/product.model";
 import catchAsync from "../../../utils/catchAsync";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
@@ -12,7 +12,7 @@ const getFilteredProducts = catchAsync(
       priceMax,
       page = 1,
       limit = 10,
-    } = req.body;
+    } = req.query;
     const skip = (Number(page) - 1) * Number(limit);
 
     const query: any = {};

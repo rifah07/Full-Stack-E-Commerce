@@ -6,7 +6,7 @@ import { createProductSchema } from "../../../validators/product.validator";
 
 const createProduct = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const parsedData = createProductSchema.parse(req.body);
+    const parsedData = createProductSchema.parse({ body: req.body }).body;
     const product = await Product.create({
       ...parsedData,
       seller: req.user?.id, // Only logged in users can create
