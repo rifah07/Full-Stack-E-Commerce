@@ -1,6 +1,21 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+export interface IOrderItem {
+  product: mongoose.Types.ObjectId;
+  quantity: number;
+}
+
+export interface IOrder extends Document {
+  buyer: mongoose.Types.ObjectId;
+  orderItems: IOrderItem[];
+  shippingAddress: string;
+  totalPrice: number;
+  status: "pending" | "shipped" | "delivered" | "cancelled";
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const orderSchema = new Schema<IOrder>(
   {
     buyer: {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,37 +32,28 @@ const orderSchema = new mongoose.Schema(
         quantity: {
           type: Number,
           required: true,
-          min: 1,
+          min: [1, "Quantity must be at least 1"],
         },
       },
     ],
     shippingAddress: {
       type: String,
-      required: true,
+      required: [true, "Shipping address is required"],
     },
     totalPrice: {
       type: Number,
-      required: true,
-      min: 0,
+      required: [true, "Total price is required"],
+      min: [0, "Total price cannot be negative"],
     },
-    paymentStatus: {
+    status: {
       type: String,
-      enum: ["pending", "paid"],
+      enum: ["pending", "shipped", "delivered", "cancelled"],
       default: "pending",
-    },
-    orderStatus: {
-      type: String,
-      enum: ["processing", "shipped", "delivered", "cancelled"],
-      default: "processing",
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
     },
   },
   { timestamps: true }
 );
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = mongoose.model<IOrder>("Order", orderSchema);
 
 export default Order;
