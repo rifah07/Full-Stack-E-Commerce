@@ -147,4 +147,5 @@ backend/
 83.  Product part is also almost complete.
 84.  Seller can see his/her own created products (not soft deleted). For that Route updated slightly.
 85.  Update ban user so that it automatically soft-delete all products if the user is a seller.
-86.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
+86.  Order model created.
+87.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
