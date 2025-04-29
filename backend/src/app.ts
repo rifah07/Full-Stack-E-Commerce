@@ -26,6 +26,7 @@ app.use(morgan("combined", { stream: morganStream }));
 //add routes here
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
+//app.use("/api/orders", orderRoutes);
 
 
 //end of routes

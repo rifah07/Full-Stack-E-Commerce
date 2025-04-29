@@ -39,6 +39,7 @@ const orderSchema = new Schema<IOrder>(
     shippingAddress: {
       type: String,
       required: [true, "Shipping address is required"],
+      trim: true,
     },
     totalPrice: {
       type: Number,
