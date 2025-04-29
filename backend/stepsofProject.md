@@ -146,3 +146,4 @@ backend/
 82.  I kept both soft and hard delete in routes with differeny route names.
 83.  Product part is also almost complete.
 84.  Seller can see his/her own created products (not soft deleted). For that Route updated slightly.
+85.  Update ban user so that it automatically soft-delete all products if the user is a seller.
