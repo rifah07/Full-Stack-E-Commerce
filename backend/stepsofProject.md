@@ -145,3 +145,4 @@ backend/
 81.  getFilteredProducts is properly working now Alhamdulillah. Query example: "http://localhost:5000/api/products/filteredProducts?search=Towel&category=Accessories&priceMin=10&priceMax=10000&page=1&limit=10".
 82.  I kept both soft and hard delete in routes with differeny route names.
 83.  Product part is also almost complete.
+84.  Seller can see his/her own created products (not soft deleted). For that Route updated slightly.
