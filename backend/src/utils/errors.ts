@@ -24,6 +24,18 @@ export class NotFoundError extends AppError {
   }
 }
 
+export class ConflictError extends AppError {
+  constructor(message: string = "Conflict") {
+    super(message, 409);
+  }
+}
+
+export class UnprocessableEntityError extends AppError {
+  constructor(message: string = "Unprocessable Entity") {
+    super(message, 422);
+  }
+}
+
 export class InternalServerError extends AppError {
   constructor(message: string = "Internal Server Error") {
     super(message, 500);

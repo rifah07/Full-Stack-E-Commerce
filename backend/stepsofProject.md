@@ -148,4 +148,22 @@ backend/
 84.  Seller can see his/her own created products (not soft deleted). For that Route updated slightly.
 85.  Update ban user so that it automatically soft-delete all products if the user is a seller.
 86.  Order model created.
-87.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
+87.  Create order implemented. use "{{url}}/orders/placeOrder" api and in body: [  {
+  "orderItems": [
+    {
+
+      "product": "680fc89b9e0429f6ee517360",
+      "quantity": 2
+    },
+    {
+
+      "product": "680fca2e9e0429f6ee517381",
+      "quantity": 1
+    }
+  ],
+
+  "shippingAddress": "123 Main Street, Springfield"
+}
+  ]
+  
+88.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.

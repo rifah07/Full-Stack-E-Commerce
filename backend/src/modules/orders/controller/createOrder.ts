@@ -1,10 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import Order from "../../../models/order.model";
-import Product from "../../../models/product.model";
+import Product, { IProduct } from "../../../models/product.model";
 import catchAsync from "../../../utils/catchAsync";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-import { BadRequestError } from "../../../utils/errors";
+import {
+  BadRequestError,
+  ConflictError,
+  NotFoundError,
+} from "../../../utils/errors";
 
 const createOrder = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -14,31 +18,40 @@ const createOrder = catchAsync(
       throw new BadRequestError("Order items are required.");
     }
 
-    let totalPrice = 0;
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      const populatedItems = await Promise.all(
-        orderItems.map(async (item: { product: string; quantity: number }) => {
-          const product = await Product.findOne({
-            _id: item.product,
-            isDeleted: false,
-          }).session(session);
-          if (!product) throw new Error("One or more products not found.");
-          if (product.stock < item.quantity)
-            throw new Error(`Insufficient stock for ${product.name}`);
+      let totalPrice = 0;
+      const populatedItems: { product: Types.ObjectId; quantity: number }[] =
+        [];
 
-          product.stock -= item.quantity;
-          await product.save({ session });
+      for (const item of orderItems) {
+        const product = await Product.findOne<IProduct>({
+          _id: item.product,
+          isDeleted: false,
+        }).session(session);
 
-          totalPrice += item.quantity * product.price;
+        if (!product) {
+          throw new NotFoundError("One or more products not found.");
+        }
 
-          return { product: product._id, quantity: item.quantity };
-        })
-      );
+        if (product.stock < item.quantity) {
+          throw new ConflictError(`Insufficient stock for ${product.name}`);
+        }
 
-      const newOrder = await Order.create(
+        product.stock -= item.quantity;
+        await product.save({ session });
+
+        totalPrice += item.quantity * product.price;
+
+        populatedItems.push({
+          product: product._id as Types.ObjectId,
+          quantity: item.quantity,
+        });
+      }
+
+      const [newOrder] = await Order.create(
         [
           {
             buyer: req.user?.id,
@@ -53,7 +66,10 @@ const createOrder = catchAsync(
       await session.commitTransaction();
       session.endSession();
 
-      res.status(201).json({ status: "success", data: newOrder[0] });
+      res.status(201).json({
+        status: "success",
+        data: newOrder,
+      });
     } catch (err) {
       await session.abortTransaction();
       session.endSession();
