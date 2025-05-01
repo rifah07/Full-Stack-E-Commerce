@@ -165,5 +165,6 @@ backend/
   "shippingAddress": "123 Main Street, Springfield"
 }
   ]
-  
-88.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
+
+88. Add cart.model.ts for implementing cart module.
+89.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
