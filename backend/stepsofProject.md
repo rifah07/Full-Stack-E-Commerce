@@ -148,23 +148,13 @@ backend/
 84.  Seller can see his/her own created products (not soft deleted). For that Route updated slightly.
 85.  Update ban user so that it automatically soft-delete all products if the user is a seller.
 86.  Order model created.
-87.  Create order implemented. use "{{url}}/orders/placeOrder" api and in body: [  {
-  "orderItems": [
-    {
-
-      "product": "680fc89b9e0429f6ee517360",
-      "quantity": 2
-    },
-    {
-
-      "product": "680fca2e9e0429f6ee517381",
-      "quantity": 1
-    }
-  ],
-
-  "shippingAddress": "123 Main Street, Springfield"
-}
-  ]
-
+87.  Create order implemented. use "{{url}}/orders/placeOrder" api. In body nothing is needed.
 88. Add cart.model.ts for implementing cart module.
-89.  The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
+89. For cart create same strucrure module as producst, users.
+90. Implement Add To Cart and che in postman with :{
+      "productId": "680fcba9c0bc04521abf55a2",
+      "quantity": 1,
+      "shippingAddress": "123 Main Street, New York, NY, USA"(address optional if you wanna custimize, else default address from db)
+}
+91. Update craeteOrder model and ts file so that order is taken from cart and body is not needed but you can add shippingAddress is want.
+92.   The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.

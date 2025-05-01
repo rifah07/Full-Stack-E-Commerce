@@ -1,81 +1,82 @@
-import { Request, Response, NextFunction } from "express";
-import mongoose, { Types } from "mongoose";
+import { Response, NextFunction } from "express";
+import Cart from "../../../models/cart.model";
 import Order from "../../../models/order.model";
-import Product, { IProduct } from "../../../models/product.model";
-import catchAsync from "../../../utils/catchAsync";
+import Product from "../../../models/product.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-import {
-  BadRequestError,
-  ConflictError,
-  NotFoundError,
-} from "../../../utils/errors";
+import { NotFoundError, UnauthorizedError, BadRequestError } from "../../../utils/errors";
+import { IProduct } from "../../../models/product.model";
 
-const createOrder = catchAsync(
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const { orderItems, shippingAddress } = req.body;
+const createOrder = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return next(new UnauthorizedError("Unauthorized"));
 
-    if (!orderItems || !Array.isArray(orderItems) || orderItems.length === 0) {
-      throw new BadRequestError("Order items are required.");
-    }
+    const cart = await Cart.findOne({ buyer: userId }).populate({
+      path: "items.product",
+      select: "price stock",
+    });
+    if (!cart) return next(new NotFoundError("Cart not found"));
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    let totalPrice = 0;
 
-    try {
-      let totalPrice = 0;
-      const populatedItems: { product: Types.ObjectId; quantity: number }[] =
-        [];
+    // Check stock availability and calculate total price
+    for (const item of cart.items) {
+      const product = item.product as IProduct & { price: number; stock: number };
 
-      for (const item of orderItems) {
-        const product = await Product.findOne<IProduct>({
-          _id: item.product,
-          isDeleted: false,
-        }).session(session);
-
-        if (!product) {
-          throw new NotFoundError("One or more products not found.");
-        }
-
-        if (product.stock < item.quantity) {
-          throw new ConflictError(`Insufficient stock for ${product.name}`);
-        }
-
-        product.stock -= item.quantity;
-        await product.save({ session });
-
-        totalPrice += item.quantity * product.price;
-
-        populatedItems.push({
-          product: product._id as Types.ObjectId,
-          quantity: item.quantity,
-        });
+      if (!product) {
+        return next(new NotFoundError(`Product not found in cart`));
       }
 
-      const [newOrder] = await Order.create(
-        [
-          {
-            buyer: req.user?.id,
-            orderItems: populatedItems,
-            shippingAddress,
-            totalPrice,
-          },
-        ],
-        { session }
-      );
+      if (item.quantity > product.stock) {
+        return next(new BadRequestError(`Not enough stock for product: ${product.name}`));
+      }
 
-      await session.commitTransaction();
-      session.endSession();
-
-      res.status(201).json({
-        status: "success",
-        data: newOrder,
-      });
-    } catch (err) {
-      await session.abortTransaction();
-      session.endSession();
-      next(err);
+      totalPrice += item.quantity * product.price;
     }
+
+    const shippingAddress =
+      cart.defaultShippingAddress || req.body.shippingAddress;
+    if (!shippingAddress) {
+      return next(
+        new NotFoundError("No shipping address provided or saved in cart")
+      );
+    }
+
+    const order = new Order({
+      buyer: userId,
+      orderItems: cart.items.map((item) => ({
+        product: (item.product as any).id, // store only ID
+        quantity: item.quantity,
+      })),
+      totalPrice,
+      shippingAddress,
+    });
+
+    await order.save();
+
+    for (const item of cart.items) {
+      const product = await Product.findById((item.product as any).id);
+      if (product) {
+        product.stock -= item.quantity;
+        await product.save();
+      }
+    }
+
+    cart.items = [];
+    await cart.save();
+
+    res.status(201).json({
+      status: "success",
+      message: "Order created successfully",
+      data: order,
+    });
+  } catch (error) {
+    next(error);
   }
-);
+};
 
 export default createOrder;
