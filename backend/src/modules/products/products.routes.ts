@@ -9,6 +9,7 @@ import updateProduct from "./controller/updateProduct";
 import softDeleteProduct from "./controller/softDeleteProduct";
 import getFilteredProducts from "./controller/getFilteredProducts";
 import myProducts from "./controller/myProducts";
+import { getSoftDeletedProducts } from "./controller/getSoftDeletedProducts";
 
 const productRoutes = express.Router();
 
@@ -17,7 +18,11 @@ productRoutes.get("/", getAllProducts);
 productRoutes.get("/filteredProducts", getFilteredProducts);
 
 //protected route
-productRoutes.get("/myProducts", auth, authorize("seller"), myProducts); // requires auth + seller role
+// Admin-only route
+productRoutes.get("/deleted", auth, authorize("admin"), getSoftDeletedProducts);
+
+// Seller-only route
+productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
 
 //public product detail route
 productRoutes.get("/:productId", getSingleProduct);

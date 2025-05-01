@@ -157,4 +157,5 @@ backend/
       "shippingAddress": "123 Main Street, New York, NY, USA"(address optional if you wanna custimize, else default address from db)
 }
 91. Update craeteOrder model and ts file so that order is taken from cart and body is not needed but you can add shippingAddress is want.
-92.   The part is left: If User is logged in as admin, can see even soft deleted products. If seller can see his products that are soft deleted.
+92. Now if User is logged in as admin, can see even soft deleted products. 
+93. Pending: If seller can see his products that are soft deleted.
