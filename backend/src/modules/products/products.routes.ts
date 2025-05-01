@@ -21,22 +21,19 @@ productRoutes.get("/filteredProducts", getFilteredProducts);
 //protected route
 // Seller-only route
 productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
-productRoutes.get("/deleted", auth, authorize("seller", "admin"), getSoftDeletedProducts);
-
-
-//public product detail route
-productRoutes.get("/:productId", getSingleProduct);
 
 //protected - Only sellers/admins can create/delete
 productRoutes.use(auth);
-
 productRoutes.use(authorize("seller", "admin"));
 
 productRoutes.post("/addProduct", createProduct);
-//productRoutes.get("/deleted", getSoftDeletedProducts);
+productRoutes.get("/deleted", getSoftDeletedProducts);
 productRoutes.patch("/:productId", updateProduct);
-productRoutes.delete("/:productId", softDeleteProduct);
+productRoutes.delete("/moveToTrash/:productId", softDeleteProduct);
 productRoutes.patch("/restoreProduct/:productId", restoreProduct);
 productRoutes.delete("/completeDelete/:productId", deleteProduct);
+
+//public product detail route
+productRoutes.get("/:productId", getSingleProduct);
 
 export default productRoutes;
