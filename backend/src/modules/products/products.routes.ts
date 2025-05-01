@@ -17,8 +17,16 @@ const productRoutes = express.Router();
 //public routes
 productRoutes.get("/", getAllProducts);
 productRoutes.get("/filteredProducts", getFilteredProducts);
+productRoutes.get("/:productId", getSingleProduct);
 
 //protected route
+productRoutes.get(
+  "/deleted",
+  auth,
+  authorize("seller", "admin"),
+  getSoftDeletedProducts
+);
+
 // Seller-only route
 productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
 
@@ -27,13 +35,9 @@ productRoutes.use(auth);
 productRoutes.use(authorize("seller", "admin"));
 
 productRoutes.post("/addProduct", createProduct);
-productRoutes.get("/deleted", getSoftDeletedProducts);
 productRoutes.patch("/:productId", updateProduct);
 productRoutes.delete("/moveToTrash/:productId", softDeleteProduct);
 productRoutes.patch("/restoreProduct/:productId", restoreProduct);
 productRoutes.delete("/completeDelete/:productId", deleteProduct);
-
-//public product detail route
-productRoutes.get("/:productId", getSingleProduct);
 
 export default productRoutes;
