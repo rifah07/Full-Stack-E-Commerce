@@ -10,6 +10,7 @@ import softDeleteProduct from "./controller/softDeleteProduct";
 import getFilteredProducts from "./controller/getFilteredProducts";
 import myProducts from "./controller/myProducts";
 import { getSoftDeletedProducts } from "./controller/getSoftDeletedProducts";
+import restoreProduct from "./controller/restoreProduct";
 
 const productRoutes = express.Router();
 
@@ -35,6 +36,7 @@ productRoutes.post("/addProduct", createProduct);
 //productRoutes.get("/deleted", getSoftDeletedProducts);
 productRoutes.patch("/:productId", updateProduct);
 productRoutes.delete("/:productId", softDeleteProduct);
+productRoutes.patch("/restoreProduct/:productId", restoreProduct);
 productRoutes.delete("/completeDelete/:productId", deleteProduct);
 
 export default productRoutes;

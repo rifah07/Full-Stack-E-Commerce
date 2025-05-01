@@ -158,4 +158,5 @@ backend/
 }
 91. Update craeteOrder model and ts file so that order is taken from cart and body is not needed but you can add shippingAddress is want.
 92. Now if User is logged in as admin, can see even soft deleted products. 
-93. Pending: If seller can see his products that are soft deleted.
+93. If seller can see his products that are soft deleted.
+94. Also seller can hard delete the soft deleted products and restore soft deleted products now.

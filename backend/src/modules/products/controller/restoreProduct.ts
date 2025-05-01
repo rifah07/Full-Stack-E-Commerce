@@ -4,7 +4,7 @@ import catchAsync from "../../../utils/catchAsync";
 import { ForbiddenError, NotFoundError } from "../../../utils/errors";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 
-const deleteProduct = catchAsync(
+const restoreProduct = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { productId } = req.params;
 
@@ -19,25 +19,24 @@ const deleteProduct = catchAsync(
     }
 
     if (!product.isDeleted) {
-      throw new ForbiddenError(
-        "Product must be in trash before permanent deletion"
-      );
+      throw new ForbiddenError("Product is not in trash");
     }
 
     if (
       req.user.role !== "admin" &&
       product.seller.toString() !== req.user.id
     ) {
-      throw new ForbiddenError("You can only delete your own products");
+      throw new ForbiddenError("You can only restore your own products");
     }
 
-    // Perform hard delete
-    await Product.findByIdAndDelete(productId);
+    product.isDeleted = false;
+    await product.save();
 
     res.status(200).json({
-      message: "Product permanently deleted successfully",
+      message: "Product restored successfully",
+      data: product,
     });
   }
 );
 
-export default deleteProduct;
+export default restoreProduct;
