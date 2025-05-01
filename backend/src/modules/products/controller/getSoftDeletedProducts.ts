@@ -3,12 +3,8 @@ import Product from '../../../models/product.model';
 import { AuthRequest } from '../../../middlewares/authMiddleware';
 import { ForbiddenError } from '../../../utils/errors';
 
-/**
- * Get soft-deleted products based on user role
- * - Admins can see all soft-deleted products
- * - Sellers can see only their own soft-deleted products
- */
-export const getSoftDeletedProducts = async (req: AuthRequest, res: Response, next: NextFunction) => {
+
+const getSoftDeletedProducts = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
       throw new ForbiddenError('Authentication required');
@@ -39,3 +35,5 @@ export const getSoftDeletedProducts = async (req: AuthRequest, res: Response, ne
     next(error);
   }
 };
+
+export default getSoftDeletedProducts 

@@ -9,7 +9,7 @@ import updateProduct from "./controller/updateProduct";
 import softDeleteProduct from "./controller/softDeleteProduct";
 import getFilteredProducts from "./controller/getFilteredProducts";
 import myProducts from "./controller/myProducts";
-import { getSoftDeletedProducts } from "./controller/getSoftDeletedProducts";
+import getSoftDeletedProducts from "./controller/getSoftDeletedProducts";
 import restoreProduct from "./controller/restoreProduct";
 
 const productRoutes = express.Router();
