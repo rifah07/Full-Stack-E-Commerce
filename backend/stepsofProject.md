@@ -13,6 +13,7 @@ Installation commands:
 11. npm install --save-dev @types/morgan
 12. npm install axios
 13. npm install stripe
+14. npm install @paypal/checkout-server-sdk
 
 
 
@@ -170,3 +171,4 @@ backend/
 99. For buyers, view all orders updated now cancelled orders ammount will not be calculated in total ammount.
 100. Install axios using 12 point above.
 101. For payment, install stripe using point 13 above.
+102. For using paypal add point 14 above in terminal and run.
