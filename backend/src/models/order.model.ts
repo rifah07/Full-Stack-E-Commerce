@@ -10,6 +10,8 @@ export interface IOrder extends Document {
   orderItems: IOrderItem[];
   shippingAddress: string;
   totalPrice: number;
+  paymentMethod: "cod" | "card" | "paypal" | "upi";
+  paymentStatus: "unpaid" | "paid" | "refunded";
   status: "pending" | "shipped" | "delivered" | "cancelled";
   createdAt: Date;
   updatedAt: Date;
@@ -45,6 +47,16 @@ const orderSchema = new Schema<IOrder>(
       type: Number,
       required: [true, "Total price is required"],
       min: [0, "Total price cannot be negative"],
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["cod", "card", "paypal", "upi"],
+      default: "cod",
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["unpaid", "paid", "refunded"],
+      default: "unpaid",
     },
     status: {
       type: String,
