@@ -163,4 +163,5 @@ backend/
 95. View cart added to see buyer's cart items.
 96. Admin can view all the orders and buyer can see all his orders with total price and dictinct price for all individual products too.
 97. Now admin/seller can update product shipment status.
-98. 
+98. Buyer can now cancel an order if it is not shipped.
+99. For buyers, view all orders updated now cancelled orders ammount will not be calculated in total ammount.

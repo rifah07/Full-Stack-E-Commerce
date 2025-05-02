@@ -5,6 +5,7 @@ import createOrder from "./controller/createOrder";
 import getAllOrders from "./controller/getAllOrders";
 import getMyOrders from "./controller/getMyOrders";
 import updateOrderStatus from "./controller/updateOrderStatus";
+import cancelOrder from "./controller/cancelOrder";
 
 const orderRoutes = express.Router();
 
@@ -29,6 +30,11 @@ orderRoutes.patch(
     "/:orderId/status",
     authorize("admin", "seller"),
     updateOrderStatus
+  );
+  orderRoutes.patch(
+    "/:orderId/cancel",
+    authorize("buyer"),
+    cancelOrder
   );
 
 export default orderRoutes;
