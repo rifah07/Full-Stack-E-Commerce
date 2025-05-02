@@ -10,7 +10,7 @@ export interface IOrder extends Document {
   orderItems: IOrderItem[];
   shippingAddress: string;
   totalPrice: number;
-  paymentMethod: "cod" | "card" | "paypal" | "upi";
+  paymentMethod: "cod" | "sslcommerz" | "stripe" | "paypal";
   paymentStatus: "unpaid" | "paid" | "refunded";
   status: "pending" | "shipped" | "delivered" | "cancelled";
   createdAt: Date;
@@ -50,7 +50,7 @@ const orderSchema = new Schema<IOrder>(
     },
     paymentMethod: {
       type: String,
-      enum: ["cod", "card", "paypal", "upi"],
+      enum: ["cod", "sslcommerz", "stripe", "paypal"],
       default: "cod",
     },
     paymentStatus: {

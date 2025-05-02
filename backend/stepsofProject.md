@@ -11,6 +11,7 @@ Installation commands:
 9. npm install yup  # For Yup
 10. npm install winston
 11. npm install --save-dev @types/morgan
+12. npm install axios
 
 
 Steps:
@@ -165,3 +166,4 @@ backend/
 97. Now admin/seller can update product shipment status.
 98. Buyer can now cancel an order if it is not shipped.
 99. For buyers, view all orders updated now cancelled orders ammount will not be calculated in total ammount.
+100. Install axios using 12 point above.
