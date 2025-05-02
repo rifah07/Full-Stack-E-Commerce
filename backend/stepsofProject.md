@@ -12,6 +12,8 @@ Installation commands:
 10. npm install winston
 11. npm install --save-dev @types/morgan
 12. npm install axios
+13. npm install stripe
+
 
 
 Steps:
@@ -167,3 +169,4 @@ backend/
 98. Buyer can now cancel an order if it is not shipped.
 99. For buyers, view all orders updated now cancelled orders ammount will not be calculated in total ammount.
 100. Install axios using 12 point above.
+101. For payment, install stripe using point 13 above.
