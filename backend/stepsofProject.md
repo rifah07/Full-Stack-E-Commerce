@@ -172,3 +172,16 @@ backend/
 100. Install axios using 12 point above.
 101. For payment, install stripe using point 13 above.
 102. For using paypal add point 14 above in terminal and run.
+103. So Paypal api: POST: "{{url}}/payment/paypal", BODY: {
+  "amount": "50.00",
+  "currency": "USD"
+}
+
+104. For stripe, add a new POST request with api: " https://api.stripe.com/v1/payment_methods" choose "Basic Auth" and "x-www-form-urlencoded" and add: "type: card", "card[token] : tok_visa" and then you should get something like: "pm_1RKPhARIm30GS1Gn6ubuA87d"
+105. Use the _id (pm_...) , add new PI: POST: "{{url}}/payment/stripe" BODY: {
+  "amount": 1000,
+  "currency": "usd",
+  "paymentMethodId": "pm_1RKPc8RIm30GS1GnfstVTege" // Paste the actual ID here
+}
+
+106. Payment is implemented just till this point.

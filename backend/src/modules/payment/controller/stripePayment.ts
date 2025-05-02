@@ -15,7 +15,13 @@ export const stripePayment = async (
 ) => {
   try {
     const userId = req.user?.id;
+    const userRole = req.user?.role;
+
     if (!userId) return next(new UnauthorizedError("Unauthorized"));
+
+    if (userRole !== "buyer") {
+      return next(new UnauthorizedError("Only buyers can make payments"));
+    }
     const { amount, currency = "usd", paymentMethodId } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.create({
