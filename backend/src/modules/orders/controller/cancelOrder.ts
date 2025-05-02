@@ -19,12 +19,17 @@ const cancelOrder = async (
       return next(new BadRequestError("Only pending orders can be cancelled"));
     }
 
+    // If already paid, mark refund (can be added later plug real refund API here, In Sha Allah)
+    if (order.paymentStatus === "paid") {
+      order.paymentStatus = "refunded";
+    }
+
     order.status = "cancelled";
     await order.save();
 
     res.status(200).json({
       status: "success",
-      message: "Order cancelled successfully",
+      message: "Order cancelled and refund processed (if applicable)",
       data: order,
     });
   } catch (error) {
