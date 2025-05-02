@@ -160,3 +160,4 @@ backend/
 92. Now if User is logged in as admin, can see even soft deleted products. 
 93. If seller can see his products that are soft deleted.
 94. Also seller can hard delete the soft deleted products and restore soft deleted products now.
+95. View cart added to see buyer's cart items.
