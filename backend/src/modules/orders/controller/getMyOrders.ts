@@ -18,22 +18,42 @@ const getMyOrders = async (
     }>("orderItems.product", "name price");
 
     const totalOrders = myOrders.length;
-
     let totalAmount = 0;
+    let paidAmount = 0;
+    let refundedAmount = 0;
+    let pendingAmount = 0;
+    let activeOrders = 0;
+
     myOrders.forEach((order) => {
+      let orderTotal = 0;
+      order.orderItems.forEach((item) => {
+        orderTotal += item.product.price * item.quantity;
+      });
+
       if (order.status !== "cancelled") {
-        let orderTotal = 0;
-        order.orderItems.forEach((item) => {
-          orderTotal += item.product.price * item.quantity;
-        });
         totalAmount += orderTotal;
+        activeOrders++;
+      }
+
+      if (order.status === "delivered") {
+        paidAmount += orderTotal;
+      } else if (order.status === "cancelled") {
+        refundedAmount += orderTotal;
+      } else if (order.status === "pending") {
+        pendingAmount += orderTotal;
       }
     });
 
     res.status(200).json({
       status: "success",
-      totalOrders,
-      totalAmount,
+      summary: {
+        totalOrders,
+        activeOrders,
+        totalAmount,
+        paidAmount,
+        refundedAmount,
+        pendingAmount,
+      },
       data: myOrders,
     });
   } catch (error) {
