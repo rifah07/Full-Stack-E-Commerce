@@ -7,7 +7,10 @@ const logout = catchAsync(
     const refreshToken = req.cookies.refreshToken;
 
     if (refreshToken) {
-      await RefreshToken.deleteOne({ token: refreshToken });
+      const deletedToken = await RefreshToken.deleteOne({
+        token: refreshToken,
+      });
+      console.log("Deleted Refresh Token:", deletedToken);
     }
 
     res.clearCookie("accessToken", {
