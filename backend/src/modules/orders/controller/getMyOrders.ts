@@ -17,11 +17,11 @@ const getMyOrders = async (
       }[];
     }>("orderItems.product", "name price");
 
-    const totalOrders = myOrders.length;
+    let totalOrders = myOrders.length;
     let totalAmount = 0;
     let paidAmount = 0;
     let refundedAmount = 0;
-    let pendingAmount = 0;
+    let unpaidPendingAmount = 0;
     let activeOrders = 0;
 
     myOrders.forEach((order) => {
@@ -30,17 +30,19 @@ const getMyOrders = async (
         orderTotal += item.product.price * item.quantity;
       });
 
-      if (order.status !== "cancelled") {
-        totalAmount += orderTotal;
-        activeOrders++;
-      }
+      totalAmount += orderTotal;
 
-      if (order.status === "delivered") {
+      if (order.status !== "cancelled") activeOrders++;
+
+      if (order.paymentStatus === "paid" && order.status !== "cancelled") {
         paidAmount += orderTotal;
-      } else if (order.status === "cancelled") {
+      } else if (order.paymentStatus === "refunded") {
         refundedAmount += orderTotal;
-      } else if (order.status === "pending") {
-        pendingAmount += orderTotal;
+      } else if (
+        order.paymentStatus === "unpaid" &&
+        order.status === "pending"
+      ) {
+        unpaidPendingAmount += orderTotal;
       }
     });
 
@@ -52,7 +54,7 @@ const getMyOrders = async (
         totalAmount,
         paidAmount,
         refundedAmount,
-        pendingAmount,
+        unpaidPendingAmount,
       },
       data: myOrders,
     });
