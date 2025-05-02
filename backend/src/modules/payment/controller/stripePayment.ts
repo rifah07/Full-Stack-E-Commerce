@@ -29,6 +29,13 @@ export const stripePayment = async (
       currency,
       payment_method: paymentMethodId,
       confirm: true,
+      automatic_payment_methods: {
+        enabled: true,
+        allow_redirects: "never",
+      },
+      return_url:
+        process.env.FRONTEND_URL ||
+        "https://your-frontend-url.com/payment/success",
     });
 
     res.status(200).json({
