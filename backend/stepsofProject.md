@@ -184,4 +184,4 @@ backend/
   "paymentMethodId": "pm_1RKPc8RIm30GS1GnfstVTege" // Paste the actual ID here
 }
 
-106. Payment is implemented just till this point.
+106. Payment is implemented just till this point. Tested too and working in postman.

@@ -8,42 +8,40 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2025-04-30.basil",
 });
 
-export const stripePayment = async (
+const stripePayment = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const userId = req.user?.id;
-    const userRole = req.user?.role;
+  const userId = req.user?.id;
+  const userRole = req.user?.role;
 
-    if (!userId) return next(new UnauthorizedError("Unauthorized"));
+  if (!userId) return next(new UnauthorizedError("Unauthorized"));
 
-    if (userRole !== "buyer") {
-      return next(new UnauthorizedError("Only buyers can make payments"));
-    }
-    const { amount, currency = "usd", paymentMethodId } = req.body;
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-      payment_method: paymentMethodId,
-      confirm: true,
-      automatic_payment_methods: {
-        enabled: true,
-        allow_redirects: "never",
-      },
-      return_url:
-        process.env.FRONTEND_URL ||
-        "https://your-frontend-url.com/payment/success",
-    });
-
-    res.status(200).json({
-      status: "success",
-      message: "Stripe payment successful",
-      paymentIntent,
-    });
-  } catch (error) {
-    next(error);
+  if (userRole !== "buyer") {
+    return next(new UnauthorizedError("Only buyers can make payments"));
   }
+  const { amount, currency = "usd", paymentMethodId } = req.body;
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount,
+    currency,
+    payment_method: paymentMethodId,
+    confirm: true,
+    automatic_payment_methods: {
+      enabled: true,
+      allow_redirects: "never",
+    },
+    return_url:
+      process.env.FRONTEND_URL ||
+      "https://your-frontend-url.com/payment/success",
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Stripe payment successful",
+    paymentIntent,
+  });
 };
+
+export default stripePayment;

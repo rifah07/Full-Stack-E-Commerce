@@ -1,6 +1,6 @@
 import express from "express";
 import paypalPayment from "./controller/paypalPayment";
-import { stripePayment } from "./controller/stripePayment";
+import stripePayment from "./controller/stripePayment";
 import auth from "../../middlewares/authMiddleware";
 import authorize from "../../middlewares/authorize";
 const paymentRoutes = express.Router();
