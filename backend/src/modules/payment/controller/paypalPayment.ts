@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import axios from "axios";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
+import { UnauthorizedError } from "../../../utils/errors";
 
 const paypalPayment = async (
   req: AuthRequest,
@@ -8,6 +9,8 @@ const paypalPayment = async (
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) return next(new UnauthorizedError("Unauthorized"));
     const { amount, currency = "USD" } = req.body;
 
     const auth = await axios({
