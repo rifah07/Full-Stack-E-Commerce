@@ -4,6 +4,7 @@ import authorize from "../../middlewares/authorize";
 import createOrder from "./controller/createOrder";
 import getAllOrders from "./controller/getAllOrders";
 import getMyOrders from "./controller/getMyOrders";
+import updateOrderStatus from "./controller/updateOrderStatus";
 
 const orderRoutes = express.Router();
 
@@ -12,16 +13,22 @@ orderRoutes.use(auth);
 
 //Route only for admin(s)
 //orderRoutes.use(authorize("admin"));
-orderRoutes.get("/all",authorize("admin"), getAllOrders);
+orderRoutes.get("/all", authorize("admin"), getAllOrders);
+
 
 //Route only for sellers
 //orderRoutes.use(authorize("seller"));
 
 //Route only for buyers
-orderRoutes.use(authorize("buyer"));
+//orderRoutes.use(authorize("buyer"));
 
-orderRoutes.post("/placeOrder", createOrder);
-orderRoutes.get("/my-orders", getMyOrders);
+orderRoutes.post("/placeOrder",authorize("buyer"), createOrder);
+orderRoutes.get("/my-orders",authorize("buyer"), getMyOrders);
 
+orderRoutes.patch(
+    "/:orderId/status",
+    authorize("admin", "seller"),
+    updateOrderStatus
+  );
 
 export default orderRoutes;

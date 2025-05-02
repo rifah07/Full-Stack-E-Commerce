@@ -162,3 +162,5 @@ backend/
 94. Also seller can hard delete the soft deleted products and restore soft deleted products now.
 95. View cart added to see buyer's cart items.
 96. Admin can view all the orders and buyer can see all his orders with total price and dictinct price for all individual products too.
+97. Now admin/seller can update product shipment status.
+98. 
