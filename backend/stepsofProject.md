@@ -185,3 +185,6 @@ backend/
 }
 
 106. Payment is implemented just till this point. Tested too and working in postman.
+107. For error handling new file added in utils, 
+108. Payment service added for stripe and paypal so that from cart buyer can pay to added in order list if payment method is not COD.,
+109.  createOrder also updated but not tested.
