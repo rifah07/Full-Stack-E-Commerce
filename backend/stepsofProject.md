@@ -188,3 +188,4 @@ backend/
 107. For error handling new file added in utils, 
 108. Payment service added for stripe and paypal so that from cart buyer can pay to added in order list if payment method is not COD.,
 109.  createOrder also updated but not tested.
+110.  Create order body example added in module orders, "order_body.md" file.
