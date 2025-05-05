@@ -19,10 +19,14 @@ const getUserWishlist = async (
       "_id name price images"
     );
 
+    const wishlistItems = wishlist ? wishlist.items : [];
+    const totalItems = wishlistItems.length;
+
     res.status(200).json({
       status: "success",
+      totalItems: totalItems,
       data: {
-        wishlist: wishlist ? wishlist.items : [],
+        items: wishlistItems,
       },
     });
   } catch (error) {
