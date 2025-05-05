@@ -191,3 +191,9 @@ backend/
 110.  CreateOrder, orderMOdel, paymentService updated to enable payment of ordering full cart at same time and also order specific product ordering with cod or ther type payment. They are all working now.
 111.  Let us implement wishlist module.
 112.  Create model for wishlist.
+113.  Add to wish list imeplemented and route added to app.ts.
+114.  The api to ad in wishlist: POST "http://localhost:5000/api/wishlist/add" , BODY: {
+      "productId": "680fca599e0429f6ee517386"
+}
+
+115. 
