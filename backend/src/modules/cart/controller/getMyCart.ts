@@ -15,7 +15,7 @@ const getMyCart = async (
 
     const cart = await Cart.findOne({ buyer: userId }).populate({
       path: "items.product",
-      select: "name price stock imageUrl", // Add fields want to show
+      select: "_id name price stock imageUrl", // Add fields want to show
     });
 
     if (!cart || cart.items.length === 0) {

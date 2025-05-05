@@ -6,28 +6,21 @@ import { AuthRequest } from "../middlewares/authMiddleware";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2025-04-30.basil",
 });
-
 export const processStripePayment = async (
-  req: AuthRequest,
   amount: number,
+  paymentMethodId: string,
   next: Function
 ) => {
   try {
-    const { paymentMethodId } = req.body;
-
-    if (!paymentMethodId) {
-      return next(new BadRequestError("Payment method ID is required"));
-    }
-
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
-      currency: "usd", // Use currency from request if needed
+      amount: Math.round(amount * 100),
+      currency: "usd",
       payment_method: paymentMethodId,
       confirm: true,
       automatic_payment_methods: {
         enabled: true,
-        allow_redirects: "never",
-      },
+        allow_redirects: 'never'
+      }
     });
 
     if (paymentIntent.status !== "succeeded") {
@@ -36,69 +29,54 @@ export const processStripePayment = async (
 
     return paymentIntent;
   } catch (error) {
-    return next(
-      new BadRequestError(`Stripe payment error: ${(error as Error).message}`)
-    );
+    return next(new BadRequestError(`Stripe payment error: ${(error as Error).message}`));
   }
 };
 
 export const processPaypalPayment = async (
-  req: AuthRequest,
   amount: number,
   next: Function
 ) => {
   try {
-    const auth = await axios({
-      method: "post",
-      url: `${
-        process.env.PAYPAL_MODE === "sandbox"
-          ? "https://api-m.sandbox.paypal.com"
-          : "https://api-m.paypal.com"
-      }/v1/oauth2/token`,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      auth: {
-        username: process.env.PAYPAL_CLIENT_ID as string,
-        password: process.env.PAYPAL_CLIENT_SECRET as string,
-      },
-      params: {
-        grant_type: "client_credentials",
-      },
-    });
+    const authResponse = await axios.post(
+      `${process.env.PAYPAL_MODE === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com"}/v1/oauth2/token`,
+      new URLSearchParams({ grant_type: "client_credentials" }),
+      {
+        auth: {
+          username: process.env.PAYPAL_CLIENT_ID as string,
+          password: process.env.PAYPAL_CLIENT_SECRET as string,
+        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
 
-    const order = await axios({
-      method: "post",
-      url: `${
-        process.env.PAYPAL_MODE === "sandbox"
-          ? "https://api-m.sandbox.paypal.com"
-          : "https://api-m.paypal.com"
-      }/v2/checkout/orders`,
-      headers: {
-        Authorization: `Bearer ${auth.data.access_token}`,
-        "Content-Type": "application/json",
-      },
-      data: {
+    const orderResponse = await axios.post(
+      `${process.env.PAYPAL_MODE === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com"}/v2/checkout/orders`,
+      {
         intent: "CAPTURE",
         purchase_units: [
           {
             amount: {
-              currency_code: "USD", // Use currency from request if needed
-              value: amount.toString(),
+              currency_code: "USD",
+              value: amount.toFixed(2),
             },
           },
         ],
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${authResponse.data.access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    if (!order.data || order.data.status !== "CREATED") {
+    if (!orderResponse.data || orderResponse.data.status !== "CREATED") {
       return next(new BadRequestError("PayPal order creation failed"));
     }
 
-    return order.data;
+    return orderResponse.data;
   } catch (error) {
-    return next(
-      new BadRequestError(`PayPal payment error: ${(error as Error).message}`)
-    );
+    return next(new BadRequestError(`PayPal payment error: ${(error as Error).message}`));
   }
 };

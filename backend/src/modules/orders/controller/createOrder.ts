@@ -3,6 +3,7 @@ import Cart from "../../../models/cart.model";
 import Order from "../../../models/order.model";
 import Product, { IProduct } from "../../../models/product.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
+import { isValidObjectId, Types } from "mongoose";
 import {
   NotFoundError,
   UnauthorizedError,
@@ -23,29 +24,34 @@ const createOrder = async (
   try {
     const userId = req.user?.id;
     if (!userId) return next(new UnauthorizedError("Unauthorized"));
-
     const {
-      productId,
+      product: productId,
       quantity: singleQuantity,
       paymentMethodId,
       paymentMethod,
       shippingAddress: providedAddress,
     } = req.body;
 
-    const cart = await Cart.findOne({ buyer: userId }).populate(
-      "items.product"
-    );
+    const cart = await Cart.findOne({ buyer: userId }).populate({
+      path: "items.product",
+      model: "Product",
+      select: "_id name price stock imageUrl",
+    });
+
     if (!cart || cart.items.length === 0) {
       return next(new NotFoundError("Cart is empty or not found"));
     }
 
-    let orderItems = [];
+    let orderItems: { product: Types.ObjectId; quantity: number }[] = [];
     let totalPrice = 0;
 
     if (productId) {
-      const cartItem = cart.items.find((item) => {
-        return getProductId(item.product) === productId;
-      });
+      const cartItem = cart.items.find(
+        (item: any) =>
+          item.product &&
+          isValidObjectId(item.product._id) &&
+          String(item.product._id) === String(productId)
+      );
 
       if (!cartItem)
         return next(new NotFoundError("Product not found in cart"));
@@ -54,26 +60,29 @@ const createOrder = async (
           new BadRequestError("Requested quantity exceeds cart quantity")
         );
 
-      const product = cartItem.product as unknown as IProduct;
+      const product = cartItem.product as IProduct;
+      if (!product || !product._id)
+        return next(new NotFoundError("Product details missing"));
       if (singleQuantity > product.stock)
         return next(new BadRequestError("Not enough stock for this product"));
 
-      orderItems.push({ product: product._id, quantity: singleQuantity });
+      orderItems.push({
+        product: new Types.ObjectId(String(product._id)),
+        quantity: singleQuantity,
+      });
       totalPrice = singleQuantity * product.price;
     } else {
       for (const item of cart.items) {
-        const product = item.product as unknown as IProduct;
-        if (!product || !product._id) {
-          continue; // Skip items with invalid products
-        }
-
-        if (item.quantity > product.stock) {
+        const product = item.product as IProduct;
+        if (!product || !product._id) continue;
+        if (item.quantity > product.stock)
           return next(
             new BadRequestError(`Not enough stock for ${product.name}`)
           );
-        }
-
-        orderItems.push({ product: product._id, quantity: item.quantity });
+        orderItems.push({
+          product: new Types.ObjectId(String(product._id)),
+          quantity: item.quantity,
+        });
         totalPrice += item.quantity * product.price;
       }
     }
@@ -84,11 +93,18 @@ const createOrder = async (
     }
 
     let paymentStatus: "unpaid" | "paid" = "unpaid";
+
     if (paymentMethod === "stripe") {
-      await processStripePayment(req, totalPrice, next);
+      const paymentResult = await processStripePayment(
+        totalPrice,
+        paymentMethodId,
+        next
+      );
+      if (!paymentResult) return;
       paymentStatus = "paid";
     } else if (paymentMethod === "paypal") {
-      await processPaypalPayment(req, totalPrice, next);
+      const paymentResult = await processPaypalPayment(totalPrice, next);
+      if (!paymentResult) return;
       paymentStatus = "paid";
     } else if (paymentMethod === "cod") {
       paymentStatus = "unpaid";
@@ -117,9 +133,11 @@ const createOrder = async (
 
     if (productId) {
       const cartItemIndex = cart.items.findIndex(
-        (item) => getProductId(item.product) === productId
+        (item: any) =>
+          item.product &&
+          isValidObjectId(item.product._id) &&
+          String(item.product._id) === String(productId)
       );
-
       if (cartItemIndex !== -1) {
         const item = cart.items[cartItemIndex];
         if (item.quantity <= singleQuantity) {

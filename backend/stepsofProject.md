@@ -187,5 +187,5 @@ backend/
 106. Payment is implemented just till this point. Tested too and working in postman.
 107. For error handling new file added in utils, 
 108. Payment service added for stripe and paypal so that from cart buyer can pay to added in order list if payment method is not COD.,
-109.  createOrder also updated but not tested.
-110.  Create order body example added in module orders, "order_body.md" file.
+109.  Create order body example added in module orders, "order_body.md" file.
+110.  CreateOrder, orderMOdel, paymentService updated to enable payment of ordering full cart at same time and also order specific product ordering with cod or ther type payment. They are all working now.
