@@ -1,25 +1,8 @@
 Scenario 1: Ordering specific product(s) from the cart:
 
 {
-    "productId": "<product_id_from_database>",
-
-    "quantity": 2,
-
     "paymentMethod": "cod",
-
-    "shippingAddress": {
-
-        "street": "123 Main St",
-
-        "city": "Anytown",
-
-        "state": "CA",
-
-        "zip": "90210",
-
-        "country": "USA"
-
-    }
+    "shippingAddress": "123 Main Street, New York, NY, USA"
 }
 
 
