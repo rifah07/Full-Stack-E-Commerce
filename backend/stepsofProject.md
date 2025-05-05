@@ -196,4 +196,4 @@ backend/
       "productId": "680fca599e0429f6ee517386"
 }
 
-115. 
+115. Get Wishlist and remove a product from wishlist added. pis are: GET: {{url}}/wishlist and DELETE: {{url}}/wishlist/remove/:productId; Nothing in body.
