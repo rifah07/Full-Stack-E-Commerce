@@ -13,6 +13,7 @@ export interface IOrder extends Document {
   paymentMethod: "cod" | "sslcommerz" | "stripe" | "paypal";
   paymentStatus: "unpaid" | "paid" | "refunded";
   status: "pending" | "shipped" | "delivered" | "cancelled";
+  cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -62,6 +63,10 @@ const orderSchema = new Schema<IOrder>(
       type: String,
       enum: ["pending", "shipped", "delivered", "cancelled"],
       default: "pending",
+    },
+    cancelledAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }

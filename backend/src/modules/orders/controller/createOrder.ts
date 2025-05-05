@@ -43,7 +43,6 @@ const createOrder = async (
     let totalPrice = 0;
 
     if (productId) {
-      // Specific product order
       const cartItem = cart.items.find((item) => {
         return getProductId(item.product) === productId;
       });
@@ -55,7 +54,6 @@ const createOrder = async (
           new BadRequestError("Requested quantity exceeds cart quantity")
         );
 
-      // Cast to IProduct with proper type checking
       const product = cartItem.product as unknown as IProduct;
       if (singleQuantity > product.stock)
         return next(new BadRequestError("Not enough stock for this product"));
@@ -63,9 +61,7 @@ const createOrder = async (
       orderItems.push({ product: product._id, quantity: singleQuantity });
       totalPrice = singleQuantity * product.price;
     } else {
-      // Full cart order
       for (const item of cart.items) {
-        // Cast the product with proper type checking
         const product = item.product as unknown as IProduct;
         if (!product || !product._id) {
           continue; // Skip items with invalid products
@@ -87,7 +83,6 @@ const createOrder = async (
       return next(new BadRequestError("Shipping address is required"));
     }
 
-    // Handle payment
     let paymentStatus: "unpaid" | "paid" = "unpaid";
     if (paymentMethod === "stripe") {
       await processStripePayment(req, totalPrice, next);
@@ -112,28 +107,29 @@ const createOrder = async (
 
     await order.save();
 
-    // Update product stock & cart
     for (const item of orderItems) {
       const product = await Product.findById(item.product);
       if (product) {
         product.stock -= item.quantity;
         await product.save();
       }
+    }
 
-      // Find the cart item and update or remove it
-      const cartItem = cart.items.find((ci) => {
-        return isSameProduct(ci.product, item.product);
-      });
+    if (productId) {
+      const cartItemIndex = cart.items.findIndex(
+        (item) => getProductId(item.product) === productId
+      );
 
-      if (cartItem) {
-        cartItem.quantity -= item.quantity;
-        if (cartItem.quantity <= 0) {
-          // Filter out items with quantity <= 0
-          cart.items = cart.items.filter((ci) => {
-            return !isSameProduct(ci.product, item.product);
-          });
+      if (cartItemIndex !== -1) {
+        const item = cart.items[cartItemIndex];
+        if (item.quantity <= singleQuantity) {
+          cart.items.splice(cartItemIndex, 1);
+        } else {
+          item.quantity -= singleQuantity;
         }
       }
+    } else {
+      cart.items = [];
     }
 
     await cart.save();
