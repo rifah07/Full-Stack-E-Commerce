@@ -34,7 +34,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/cart", cartRoures);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use("/api/refund", refundRoutes);
+app.use("/api/refunds", refundRoutes);
 
 //end of routes
 
