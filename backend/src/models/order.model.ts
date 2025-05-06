@@ -6,6 +6,7 @@ export interface IOrderItem {
 }
 
 export enum RefundStatus {
+  NONE= "none",
   PENDING = "pending",
   APPROVED = "approved",
   REJECTED = "rejected",
@@ -75,7 +76,7 @@ const orderSchema = new Schema<IOrder>(
     refundStatus: {
       type: String,
       enum: Object.values(RefundStatus),
-      default: RefundStatus.PENDING,
+      default: RefundStatus.NONE,
     },
     cancelledAt: {
       type: Date,

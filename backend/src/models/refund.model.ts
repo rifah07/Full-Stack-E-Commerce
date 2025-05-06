@@ -3,6 +3,7 @@ import { IOrder } from "./order.model";
 import { IUser } from "./user.model";
 
 export enum RefundStatus {
+  NONE= "none",
   PENDING = "pending",
   APPROVED = "approved",
   REJECTED = "rejected",
@@ -43,7 +44,7 @@ const RefundSchema: Schema = new Schema(
     status: {
       type: String,
       enum: Object.values(RefundStatus),
-      default: RefundStatus.PENDING,
+      default: RefundStatus.NONE,
     },
     processedAt: {
       type: Date,

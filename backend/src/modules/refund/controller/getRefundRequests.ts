@@ -10,7 +10,6 @@ const getRefundRequests = async (
   try {
     const userId = req.user?.id;
     const isAdmin = req.user?.role === "admin";
-    console.log(isAdmin);
 
     let query = {};
     if (!isAdmin) {

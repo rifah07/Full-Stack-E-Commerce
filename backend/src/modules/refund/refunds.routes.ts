@@ -3,22 +3,30 @@ import requestRefund from "./controller/requestRefund";
 import auth from "../../middlewares/authMiddleware";
 import getRefundRequests from "./controller/getRefundRequests";
 import authorize from "../../middlewares/authorize";
+import getRefundRequestById from "./controller/getRefundRequestById";
 
 const refundRoutes = express.Router();
 
 // protected routes
 refundRoutes.use(auth);
-refundRoutes.get("/me", getRefundRequests);
-refundRoutes.post("/request/:orderId", requestRefund);
+
+//refundRoutes.use(authorize("admin", "seller"));
+refundRoutes.get("/",authorize("admin", "seller"), getRefundRequests);
+
+
+//refundRoutes.use(authorize("buyer"));
+
+refundRoutes.get("/me", authorize("buyer"), getRefundRequests);
+refundRoutes.post("/request/:orderId", authorize("buyer"), requestRefund);
+
+refundRoutes.get("/:refundId",authorize("admin", "seller"), getRefundRequestById);
+
 /*
 
 
 // Admin routes
 
 refundRoutes.use(authorize("admin"));
-refundRoutes.use(authMiddleware, adminMiddleware);
-refundRoutes.get("/", getRefundRequests); // Get all refund requests
-refundRoutes.get("/:refundId", getRefundRequestById);
 refundRoutes.patch("/:refundId", updateRefundStatus);
 
 */
