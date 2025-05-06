@@ -197,3 +197,5 @@ backend/
 }
 
 115. Get Wishlist and remove a product from wishlist added. pis are: GET: {{url}}/wishlist and DELETE: {{url}}/wishlist/remove/:productId; Nothing in body.
+116. Refund implemented. First, refund model created and refund module created where controllers and routes are addded. Order model is also updated to implement this. The apis are: PPST "{{url}}/refunds/request/6818d05d2e90a603bcfef01b"; GET:"{{url}}/refunds/"(for admin and seller); GET:"{{url}}/refunds/me" for buyer; GET:"{{url}}/refunds/6819b4faa71f2f7b94992f47" for admin and seller to ge specifinc refund request; PATCH:"{{url}}/refunds/6819cd156c69c9a8cfa5972e" for admin/seller to update the refund when approped or rejected.
+117. 
