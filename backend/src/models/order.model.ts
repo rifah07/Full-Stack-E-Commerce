@@ -5,6 +5,13 @@ export interface IOrderItem {
   quantity: number;
 }
 
+export enum RefundStatus {
+  PENDING = "pending",
+  APPROVED = "approved",
+  REJECTED = "rejected",
+  REFUNDED = "refunded",
+}
+
 export interface IOrder extends Document {
   buyer: mongoose.Types.ObjectId;
   orderItems: IOrderItem[];
@@ -13,6 +20,7 @@ export interface IOrder extends Document {
   paymentMethod: "cod" | "sslcommerz" | "stripe" | "paypal";
   paymentStatus: "unpaid" | "paid" | "refunded";
   status: "pending" | "shipped" | "delivered" | "cancelled";
+  refundStatus: RefundStatus;
   cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -63,6 +71,11 @@ const orderSchema = new Schema<IOrder>(
       type: String,
       enum: ["pending", "shipped", "delivered", "cancelled"],
       default: "pending",
+    },
+    refundStatus: {
+      type: String,
+      enum: Object.values(RefundStatus),
+      default: RefundStatus.PENDING,
     },
     cancelledAt: {
       type: Date,
