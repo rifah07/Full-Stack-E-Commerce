@@ -1,16 +1,17 @@
 import express from "express";
 import requestRefund from "./controller/requestRefund";
 import auth from "../../middlewares/authMiddleware";
-
+import getRefundRequests from "./controller/getRefundRequests";
+import authorize from "../../middlewares/authorize";
 
 const refundRoutes = express.Router();
 
-// protected routes 
+// protected routes
 refundRoutes.use(auth);
+refundRoutes.get("/me", getRefundRequests);
 refundRoutes.post("/request/:orderId", requestRefund);
 /*
 
-refundRoutes.get("/me", getRefundRequests);
 
 // Admin routes
 
