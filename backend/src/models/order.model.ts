@@ -76,7 +76,7 @@ const orderSchema = new Schema<IOrder>(
     refundStatus: {
       type: String,
       enum: Object.values(RefundStatus),
-      default: RefundStatus.NONE,
+      default: RefundStatus.PENDING,
     },
     cancelledAt: {
       type: Date,

@@ -15,7 +15,7 @@ export interface IRefund extends Document {
   user: IUser["_id"];
   reason: string;
   requestedAt: Date;
-  status: RefundStatus;
+  refundStatus: RefundStatus;
   processedAt?: Date;
   processedBy?: IUser["_id"]; // Admin who processed the refund
   refundAmount: number;
@@ -41,10 +41,10 @@ const RefundSchema: Schema = new Schema(
       type: Date,
       default: Date.now,
     },
-    status: {
+    refundStatus: {
       type: String,
       enum: Object.values(RefundStatus),
-      default: RefundStatus.NONE,
+      default: RefundStatus.PENDING,
     },
     processedAt: {
       type: Date,

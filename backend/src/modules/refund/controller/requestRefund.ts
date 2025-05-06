@@ -42,7 +42,7 @@ const requestRefund = async (
     const existingRefundRequest = await Refund.findOne({
       order: orderId,
       user: userId,
-      status: RefundStatus.PENDING,
+      refundStatus: RefundStatus.PENDING,
     });
     if (existingRefundRequest) {
       return next(

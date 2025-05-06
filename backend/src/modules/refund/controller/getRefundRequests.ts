@@ -17,7 +17,7 @@ const getRefundRequests = async (
     }
 
     const refunds = await Refund.find(query)
-      .populate("order", "_id orderItems totalPrice")
+      .populate("order", "_id orderItems totalPrice refundStatus")
       .populate("user", "_id name email");
 
     res.status(200).json({
