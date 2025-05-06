@@ -16,10 +16,6 @@ export interface IOrder extends Document {
   cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-  paymentIntentId: String; // <-- store from Stripe payment
-  isRefunded: Boolean;
-  refundReason: String;
-  refundedAt: Date;
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -72,10 +68,6 @@ const orderSchema = new Schema<IOrder>(
       type: Date,
       default: null,
     },
-    paymentIntentId: String,
-    isRefunded: { type: Boolean, default: false },
-    refundReason: { type: String },
-    refundedAt: { type: Date },
   },
   { timestamps: true }
 );
