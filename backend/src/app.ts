@@ -11,7 +11,7 @@ import orderRoutes from "./modules/orders/orders.routes";
 import cartRoures from "./modules/cart/cart.routes";
 import paymentRoutes from "./modules/payment/payment.route";
 import wishlistRoutes from "./modules/wishlist/wishlist.routes";
-
+import refundRoutes from "./modules/refund/refunds.routes";
 
 dotenv.config();
 
@@ -31,11 +31,10 @@ app.use(morgan("combined", { stream: morganStream }));
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/wishlist", wishlistRoutes);
-app.use('/api/cart', cartRoures);
+app.use("/api/cart", cartRoures);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
-
-
+app.use("/api/refund", refundRoutes);
 
 //end of routes
 
