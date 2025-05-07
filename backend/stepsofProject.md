@@ -207,4 +207,4 @@ backend/
     "usageCount":100
 }
 
-120. 
+1.   Use , GET:"{{url}}/coupons/"; to see all coupons.
