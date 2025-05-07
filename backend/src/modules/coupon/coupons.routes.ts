@@ -4,6 +4,7 @@ import authorize from "../../middlewares/authorize";
 import createCoupon from "./controller/createCoupon";
 import getCoupons from "./controller/getCoupons";
 import getCouponByCode from "./controller/getCouponByCode";
+import updateCoupon from "./controller/updateCoupon";
 
 const couponRoutes = express.Router();
 
@@ -13,8 +14,8 @@ couponRoutes.use(authorize("admin"));
 couponRoutes.post("/", createCoupon);
 couponRoutes.get("/", getCoupons);
 couponRoutes.get("/:code", getCouponByCode);
-/*
 couponRoutes.patch("/:code", updateCoupon);
+/*
 couponRoutes.delete("/:code", deleteCoupon);
 */
 

@@ -209,3 +209,4 @@ backend/
 
 120. Use , GET:"{{url}}/coupons/"; to see all coupons.
 121. Use , GET:"{{url}}/coupons/APPLE"; to see perticular coupons.
+122. Use , PATCH :"{{url}}/coupons/APPLE"; body same as create coupon (with updated value) to update a coupon info.
