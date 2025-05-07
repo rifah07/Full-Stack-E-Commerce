@@ -206,9 +206,10 @@ backend/
     "value":50,
     "usageCount":100
 }
+use variables from model to add in req.body.
 
 120. Use , GET:"{{url}}/coupons/"; to see all coupons.
 121. Use , GET:"{{url}}/coupons/APPLE"; to see perticular coupons.
 122. Use , PATCH :"{{url}}/coupons/APPLE"; body same as create coupon (with updated value) to update a coupon info.
 123. Use, DELETE : "{{url}}/coupons/apple"/ "{{url}}/coupons/APPLE" (not case sensetive, it is habdled by code) to delete APPLE(coupon code) coupon.
-124. 
+124. To apply coupon in ordering add -> "couponCode":"BANANA" in body.

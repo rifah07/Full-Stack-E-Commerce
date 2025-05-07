@@ -13,8 +13,7 @@ import {
   processPaypalPayment,
   processStripePayment,
 } from "../../../services/paymentService";
-
-import { getProductId, isSameProduct } from "../../../utils/cartItem";
+import Coupon, { CouponStatus } from "../../../models/coupon.model";
 
 const createOrder = async (
   req: AuthRequest,
@@ -25,11 +24,12 @@ const createOrder = async (
     const userId = req.user?.id;
     if (!userId) return next(new UnauthorizedError("Unauthorized"));
     const {
-      product: productId,
+      product: productIdFromBody,
       quantity: singleQuantity,
       paymentMethodId,
       paymentMethod,
       shippingAddress: providedAddress,
+      couponCode,
     } = req.body;
 
     const cart = await Cart.findOne({ buyer: userId }).populate({
@@ -43,14 +43,17 @@ const createOrder = async (
     }
 
     let orderItems: { product: Types.ObjectId; quantity: number }[] = [];
-    let totalPrice = 0;
+    let totalPriceBeforeDiscount = 0;
+    let appliedCoupon: any = null;
+    let discountAmount = 0;
+    let finalPrice = 0;
 
-    if (productId) {
+    if (productIdFromBody) {
       const cartItem = cart.items.find(
         (item: any) =>
           item.product &&
           isValidObjectId(item.product._id) &&
-          String(item.product._id) === String(productId)
+          String(item.product._id) === String(productIdFromBody)
       );
 
       if (!cartItem)
@@ -70,7 +73,7 @@ const createOrder = async (
         product: new Types.ObjectId(String(product._id)),
         quantity: singleQuantity,
       });
-      totalPrice = singleQuantity * product.price;
+      totalPriceBeforeDiscount = singleQuantity * product.price;
     } else {
       for (const item of cart.items) {
         const product = item.product as IProduct;
@@ -83,9 +86,52 @@ const createOrder = async (
           product: new Types.ObjectId(String(product._id)),
           quantity: item.quantity,
         });
-        totalPrice += item.quantity * product.price;
+        totalPriceBeforeDiscount += item.quantity * product.price;
       }
     }
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({
+        code: couponCode.toUpperCase(),
+        status: CouponStatus.ACTIVE,
+      });
+
+      if (coupon) {
+        const now = new Date();
+        if (coupon.expiresAt && now > coupon.expiresAt) {
+          return next(new BadRequestError("Coupon has expired"));
+        }
+
+        if (
+          coupon.minOrderValue &&
+          totalPriceBeforeDiscount < coupon.minOrderValue
+        ) {
+          return next(
+            new BadRequestError(
+              `Minimum order value for this coupon is ${coupon.minOrderValue}`
+            )
+          );
+        }
+
+        if (coupon.usageLimit && coupon.usageCount >= coupon.usageLimit) {
+          return next(new BadRequestError("Coupon usage limit reached"));
+        }
+
+        appliedCoupon = coupon;
+
+        if (coupon.type === "percentage") {
+          discountAmount = totalPriceBeforeDiscount * (coupon.value / 100);
+        } else if (coupon.type === "fixed") {
+          discountAmount = coupon.value;
+        }
+
+        discountAmount = Math.min(discountAmount, totalPriceBeforeDiscount);
+      } else {
+        console.log(`Coupon code "${couponCode}" is invalid or not active.`);
+      }
+    }
+
+    finalPrice = totalPriceBeforeDiscount - discountAmount;
 
     const shippingAddress = providedAddress || cart.defaultShippingAddress;
     if (!shippingAddress) {
@@ -96,14 +142,14 @@ const createOrder = async (
 
     if (paymentMethod === "stripe") {
       const paymentResult = await processStripePayment(
-        totalPrice,
+        finalPrice,
         paymentMethodId,
         next
       );
       if (!paymentResult) return;
       paymentStatus = "paid";
     } else if (paymentMethod === "paypal") {
-      const paymentResult = await processPaypalPayment(totalPrice, next);
+      const paymentResult = await processPaypalPayment(finalPrice, next);
       if (!paymentResult) return;
       paymentStatus = "paid";
     } else if (paymentMethod === "cod") {
@@ -115,13 +161,21 @@ const createOrder = async (
     const order = new Order({
       buyer: userId,
       orderItems,
-      totalPrice,
+      totalPrice: totalPriceBeforeDiscount, // save original total
       shippingAddress,
       paymentMethod,
       paymentStatus,
+      couponCode: appliedCoupon?.code,
+      discountAmount,
+      finalPrice,
     });
 
     await order.save();
+
+    if (appliedCoupon) {
+      appliedCoupon.usageCount += 1;
+      await appliedCoupon.save();
+    }
 
     for (const item of orderItems) {
       const product = await Product.findById(item.product);
@@ -131,12 +185,12 @@ const createOrder = async (
       }
     }
 
-    if (productId) {
+    if (productIdFromBody) {
       const cartItemIndex = cart.items.findIndex(
         (item: any) =>
           item.product &&
           isValidObjectId(item.product._id) &&
-          String(item.product._id) === String(productId)
+          String(item.product._id) === String(productIdFromBody)
       );
       if (cartItemIndex !== -1) {
         const item = cart.items[cartItemIndex];
@@ -161,91 +215,5 @@ const createOrder = async (
     next(error);
   }
 };
-
-/*
-const createOrder = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) return next(new UnauthorizedError("Unauthorized"));
-
-    const { paymentMethod, shippingAddress: providedAddress } = req.body;
-
-    const cart = await Cart.findOne({ buyer: userId }).populate({
-      path: "items.product",
-      select: "price stock name",
-    });
-    if (!cart || cart.items.length === 0) {
-      return next(new NotFoundError("Cart is empty or not found"));
-    }
-
-    let totalPrice = 0;
-
-    for (const item of cart.items) {
-      const product = item.product as IProduct & {
-        price: number;
-        stock: number;
-      };
-      if (!product) return next(new NotFoundError(`Product not found`));
-      if (item.quantity > product.stock) {
-        return next(
-          new BadRequestError(`Not enough stock for ${product.name}`)
-        );
-      }
-      totalPrice += item.quantity * product.price;
-    }
-
-    const shippingAddress = providedAddress || cart.defaultShippingAddress;
-    if (!shippingAddress) {
-      return next(new BadRequestError("Shipping address is required"));
-    }
-
-    let paymentStatus: "unpaid" | "paid";
-    if (paymentMethod === "cod") {
-      paymentStatus = "unpaid";
-    } else {
-      // right now assume online payments are captured here (expand later)
-      paymentStatus = "paid";
-    }
-
-    const order = new Order({
-      buyer: userId,
-      orderItems: cart.items.map((item) => ({
-        product: (item.product as any).id,
-        quantity: item.quantity,
-      })),
-      totalPrice,
-      shippingAddress,
-      paymentMethod,
-      paymentStatus,
-    });
-
-    await order.save();
-
-    for (const item of cart.items) {
-      const product = await Product.findById((item.product as any).id);
-      if (product) {
-        product.stock -= item.quantity;
-        await product.save();
-      }
-    }
-
-    cart.items = [];
-    await cart.save();
-
-    res.status(201).json({
-      status: "success",
-      message: "Order created successfully",
-      data: order,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-*/
 
 export default createOrder;
