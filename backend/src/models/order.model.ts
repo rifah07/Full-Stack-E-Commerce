@@ -6,7 +6,7 @@ export interface IOrderItem {
 }
 
 export enum RefundStatus {
-  NONE= "none",
+  NONE = "none",
   PENDING = "pending",
   APPROVED = "approved",
   REJECTED = "rejected",
@@ -22,6 +22,9 @@ export interface IOrder extends Document {
   paymentStatus: "unpaid" | "paid" | "refunded";
   status: "pending" | "shipped" | "delivered" | "cancelled";
   refundStatus: RefundStatus;
+  couponCode?: string;
+  discountAmount?: number;
+  finalPrice?: number; //after discount applied
   cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -77,6 +80,20 @@ const orderSchema = new Schema<IOrder>(
       type: String,
       enum: Object.values(RefundStatus),
       default: RefundStatus.PENDING,
+    },
+    couponCode: {
+      type: String,
+      trim: true,
+      uppercase: true,
+    },
+    discountAmount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    finalPrice: {
+      type: Number,
+      min: 0,
     },
     cancelledAt: {
       type: Date,
