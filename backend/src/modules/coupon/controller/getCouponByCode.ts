@@ -13,7 +13,10 @@ const getCouponByCode = async (
   if (!coupon) {
     throw new NotFoundError("Coupon not found");
   }
-  res.status(200).json({ status: "success", data: { coupon } });
+  res.status(200).json({
+    status: "success",
+    data: { coupon },
+  });
 };
 
 export default getCouponByCode;

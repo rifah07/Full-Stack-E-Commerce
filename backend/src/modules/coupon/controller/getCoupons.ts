@@ -4,7 +4,10 @@ import { AuthRequest } from "../../../middlewares/authMiddleware";
 
 const getCoupons = async (req: AuthRequest, res: Response) => {
   const coupons = await Coupon.find();
-  res.status(200).json({ status: "success", data: { coupons } });
+  res.status(200).json({
+    status: "success",
+    data: { coupons },
+  });
 };
 
 export default getCoupons;
