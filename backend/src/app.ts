@@ -12,6 +12,7 @@ import cartRoures from "./modules/cart/cart.routes";
 import paymentRoutes from "./modules/payment/payment.route";
 import wishlistRoutes from "./modules/wishlist/wishlist.routes";
 import refundRoutes from "./modules/refund/refunds.routes";
+import couponRoutes from "./modules/coupon/coupons.routes";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use("/api/cart", cartRoures);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/refunds", refundRoutes);
+app.use("/api/coupons", couponRoutes);
 
 //end of routes
 
