@@ -14,6 +14,7 @@ Installation commands:
 12. npm install axios
 13. npm install stripe
 14. npm install @paypal/checkout-server-sdk
+15. npm install moment
 
 
 
@@ -213,3 +214,4 @@ use variables from model to add in req.body.
 122. Use , PATCH :"{{url}}/coupons/APPLE"; body same as create coupon (with updated value) to update a coupon info.
 123. Use, DELETE : "{{url}}/coupons/apple"/ "{{url}}/coupons/APPLE" (not case sensetive, it is habdled by code) to delete APPLE(coupon code) coupon.
 124. To apply coupon in ordering add -> "couponCode":"BANANA" in body.
+125. Install moment by 15 point above to implement revenue calculation.
