@@ -207,4 +207,5 @@ backend/
     "usageCount":100
 }
 
-1.   Use , GET:"{{url}}/coupons/"; to see all coupons.
+120. Use , GET:"{{url}}/coupons/"; to see all coupons.
+121. Use , GET:"{{url}}/coupons/APPLE"; to see perticular coupons.
