@@ -215,3 +215,4 @@ use variables from model to add in req.body.
 123. Use, DELETE : "{{url}}/coupons/apple"/ "{{url}}/coupons/APPLE" (not case sensetive, it is habdled by code) to delete APPLE(coupon code) coupon.
 124. To apply coupon in ordering add -> "couponCode":"BANANA" in body.
 125. Install moment by 15 point above to implement revenue calculation.
+126. Now let's move to revenie implementetion. for that in modules create admin module.
