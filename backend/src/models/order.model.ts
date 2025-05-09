@@ -25,7 +25,7 @@ export interface IOrder extends Document {
   refundStatus: RefundStatus;
   couponCode?: string;
   discountAmount?: number;
-  finalPrice?: number; //after discount applied
+  finalPrice?: number;
   cancelledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -40,6 +40,11 @@ const orderSchema = new Schema<IOrder>(
     },
     orderItems: [
       {
+        seller: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",

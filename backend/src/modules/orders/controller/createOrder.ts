@@ -49,7 +49,11 @@ const createOrder = async (
     useCart = true, // a flag to determine if we should use cart or direct order
   } = req.body;
 
-  let orderItems: { product: Types.ObjectId; quantity: number }[] = [];
+  let orderItems: {
+    product: Types.ObjectId;
+    quantity: number;
+    seller: Types.ObjectId; // ADDED SELLER HERE
+  }[] = [];
   let totalPriceBeforeDiscount = 0;
   let appliedCoupon: any = null;
   let discountAmount = 0;
@@ -62,7 +66,7 @@ const createOrder = async (
     const cart = await Cart.findOne({ buyer: userId }).populate({
       path: "items.product",
       model: "Product",
-      select: "_id name price stock imageUrl",
+      select: "_id name price stock imageUrl seller", // Include seller in population
     });
 
     if (!cart || cart.items.length === 0) {
@@ -111,6 +115,7 @@ const createOrder = async (
         orderItems.push({
           product: new Types.ObjectId(String(product._id)),
           quantity: singleQuantity,
+          seller: product.seller, // ADDED SELLER HERE
         });
         totalPriceBeforeDiscount = singleQuantity * product.price;
       } else if (!directOrderItems) {
@@ -128,6 +133,7 @@ const createOrder = async (
           orderItems.push({
             product: new Types.ObjectId(String(product._id)),
             quantity: item.quantity,
+            seller: product.seller, // ADDED SELLER HERE
           });
           totalPriceBeforeDiscount += item.quantity * product.price;
         }
@@ -181,6 +187,7 @@ const createOrder = async (
         orderItems.push({
           product: new Types.ObjectId(String(product._id)),
           quantity: item.quantity,
+          seller: product.seller, // ADDED SELLER HERE
         });
       }
 

@@ -8,6 +8,7 @@ import getDailyRevenue from "./controller/getDailyRevenue";
 import getMonthlyRevenue from "./controller/getMonthlyRevenue";
 import getYearlyRevenue from "./controller/getYearlyRevenue";
 import getRevenueByDateRange from "./controller/getRevenueByDateRange";
+import getRevenuePerSeller from "./controller/getRevenuePerSeller";
 
 
 const adminRoutes = express.Router();
@@ -22,6 +23,7 @@ adminRoutes.get('/revenue/weekly', getWeeklyRevenue);
 adminRoutes.get('/revenue/monthly', getMonthlyRevenue);
 adminRoutes.get('/revenue/yearly', getYearlyRevenue);
 adminRoutes.get('/revenue/range', getRevenueByDateRange);
+adminRoutes.get('/revenue/sellers', getRevenuePerSeller);
 
 
 
