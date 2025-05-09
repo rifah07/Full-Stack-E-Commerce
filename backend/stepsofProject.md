@@ -217,3 +217,5 @@ use variables from model to add in req.body.
 125. Install moment by 15 point above to implement revenue calculation.
 126. Now let's move to revenue implementetion. for that in modules create admin module.
 127. First, update createOrders so that no buyers can order without adding products in cart.
+128. Add getRevenue.ts to let admin see tital revenue. Add route and add route in app.ts
+129. getRevenue.ts is working. api: GET: "{{url}}/admin/revenue"
