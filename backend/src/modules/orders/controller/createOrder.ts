@@ -28,7 +28,7 @@ const createOrder = async (
   next: NextFunction
 ) => {
   const userId = req.user?.id;
-  if (!userId) return next(new UnauthorizedError("Unauthorized"));
+  if (!userId) throw new UnauthorizedError("Unauthorized");
 
   const user = await User.findById(userId);
   if (!user) return next(new NotFoundError("User not found"));

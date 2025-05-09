@@ -2,9 +2,13 @@ import { Response } from "express";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 import Order from "../../../models/order.model";
 import { Types } from "mongoose";
+import { UnauthorizedError } from "../../../utils/errors";
 
 const getSellerRevenue = async (req: AuthRequest, res: Response) => {
   const sellerId = req.user?.id;
+
+  if (!sellerId) throw new UnauthorizedError("Unauthorized");
+
   const sellerObjectId = new Types.ObjectId(sellerId);
 
   const sellerRevenue = await Order.aggregate([
