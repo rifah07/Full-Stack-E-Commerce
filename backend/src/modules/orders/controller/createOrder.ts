@@ -52,7 +52,7 @@ const createOrder = async (
   let orderItems: {
     product: Types.ObjectId;
     quantity: number;
-    seller: Types.ObjectId; // ADDED SELLER HERE
+    seller: Types.ObjectId;
   }[] = [];
   let totalPriceBeforeDiscount = 0;
   let appliedCoupon: any = null;
@@ -115,7 +115,7 @@ const createOrder = async (
         orderItems.push({
           product: new Types.ObjectId(String(product._id)),
           quantity: singleQuantity,
-          seller: product.seller, // ADDED SELLER HERE
+          seller: product.seller,
         });
         totalPriceBeforeDiscount = singleQuantity * product.price;
       } else if (!directOrderItems) {
@@ -133,7 +133,7 @@ const createOrder = async (
           orderItems.push({
             product: new Types.ObjectId(String(product._id)),
             quantity: item.quantity,
-            seller: product.seller, // ADDED SELLER HERE
+            seller: product.seller,
           });
           totalPriceBeforeDiscount += item.quantity * product.price;
         }
