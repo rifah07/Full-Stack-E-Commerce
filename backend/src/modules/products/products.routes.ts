@@ -11,6 +11,7 @@ import getFilteredProducts from "./controller/getFilteredProducts";
 import myProducts from "./controller/myProducts";
 import getSoftDeletedProducts from "./controller/getSoftDeletedProducts";
 import restoreProduct from "./controller/restoreProduct";
+import updateProductDiscount from "./controller/updateProductDiscount";
 
 const productRoutes = express.Router();
 
@@ -28,10 +29,23 @@ productRoutes.get(
 
 // Seller-only route
 productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
+productRoutes.patch(
+  "seller/:productId/discount",
+  auth,
+  authorize("seller"),
+  updateProductDiscount
+);
+
+//admin only routes
+productRoutes.patch(
+  "/:productId/discount",
+  auth,
+  authorize("admin"),
+  updateProductDiscount
+);
 
 //public route but with query parameter
 productRoutes.get("/:productId", getSingleProduct);
-
 
 //protected - Only sellers/admins can create/delete
 productRoutes.use(auth);
