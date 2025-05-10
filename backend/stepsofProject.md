@@ -219,3 +219,6 @@ use variables from model to add in req.body.
 127. First, update createOrders so that no buyers can order without adding products in cart.
 128. Add getRevenue.ts to let admin see tital revenue. Add route and add route in app.ts
 129. getRevenue.ts is working. api: GET: "{{url}}/admin/revenue"
+130. Discount added, now seller, admin can add discount.
+131. REvenue is also implemented.
+132. Review, rating and Coupon add by seller remained pending.
