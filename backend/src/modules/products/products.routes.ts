@@ -30,7 +30,7 @@ productRoutes.get(
 // Seller-only route
 productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
 productRoutes.patch(
-  "seller/:productId/discount",
+  "/seller/:productId/discount",
   auth,
   authorize("seller"),
   updateProductDiscount
