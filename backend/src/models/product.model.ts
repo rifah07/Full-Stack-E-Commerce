@@ -8,7 +8,10 @@ export interface IProduct extends Document {
   stock: number;
   images: string[];
   isDeleted: Boolean;
-
+  discount?: {
+    type: "percentage" | "fixed";
+    value: number;
+  };
   seller: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -52,6 +55,10 @@ const productSchema = new Schema<IProduct>(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    discount: {
+      type: { type: String, enum: ["percentage", "fixed"] },
+      value: { type: Number, min: 0 },
     },
   },
   { timestamps: true }
