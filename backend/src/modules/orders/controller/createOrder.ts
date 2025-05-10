@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import Cart from "../../../models/cart.model";
+import Cart, { ICartItem } from "../../../models/cart.model"; // Import ICartItem
 import Order from "../../../models/order.model";
 import User from "../../../models/user.model";
 import Product, { IProduct } from "../../../models/product.model";
@@ -16,7 +16,6 @@ import {
 } from "../../../services/paymentService";
 import Coupon, { CouponStatus } from "../../../models/coupon.model";
 
-// new interface for direct order items
 interface DirectOrderItem {
   productId: string;
   quantity: number;
@@ -28,185 +27,172 @@ const createOrder = async (
   next: NextFunction
 ) => {
   const userId = req.user?.id;
-  if (!userId) throw new UnauthorizedError("Unauthorized");
+  if (!userId) return next(new UnauthorizedError("Unauthorized"));
 
   const user = await User.findById(userId);
   if (!user) return next(new NotFoundError("User not found"));
 
   const {
-    // Cart-based order properties
     product: productIdFromBody,
     quantity: singleQuantity,
-
-    // Direct order properties
     products: directOrderItems,
-
-    // Common properties
     paymentMethodId,
     paymentMethod,
     shippingAddress: providedAddress,
     couponCode,
-    useCart = true, // a flag to determine if we should use cart or direct order
+    useCart = true,
   } = req.body;
 
   let orderItems: {
     product: Types.ObjectId;
     quantity: number;
     seller: Types.ObjectId;
+    basePrice: number;
+    discountAmountForItem: number;
   }[] = [];
   let totalPriceBeforeDiscount = 0;
   let appliedCoupon: any = null;
-  let discountAmount = 0;
+  let couponDiscountAmount = 0;
   let finalPrice = 0;
 
   let shippingAddress = providedAddress;
+
+  const calculateItemPriceWithDiscount = (
+    product: IProduct,
+    quantity: number
+  ) => {
+    let discountedPrice = product.price;
+    let itemDiscount = 0;
+    if (product.discount && product.discount.value > 0) {
+      if (product.discount.type === "percentage") {
+        itemDiscount = product.price * (product.discount.value / 100);
+        discountedPrice -= itemDiscount;
+      } else if (product.discount.type === "fixed") {
+        itemDiscount = Math.min(product.discount.value, product.price);
+        discountedPrice -= itemDiscount;
+      }
+    }
+    return {
+      finalPrice: discountedPrice * quantity,
+      itemDiscount: itemDiscount * quantity,
+      basePrice: product.price * quantity,
+    };
+  };
 
   // Process cart-based order
   if (useCart) {
     const cart = await Cart.findOne({ buyer: userId }).populate({
       path: "items.product",
       model: "Product",
-      select: "_id name price stock imageUrl seller", // Include seller in population
+      select: "_id name price stock imageUrl seller discount",
     });
 
-    if (!cart || cart.items.length === 0) {
-      if (!directOrderItems) {
-        return next(
-          new NotFoundError(
-            "Cart is empty or not found and no direct order items provided"
-          )
-        );
-      }
-      // If cart is empty but we have direct order items, continue with direct order
-    } else {
-      // For cart orders, use cart's default address if no address provided
+    if (cart && cart.items.length > 0) {
       if (!shippingAddress && cart.defaultShippingAddress) {
         shippingAddress = cart.defaultShippingAddress;
       }
 
-      if (productIdFromBody) {
-        // Single product from cart
-        const cartItem = cart.items.find(
-          (item: any) =>
-            item.product &&
-            isValidObjectId(item.product._id) &&
-            String(item.product._id) === String(productIdFromBody)
-        );
+      const itemsToProcess = productIdFromBody
+        ? cart.items.filter(
+            (item: ICartItem) =>
+              String((item.product as IProduct)._id) === productIdFromBody
+          )
+        : cart.items;
 
-        if (!cartItem) {
-          return next(new NotFoundError("Product not found in cart"));
-        }
+      for (const item of itemsToProcess) {
+        const product = item.product as IProduct;
+        const quantityToOrder = productIdFromBody
+          ? singleQuantity
+          : item.quantity;
 
-        if (singleQuantity > cartItem.quantity) {
-          return next(
-            new BadRequestError("Requested quantity exceeds cart quantity")
-          );
-        }
+        if (!product || quantityToOrder > product.stock) continue;
 
-        const product = cartItem.product as IProduct;
-        if (!product || !product._id) {
-          return next(new NotFoundError("Product details missing"));
-        }
-
-        if (singleQuantity > product.stock) {
-          return next(new BadRequestError("Not enough stock for this product"));
-        }
+        const {
+          finalPrice: itemFinalPrice,
+          itemDiscount,
+          basePrice,
+        } = calculateItemPriceWithDiscount(product, quantityToOrder);
 
         orderItems.push({
           product: new Types.ObjectId(String(product._id)),
-          quantity: singleQuantity,
+          quantity: quantityToOrder,
           seller: product.seller,
+          basePrice: basePrice / quantityToOrder,
+          discountAmountForItem: itemDiscount / quantityToOrder,
         });
-        totalPriceBeforeDiscount = singleQuantity * product.price;
-      } else if (!directOrderItems) {
-        // all items from cart
-        for (const item of cart.items) {
-          const product = item.product as IProduct;
-          if (!product || !product._id) continue;
-
-          if (item.quantity > product.stock) {
-            return next(
-              new BadRequestError(`Not enough stock for ${product.name}`)
-            );
-          }
-
-          orderItems.push({
-            product: new Types.ObjectId(String(product._id)),
-            quantity: item.quantity,
-            seller: product.seller,
-          });
-          totalPriceBeforeDiscount += item.quantity * product.price;
-        }
+        totalPriceBeforeDiscount += basePrice;
       }
     }
   }
 
-  // process direct order items (either instead of cart or in addition to it)
+  // Process direct order items
   if (directOrderItems && Array.isArray(directOrderItems)) {
     for (const item of directOrderItems) {
       if (!item.productId || !item.quantity || item.quantity <= 0) {
         return next(new BadRequestError("Invalid product data in order"));
       }
-
       if (!isValidObjectId(item.productId)) {
         return next(
           new BadRequestError(`Invalid product ID: ${item.productId}`)
         );
       }
 
-      const product = await Product.findById(item.productId);
+      const product = await Product.findById(item.productId).populate({
+        path: "seller",
+        model: "User",
+        select: "_id",
+      });
       if (!product) {
         return next(
           new NotFoundError(`Product with ID ${item.productId} not found`)
         );
       }
-
       if (item.quantity > product.stock) {
         return next(
           new BadRequestError(`Not enough stock for ${product.name}`)
         );
       }
 
-      // check if product already exists in orderItems (from cart)
-      const existingItemIndex = orderItems.findIndex(
-        (orderItem) => String(orderItem.product) === String(product._id)
-      );
+      const {
+        finalPrice: itemFinalPrice,
+        itemDiscount,
+        basePrice,
+      } = calculateItemPriceWithDiscount(product, item.quantity);
 
-      if (existingItemIndex !== -1) {
-        // update quantity if product already in orderItems
-        const newQuantity =
-          orderItems[existingItemIndex].quantity + item.quantity;
-        if (newQuantity > product.stock) {
-          return next(
-            new BadRequestError(`Not enough stock for ${product.name}`)
-          );
-        }
-        orderItems[existingItemIndex].quantity = newQuantity;
+      const existingItem = orderItems.find(
+        (oi) => String(oi.product) === item.productId
+      );
+      if (existingItem) {
+        existingItem.quantity += item.quantity;
+        existingItem.basePrice =
+          (existingItem.basePrice * (existingItem.quantity - item.quantity) +
+            basePrice) /
+          existingItem.quantity;
+        existingItem.discountAmountForItem =
+          (existingItem.discountAmountForItem *
+            (existingItem.quantity - item.quantity) +
+            itemDiscount) /
+          existingItem.quantity;
       } else {
-        // add new product to orderItems
         orderItems.push({
-          product: new Types.ObjectId(String(product._id)),
+          product: new Types.ObjectId(item.productId),
           quantity: item.quantity,
-          seller: product.seller, // ADDED SELLER HERE
+          seller: product.seller._id,
+          basePrice: basePrice / item.quantity,
+          discountAmountForItem: itemDiscount / item.quantity,
         });
       }
-
-      totalPriceBeforeDiscount += item.quantity * product.price;
+      totalPriceBeforeDiscount += basePrice;
     }
   }
 
-  // Ensure we have items to order
   if (orderItems.length === 0) {
     return next(new BadRequestError("No valid items to order"));
   }
 
-  // If shipping address is not provided in the request and not found in the cart,
-  // use the user's address as a fallback
   if (!shippingAddress && user.address) {
     shippingAddress = user.address;
   }
-
-  // Final shipping address validation
   if (!shippingAddress) {
     return next(
       new BadRequestError(
@@ -214,8 +200,6 @@ const createOrder = async (
       )
     );
   }
-
-  // Ensure address is not empty string
   if (
     typeof shippingAddress === "string" &&
     (!shippingAddress.trim() || shippingAddress === "No address provided")
@@ -239,7 +223,6 @@ const createOrder = async (
       if (coupon.expiresAt && now > coupon.expiresAt) {
         return next(new BadRequestError("Coupon has expired"));
       }
-
       if (
         coupon.minOrderValue &&
         totalPriceBeforeDiscount < coupon.minOrderValue
@@ -250,28 +233,33 @@ const createOrder = async (
           )
         );
       }
-
       if (coupon.usageLimit && coupon.usageCount >= coupon.usageLimit) {
         return next(new BadRequestError("Coupon usage limit reached"));
       }
 
       appliedCoupon = coupon;
-
       if (coupon.type === "percentage") {
-        discountAmount = totalPriceBeforeDiscount * (coupon.value / 100);
+        couponDiscountAmount = totalPriceBeforeDiscount * (coupon.value / 100);
       } else if (coupon.type === "fixed") {
-        discountAmount = coupon.value;
+        couponDiscountAmount = coupon.value;
       }
-
-      discountAmount = Math.min(discountAmount, totalPriceBeforeDiscount);
+      couponDiscountAmount = Math.min(
+        couponDiscountAmount,
+        totalPriceBeforeDiscount
+      );
     } else {
       console.log(`Coupon code "${couponCode}" is invalid or not active.`);
     }
   }
 
-  finalPrice = totalPriceBeforeDiscount - discountAmount;
+  finalPrice =
+    totalPriceBeforeDiscount -
+    (couponDiscountAmount +
+      orderItems.reduce(
+        (sum, item) => sum + item.discountAmountForItem * item.quantity,
+        0
+      ));
 
-  // Process payment
   let paymentStatus: "unpaid" | "paid" = "unpaid";
 
   if (paymentMethod === "stripe") {
@@ -292,28 +280,37 @@ const createOrder = async (
     return next(new BadRequestError("Invalid payment method"));
   }
 
-  // create order
   const order = new Order({
     buyer: userId,
-    orderItems,
+    orderItems: orderItems.map((item) => ({
+      product: item.product,
+      quantity: item.quantity,
+      seller: item.seller,
+      basePrice: item.basePrice,
+      discountAmountForItem: item.discountAmountForItem,
+    })),
     totalPrice: totalPriceBeforeDiscount,
     shippingAddress,
     paymentMethod,
     paymentStatus,
     couponCode: appliedCoupon?.code,
-    discountAmount,
+    discountAmount:
+      couponDiscountAmount +
+      orderItems.reduce(
+        (sum, item) => sum + item.discountAmountForItem * item.quantity,
+        0
+      ),
     finalPrice,
   });
 
   await order.save();
 
-  // update coupon usage if applied
   if (appliedCoupon) {
     appliedCoupon.usageCount += 1;
     await appliedCoupon.save();
   }
 
-  // update product stock
+  // Update product stock
   for (const item of orderItems) {
     const product = await Product.findById(item.product);
     if (product) {
@@ -326,48 +323,24 @@ const createOrder = async (
   if (useCart) {
     const cart = await Cart.findOne({ buyer: userId });
     if (cart) {
-      if (productIdFromBody) {
-        // remove single product
+      const itemsToRemove: string[] = [];
+      for (const orderedItem of orderItems) {
         const cartItemIndex = cart.items.findIndex(
-          (item: any) =>
-            item.product &&
-            isValidObjectId(item.product._id) &&
-            String(item.product._id) === String(productIdFromBody)
+          (item: ICartItem) =>
+            String(item.product as Types.ObjectId) ===
+            String(orderedItem.product)
         );
         if (cartItemIndex !== -1) {
-          const item = cart.items[cartItemIndex];
-          if (item.quantity <= singleQuantity) {
-            cart.items.splice(cartItemIndex, 1);
-          } else {
-            item.quantity -= singleQuantity;
-          }
-        }
-      } else if (!directOrderItems) {
-        // clear entire cart
-        cart.items = [];
-      } else {
-        // remove only the products that were ordered directly
-        const productIdsToRemove = directOrderItems.map(
-          (item: DirectOrderItem) => item.productId
-        );
-        for (const productId of productIdsToRemove) {
-          const cartItemIndex = cart.items.findIndex(
-            (item: any) => String(item.product) === String(productId)
-          );
-          if (cartItemIndex !== -1) {
-            const directItem = directOrderItems.find(
-              (item: DirectOrderItem) =>
-                String(item.productId) === String(productId)
-            );
-            const cartItem = cart.items[cartItemIndex];
-            if (cartItem.quantity <= directItem.quantity) {
-              cart.items.splice(cartItemIndex, 1);
-            } else {
-              cartItem.quantity -= directItem.quantity;
-            }
+          cart.items[cartItemIndex].quantity -= orderedItem.quantity;
+          if (cart.items[cartItemIndex].quantity <= 0) {
+            itemsToRemove.push(String(orderedItem.product));
           }
         }
       }
+      cart.items = cart.items.filter(
+        (item) =>
+          !itemsToRemove.includes(String(item.product as Types.ObjectId))
+      );
       await cart.save();
     }
   }
