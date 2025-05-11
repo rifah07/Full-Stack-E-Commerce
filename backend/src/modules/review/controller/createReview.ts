@@ -2,10 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 import Product from "../../../models/product.model";
 import Review from "../../../models/review.model";
-import {
-  BadRequestError,
-  NotFoundError,
-} from "../../../utils/errors";
+import { BadRequestError, NotFoundError } from "../../../utils/errors";
 import { isValidObjectId } from "mongoose";
 
 const createReview = async (

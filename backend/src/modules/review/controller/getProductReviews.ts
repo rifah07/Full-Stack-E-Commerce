@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { isValidObjectId } from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { BadRequestError } from "../../../utils/errors";
 import Review from "../../../models/review.model";
 import Product from "../../../models/product.model";
@@ -27,21 +27,20 @@ const getProductReviews = async (
 
     const totalReviews = await Review.countDocuments({ product: productId });
     const totalPages = Math.ceil(totalReviews / limit);
-    // Calculate average rating
+
+    // calculate average rating
     const aggregationResult = await Review.aggregate([
       {
-        $match: { product: { $eq: productId } },
+        $match: { product: new mongoose.Types.ObjectId(productId) },
       },
       {
         $group: {
-          _id: "$product",
-          averageRating: { $avg: "$rating" },
+          _id: '$product',
+          averageRating: { $avg: '$rating' },
         },
       },
     ]);
-
-    const averageRating =
-      aggregationResult.length > 0 ? aggregationResult[0].averageRating : 0;
+    const averageRating = aggregationResult.length > 0 ? aggregationResult[0].averageRating : 0;
 
     // update the product document with the average rating and number of reviews
     await Product.findByIdAndUpdate(productId, {
@@ -50,7 +49,7 @@ const getProductReviews = async (
     });
 
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         reviews,
         totalReviews,
