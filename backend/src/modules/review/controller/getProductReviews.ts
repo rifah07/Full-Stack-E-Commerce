@@ -29,34 +29,19 @@ const getProductReviews = async (
     const totalPages = Math.ceil(totalReviews / limit);
 
     // calculate average rating
-    const aggregationResult = await Review.aggregate([
-      {
-        $match: { product: new mongoose.Types.ObjectId(productId) },
-      },
-      {
-        $group: {
-          _id: '$product',
-          averageRating: { $avg: '$rating' },
-        },
-      },
-    ]);
-    const averageRating = aggregationResult.length > 0 ? aggregationResult[0].averageRating : 0;
-
-    // update the product document with the average rating and number of reviews
-    await Product.findByIdAndUpdate(productId, {
-      averageRating: parseFloat(averageRating.toFixed(2)), // store with 2 decimal places
-      numberOfReviews: totalReviews,
-    });
+    const product = await Product.findById(productId);
+    const averageRating = product?.averageRating || 0;
+    const numberOfReviews = product?.numberOfReviews || 0;
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
         reviews,
         totalReviews,
         totalPages,
         currentPage: page,
-        averageRating: parseFloat(averageRating.toFixed(2)),
-        numberOfReviews: totalReviews,
+        averageRating,
+        numberOfReviews,
       },
     });
   } catch (error) {

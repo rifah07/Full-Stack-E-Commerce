@@ -3,7 +3,8 @@ import { AuthRequest } from "../../../middlewares/authMiddleware";
 import Product from "../../../models/product.model";
 import Review from "../../../models/review.model";
 import { BadRequestError, NotFoundError } from "../../../utils/errors";
-import { isValidObjectId } from "mongoose";
+import { isValidObjectId, Types } from "mongoose";
+import updateProductRating from "./updateProductRating";
 
 const createReview = async (
   req: AuthRequest,
@@ -30,7 +31,6 @@ const createReview = async (
       return next(new NotFoundError("Product not found"));
     }
 
-    // check if the user has already reviewed this product
     const existingReview = await Review.findOne({
       product: productId,
       user: userId,
@@ -49,6 +49,9 @@ const createReview = async (
     });
 
     const savedReview = await newReview.save();
+
+    // update product rating after creating a review
+    await updateProductRating(new Types.ObjectId(productId));
 
     res.status(201).json({
       status: "success",

@@ -1,12 +1,13 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-import { isValidObjectId } from "mongoose";
+import { isValidObjectId, Types } from "mongoose";
 import {
   BadRequestError,
   NotFoundError,
   UnauthorizedError,
 } from "../../../utils/errors";
 import Review from "../../../models/review.model";
+import updateProductRating from "./updateProductRating";
 
 const updateReview = async (
   req: AuthRequest,
@@ -44,11 +45,14 @@ const updateReview = async (
 
     review.rating = rating !== undefined ? rating : review.rating;
     review.comment = comment !== undefined ? comment : review.comment;
-    const updatedReview = await review.save();
+    await review.save();
+
+    // update product rating after updating a review
+    await updateProductRating(new Types.ObjectId(productId));
 
     res.status(200).json({
       status: "success",
-      data: { review: updatedReview },
+      data: { review: review },
       message: "Review updated successfully",
     });
   } catch (error) {

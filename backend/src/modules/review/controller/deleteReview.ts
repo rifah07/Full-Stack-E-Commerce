@@ -1,12 +1,13 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-import { isValidObjectId } from "mongoose";
+import { isValidObjectId, Types } from "mongoose";
 import Review from "../../../models/review.model";
 import {
   BadRequestError,
   NotFoundError,
   UnauthorizedError,
 } from "../../../utils/errors";
+import updateProductRating from "./updateProductRating";
 
 const deleteReview = async (
   req: AuthRequest,
@@ -27,7 +28,6 @@ const deleteReview = async (
       return next(new NotFoundError("Review not found"));
     }
 
-    // the user who wrote the review or an admin can delete it
     if (String(review.user) !== userId && userRole !== "admin") {
       return next(
         new UnauthorizedError("You are not authorized to delete this review")
@@ -35,6 +35,9 @@ const deleteReview = async (
     }
 
     await Review.findByIdAndDelete(reviewId);
+
+    // update product rating after deleting a review
+    await updateProductRating(new Types.ObjectId(productId));
 
     res.status(200).json({
       status: "success",
