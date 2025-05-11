@@ -13,6 +13,8 @@ export interface IProduct extends Document {
     value: number;
   };
   seller: mongoose.Types.ObjectId;
+  averageRating?: number;
+  numberOfReviews?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,11 +49,6 @@ const productSchema = new Schema<IProduct>(
       type: [String],
       default: [],
     },
-    seller: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -59,6 +56,19 @@ const productSchema = new Schema<IProduct>(
     discount: {
       type: { type: String, enum: ["percentage", "fixed"] },
       value: { type: Number, min: 0 },
+    },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
+    numberOfReviews: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
