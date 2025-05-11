@@ -1,4 +1,3 @@
-// backend/src/controllers/review.controller.ts
 import { Request, Response, NextFunction } from "express";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
 import Product from "../../../models/product.model";
