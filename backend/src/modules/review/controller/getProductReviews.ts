@@ -27,6 +27,27 @@ const getProductReviews = async (
 
     const totalReviews = await Review.countDocuments({ product: productId });
     const totalPages = Math.ceil(totalReviews / limit);
+    // Calculate average rating
+    const aggregationResult = await Review.aggregate([
+      {
+        $match: { product: { $eq: productId } },
+      },
+      {
+        $group: {
+          _id: "$product",
+          averageRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+
+    const averageRating =
+      aggregationResult.length > 0 ? aggregationResult[0].averageRating : 0;
+
+    // update the product document with the average rating and number of reviews
+    await Product.findByIdAndUpdate(productId, {
+      averageRating: parseFloat(averageRating.toFixed(2)), // store with 2 decimal places
+      numberOfReviews: totalReviews,
+    });
 
     res.status(200).json({
       status: "success",
@@ -35,6 +56,8 @@ const getProductReviews = async (
         totalReviews,
         totalPages,
         currentPage: page,
+        averageRating: parseFloat(averageRating.toFixed(2)),
+        numberOfReviews: totalReviews,
       },
     });
   } catch (error) {
