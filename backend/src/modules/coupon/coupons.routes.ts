@@ -10,29 +10,40 @@ import createCouponForSeller from "./controller/createCouponForSeller";
 import deleteSellerCoupon from "./controller/deleteSellerCoupon";
 import updateSellerCoupon from "./controller/updateSellerCoupon";
 import getSellerCouponById from "./controller/getSellerCouponById";
+import getSellerCoupons from "./controller/getSellerCoupons";
 
 const couponRoutes = express.Router();
+
+couponRoutes.use(auth);
 
 //Seller routes
 couponRoutes.post(
   "/seller/create",
-  auth,
   authorize("seller"),
   createCouponForSeller
 );
+couponRoutes.get("/seller", authorize("seller"), getSellerCoupons);
 
 // Admin routes
-couponRoutes.use(auth);
 
 couponRoutes.post("/", authorize("admin"), createCoupon);
-couponRoutes.get("/",authorize("admin"),  getCoupons);
+couponRoutes.get("/", authorize("admin"), getCoupons);
 couponRoutes.get("/:code", authorize("admin"), getCouponByCode);
 couponRoutes.patch("/:code", authorize("admin"), updateCoupon);
-couponRoutes.delete("/:code",authorize("admin"), deleteCoupon);
+couponRoutes.delete("/:code", authorize("admin"), deleteCoupon);
 
-couponRoutes.get('/seller/:couponId', authorize("seller"), getSellerCouponById);
-couponRoutes.patch('/seller/:couponId', authorize("seller"), updateSellerCoupon);
-couponRoutes.delete('/seller/:couponId', authorize("seller"), deleteSellerCoupon);
+//seller routes with id in query parameter
 
+couponRoutes.get("/seller/:couponId", authorize("seller"), getSellerCouponById);
+couponRoutes.patch(
+  "/seller/:couponId",
+  authorize("seller"),
+  updateSellerCoupon
+);
+couponRoutes.delete(
+  "/seller/:couponId",
+  authorize("seller"),
+  deleteSellerCoupon
+);
 
 export default couponRoutes;
