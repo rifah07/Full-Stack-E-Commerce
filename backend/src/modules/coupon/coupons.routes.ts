@@ -15,14 +15,10 @@ import getSellerCoupons from "./controller/getSellerCoupons";
 const couponRoutes = express.Router();
 
 couponRoutes.use(auth);
-couponRoutes.get("/", getCoupons);
+couponRoutes.get("/",authorize("admin", "seller"), getCoupons);
 
 //Seller routes
-couponRoutes.post(
-  "/seller/create",
-  authorize("seller"),
-  createCouponForSeller
-);
+couponRoutes.post("/seller/create", authorize("seller"), createCouponForSeller);
 
 /*
 this is not needed as in single file getCoupons.ts the logic is written for admin and seller
@@ -32,13 +28,17 @@ couponRoutes.get("/seller", authorize("seller"), getSellerCoupons);
 // Admin routes
 
 couponRoutes.post("/", authorize("admin"), createCoupon);
-couponRoutes.get("/:code", authorize("admin"), getCouponByCode);
+couponRoutes.get("/:code",authorize("admin", "seller"), getCouponByCode);
 couponRoutes.patch("/:code", authorize("admin"), updateCoupon);
 couponRoutes.delete("/:code", authorize("admin"), deleteCoupon);
 
 //seller routes with id in query parameter
 
+/*
+this is not needed now as in getCouponByCode the logic is written for both seller and admin, but it can
+bse used to see coupon by Id by seller
 couponRoutes.get("/seller/:couponId", authorize("seller"), getSellerCouponById);
+*/
 couponRoutes.patch(
   "/seller/:couponId",
   authorize("seller"),
