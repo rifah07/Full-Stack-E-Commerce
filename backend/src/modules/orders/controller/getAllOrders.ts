@@ -13,7 +13,8 @@ const getAllOrders = async (
   }
   const orders = await Order.find()
     .populate("buyer", "name email")
-    .populate("orderItems.product", "name price");
+    .populate("orderItems.product", "name price")
+    .populate("orderItems.seller", "firstName lastName");
   const totalOrders = await Order.countDocuments();
   res.status(200).json({
     status: "success",
