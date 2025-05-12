@@ -221,3 +221,4 @@ use variables from model to add in req.body.
 129. getRevenue.ts is working. api: GET: "{{url}}/admin/revenue"
 130. Discount added, now seller, admin can add discount.
 131. Revenue is also implemented.
+132. Update, remove from cart is pending. Also, API Rate Limiting and Security Enhancements should be added.
