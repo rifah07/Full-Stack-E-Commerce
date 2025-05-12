@@ -7,6 +7,7 @@ import getCouponByCode from "./controller/getCouponByCode";
 import updateCoupon from "./controller/updateCoupon";
 import deleteCoupon from "./controller/deleteCoupon";
 import createCouponForSeller from "./controller/createCouponForSeller";
+import deleteSellerCoupon from "./controller/deleteSellerCoupon";
 
 const couponRoutes = express.Router();
 
@@ -20,12 +21,14 @@ couponRoutes.post(
 
 // Admin routes
 couponRoutes.use(auth);
-couponRoutes.use(authorize("admin"));
 
-couponRoutes.post("/", createCoupon);
-couponRoutes.get("/", getCoupons);
-couponRoutes.get("/:code", getCouponByCode);
-couponRoutes.patch("/:code", updateCoupon);
-couponRoutes.delete("/:code", deleteCoupon);
+couponRoutes.post("/", authorize("admin"), createCoupon);
+couponRoutes.get("/",authorize("admin"),  getCoupons);
+couponRoutes.get("/:code", authorize("admin"), getCouponByCode);
+couponRoutes.patch("/:code", authorize("admin"), updateCoupon);
+couponRoutes.delete("/:code",authorize("admin"), deleteCoupon);
+
+couponRoutes.delete('/seller/:couponId', authorize("seller"), deleteSellerCoupon);
+
 
 export default couponRoutes;
