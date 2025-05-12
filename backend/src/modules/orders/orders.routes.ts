@@ -6,6 +6,7 @@ import getAllOrders from "./controller/getAllOrders";
 import getMyOrders from "./controller/getMyOrders";
 import updateOrderStatus from "./controller/updateOrderStatus";
 import cancelOrder from "./controller/cancelOrder";
+import getSellerOrders from "./controller/getSellerOrders";
 
 const orderRoutes = express.Router();
 
@@ -25,6 +26,8 @@ orderRoutes.get("/all", authorize("admin"), getAllOrders);
 
 orderRoutes.post("/placeOrder",authorize("buyer"), createOrder);
 orderRoutes.get("/my-orders",authorize("buyer"), getMyOrders);
+orderRoutes.get("/seller/orders", authorize("seller"), getSellerOrders);
+
 
 orderRoutes.patch(
     "/:orderId/status",
