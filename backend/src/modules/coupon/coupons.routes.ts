@@ -6,8 +6,17 @@ import getCoupons from "./controller/getCoupons";
 import getCouponByCode from "./controller/getCouponByCode";
 import updateCoupon from "./controller/updateCoupon";
 import deleteCoupon from "./controller/deleteCoupon";
+import createCouponForSeller from "./controller/createCouponForSeller";
 
 const couponRoutes = express.Router();
+
+//Seller routes
+couponRoutes.post(
+  "/seller/create",
+  auth,
+  authorize("seller"),
+  createCouponForSeller
+);
 
 // Admin routes
 couponRoutes.use(auth);
