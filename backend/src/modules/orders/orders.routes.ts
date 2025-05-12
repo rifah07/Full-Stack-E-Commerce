@@ -7,6 +7,7 @@ import getMyOrders from "./controller/getMyOrders";
 import updateOrderStatus from "./controller/updateOrderStatus";
 import cancelOrder from "./controller/cancelOrder";
 import getSellerOrders from "./controller/getSellerOrders";
+import getSellerOrderById from "./controller/getSellerOrderById";
 
 const orderRoutes = express.Router();
 
@@ -17,27 +18,22 @@ orderRoutes.use(auth);
 //orderRoutes.use(authorize("admin"));
 orderRoutes.get("/all", authorize("admin"), getAllOrders);
 
-
 //Route only for sellers
 //orderRoutes.use(authorize("seller"));
 
 //Route only for buyers
 //orderRoutes.use(authorize("buyer"));
 
-orderRoutes.post("/placeOrder",authorize("buyer"), createOrder);
-orderRoutes.get("/my-orders",authorize("buyer"), getMyOrders);
+orderRoutes.post("/placeOrder", authorize("buyer"), createOrder);
+orderRoutes.get("/my-orders", authorize("buyer"), getMyOrders);
 orderRoutes.get("/seller/orders", authorize("seller"), getSellerOrders);
 
-
+orderRoutes.get("/seller/:orderId", authorize("seller"), getSellerOrderById);
 orderRoutes.patch(
-    "/:orderId/status",
-    authorize("admin", "seller"),
-    updateOrderStatus
-  );
-  orderRoutes.patch(
-    "/:orderId/cancel",
-    authorize("buyer"),
-    cancelOrder
-  );
+  "/:orderId/status",
+  authorize("admin", "seller"),
+  updateOrderStatus
+);
+orderRoutes.patch("/:orderId/cancel", authorize("buyer"), cancelOrder);
 
 export default orderRoutes;
