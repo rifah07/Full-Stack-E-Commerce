@@ -9,6 +9,7 @@ import deleteCoupon from "./controller/deleteCoupon";
 import createCouponForSeller from "./controller/createCouponForSeller";
 import deleteSellerCoupon from "./controller/deleteSellerCoupon";
 import updateSellerCoupon from "./controller/updateSellerCoupon";
+import getSellerCouponById from "./controller/getSellerCouponById";
 
 const couponRoutes = express.Router();
 
@@ -29,6 +30,7 @@ couponRoutes.get("/:code", authorize("admin"), getCouponByCode);
 couponRoutes.patch("/:code", authorize("admin"), updateCoupon);
 couponRoutes.delete("/:code",authorize("admin"), deleteCoupon);
 
+couponRoutes.get('/seller/:couponId', authorize("seller"), getSellerCouponById);
 couponRoutes.patch('/seller/:couponId', authorize("seller"), updateSellerCoupon);
 couponRoutes.delete('/seller/:couponId', authorize("seller"), deleteSellerCoupon);
 
