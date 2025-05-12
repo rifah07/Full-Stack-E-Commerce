@@ -15,6 +15,7 @@ import getSellerCoupons from "./controller/getSellerCoupons";
 const couponRoutes = express.Router();
 
 couponRoutes.use(auth);
+couponRoutes.get("/", getCoupons);
 
 //Seller routes
 couponRoutes.post(
@@ -22,12 +23,15 @@ couponRoutes.post(
   authorize("seller"),
   createCouponForSeller
 );
+
+/*
+this is not needed as in single file getCoupons.ts the logic is written for admin and seller
 couponRoutes.get("/seller", authorize("seller"), getSellerCoupons);
+*/
 
 // Admin routes
 
 couponRoutes.post("/", authorize("admin"), createCoupon);
-couponRoutes.get("/", authorize("admin"), getCoupons);
 couponRoutes.get("/:code", authorize("admin"), getCouponByCode);
 couponRoutes.patch("/:code", authorize("admin"), updateCoupon);
 couponRoutes.delete("/:code", authorize("admin"), deleteCoupon);
