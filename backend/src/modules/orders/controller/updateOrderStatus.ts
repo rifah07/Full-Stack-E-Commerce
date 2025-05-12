@@ -11,6 +11,8 @@ const updateOrderStatus = async (
   try {
     const { orderId } = req.params;
     const { status } = req.body;
+    const userId = req.user?.id;
+    const userRole = req.user?.role;
 
     if (!["admin", "seller"].includes(req.user?.role)) {
       return next(
@@ -20,6 +22,20 @@ const updateOrderStatus = async (
 
     const order = await Order.findById(orderId);
     if (!order) return next(new NotFoundError("Order not found"));
+
+    // authorization check for sellers
+    if (userRole === "seller") {
+      const isSellerOrder = order.orderItems.some(
+        (item) => String(item.seller) === userId
+      );
+      if (!isSellerOrder) {
+        return next(
+          new UnauthorizedError(
+            "Seller cannot update the status of orders that do not contain their products"
+          )
+        );
+      }
+    }
 
     order.status = status;
     await order.save();
