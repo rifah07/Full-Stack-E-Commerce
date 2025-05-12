@@ -8,7 +8,7 @@ import {
 import { isValidObjectId } from "mongoose";
 import Coupon from "../../../models/coupon.model";
 
-const deleteSellerCoupon = async (
+const updateSellerCoupon = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -16,6 +16,7 @@ const deleteSellerCoupon = async (
   try {
     const sellerId = req.user?.id;
     const { couponId } = req.params;
+    const updateData = req.body;
 
     if (!sellerId || req.user?.role !== "seller") {
       return next(new UnauthorizedError("Seller access required."));
@@ -32,16 +33,31 @@ const deleteSellerCoupon = async (
       );
     }
 
-    await Coupon.findByIdAndDelete(couponId);
+    // prevent sellers from changing the coupon code or seller association
+    delete updateData.code;
+    delete updateData.seller;
+    delete updateData.usageCount;
+
+    if (
+      updateData.expiresAt &&
+      isNaN(new Date(updateData.expiresAt).getTime())
+    ) {
+      return next(new BadRequestError("Invalid expiration date format."));
+    }
+
+    const updatedCoupon = await Coupon.findByIdAndUpdate(couponId, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       status: "success",
-      message: "Coupon deleted successfully.",
+      data: { coupon: updatedCoupon },
+      message: "Coupon updated successfully.",
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-export default deleteSellerCoupon;
+export default updateSellerCoupon;
