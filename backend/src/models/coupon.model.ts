@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export enum CouponStatus {
   ACTIVE = "active",
@@ -15,12 +15,17 @@ export interface ICoupon extends Document {
   code: string;
   description?: string;
   type: CouponType;
-  value: number; // Percentage or fixed amount
-  minOrderValue?: number; // Minimum order value for the coupon to be valid
-  usageLimit?: number; // Maximum number of times the coupon can be used
-  usageCount: number; // Number of times the coupon has been used
+  value: number;
+  minOrderValue?: number;
+  usageLimit?: number;
+  usageCount: number;
   expiresAt?: Date;
   status: CouponStatus;
+  seller?: Types.ObjectId;
+  productSpecific: boolean;
+  products: Types.ObjectId[];
+  categorySpecific: boolean;
+  categories: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -69,6 +74,31 @@ const CouponSchema: Schema = new Schema(
       enum: Object.values(CouponStatus),
       default: CouponStatus.ACTIVE,
     },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      index: true,
+    },
+    productSpecific: {
+      type: Boolean,
+      default: false,
+    },
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    categorySpecific: {
+      type: Boolean,
+      default: false,
+    },
+    categories: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
   },
   { timestamps: true }
 );
