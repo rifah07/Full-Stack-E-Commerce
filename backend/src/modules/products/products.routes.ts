@@ -12,6 +12,7 @@ import myProducts from "./controller/myProducts";
 import getSoftDeletedProducts from "./controller/getSoftDeletedProducts";
 import restoreProduct from "./controller/restoreProduct";
 import updateProductDiscount from "./controller/updateProductDiscount";
+import askProductQuestion from "./controller/askProductQuestion";
 
 const productRoutes = express.Router();
 
@@ -34,6 +35,14 @@ productRoutes.get(
   getSoftDeletedProducts
 );
 
+//admin only routes
+productRoutes.patch(
+  "/:productId/discount",
+  auth,
+  authorize("admin"),
+  updateProductDiscount
+);
+
 // Seller-only route
 productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
 productRoutes.patch(
@@ -43,12 +52,12 @@ productRoutes.patch(
   updateProductDiscount
 );
 
-//admin only routes
-productRoutes.patch(
-  "/:productId/discount",
+//buyer only routes
+productRoutes.post(
+  "/:productId/questions",
   auth,
-  authorize("admin"),
-  updateProductDiscount
+  authorize("buyer"),
+  askProductQuestion
 );
 
 //public route but with query parameter
