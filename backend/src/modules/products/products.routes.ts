@@ -35,6 +35,10 @@ productRoutes.get(
   getSoftDeletedProducts
 );
 
+//from here starts id as query parameter routes
+
+productRoutes.post("/:productId/questions", auth, askProductQuestion);
+
 //admin only routes
 productRoutes.patch(
   "/:productId/discount",
@@ -53,12 +57,6 @@ productRoutes.patch(
 );
 
 //buyer only routes
-productRoutes.post(
-  "/:productId/questions",
-  auth,
-  authorize("buyer"),
-  askProductQuestion
-);
 
 //public route but with query parameter
 productRoutes.get("/:productId", getSingleProduct);
