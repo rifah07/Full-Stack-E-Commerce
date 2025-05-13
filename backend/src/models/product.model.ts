@@ -15,6 +15,14 @@ export interface IProduct extends Document {
   seller: mongoose.Types.ObjectId;
   averageRating?: number;
   numberOfReviews?: number;
+  questionsAndAnswers: {
+    question: string;
+    answer?: string;
+    user: mongoose.Types.ObjectId; //  people asking the question (could be buyer or general user)
+    seller: mongoose.Types.ObjectId; // seller answering the question
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -70,6 +78,23 @@ const productSchema = new Schema<IProduct>(
       type: Number,
       default: 0,
     },
+    questionsAndAnswers: [
+      {
+        question: { type: String, required: true },
+        answer: { type: String },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        seller: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        timestamps: true,
+      },
+    ],
   },
   { timestamps: true }
 );
