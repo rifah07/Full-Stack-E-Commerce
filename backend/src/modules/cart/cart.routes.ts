@@ -4,6 +4,7 @@ import auth from '../../middlewares/authMiddleware';
 import authorize from '../../middlewares/authorize';
 import getMyCart from './controller/getMyCart';
 import removeFromCart from './controller/removeFromCart';
+import updateCartItemQuantity from './controller/updateCartItemQuantity';
 
 const cartRoutes = Router();
 
@@ -13,5 +14,6 @@ cartRoutes.use(authorize("buyer"));
 cartRoutes.post('/add', addToCart);
 cartRoutes.get('/my-cart', getMyCart);
 cartRoutes.delete("/remove/:productId", removeFromCart);
+cartRoutes.patch("/update/:productId", updateCartItemQuantity);
 
 export default cartRoutes;
