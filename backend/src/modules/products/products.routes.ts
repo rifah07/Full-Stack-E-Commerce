@@ -20,6 +20,13 @@ productRoutes.get("/", getAllProducts);
 productRoutes.get("/filteredProducts", getFilteredProducts);
 
 //protected route
+productRoutes.post(
+  "/addProduct",
+  auth,
+  authorize("seller", "admin"),
+  createProduct
+);
+
 productRoutes.get(
   "/deleted",
   auth,
@@ -51,7 +58,6 @@ productRoutes.get("/:productId", getSingleProduct);
 productRoutes.use(auth);
 productRoutes.use(authorize("seller", "admin"));
 
-productRoutes.post("/addProduct", createProduct);
 productRoutes.patch("/:productId", updateProduct);
 productRoutes.delete("/moveToTrash/:productId", softDeleteProduct);
 productRoutes.patch("/restoreProduct/:productId", restoreProduct);
