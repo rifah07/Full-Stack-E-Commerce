@@ -13,6 +13,7 @@ import getSoftDeletedProducts from "./controller/getSoftDeletedProducts";
 import restoreProduct from "./controller/restoreProduct";
 import updateProductDiscount from "./controller/updateProductDiscount";
 import askProductQuestion from "./controller/askProductQuestion";
+import getProductQA from "./controller/getProductQA";
 
 const productRoutes = express.Router();
 
@@ -36,6 +37,9 @@ productRoutes.get(
 );
 
 //from here starts id as query parameter routes
+//public route but with query parameter
+productRoutes.get("/:productId", getSingleProduct);
+productRoutes.get("/:productId/questionsandanswers", getProductQA);
 
 productRoutes.post("/:productId/questions", auth, askProductQuestion);
 
@@ -57,9 +61,6 @@ productRoutes.patch(
 );
 
 //buyer only routes
-
-//public route but with query parameter
-productRoutes.get("/:productId", getSingleProduct);
 
 //protected - Only sellers/admins can create/delete
 productRoutes.use(auth);
