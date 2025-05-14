@@ -53,11 +53,11 @@ app.use(morgan("combined", { stream: morganStream }));
 // Swagger UI Configuration
 const swaggerOptions = {
   swaggerDefinition: {
-    openapi: "3.0.0",
+    openapi: '3.0.0',
     info: {
-      title: "Multi-Vendor E-commerce API by Rifah",
-      version: "1.0.0",
-      description: "API documentation for the multi-vendor e-commerce platform",
+      title: 'Multi-Vendor E-commerce API by Rifah',
+      version: '1.0.0',
+      description: 'API documentation for the multi-vendor e-commerce platform',
     },
     servers: [
       {
@@ -67,10 +67,21 @@ const swaggerOptions = {
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
         },
+      },
+      schemas: {
+        ErrorResponse: {
+          type: 'object',
+          properties: {
+            status: { type: 'string', example: 'failed' },
+            message: { type: 'string', example: 'Something went wrong' },
+            errors: { type: 'array', items: { type: 'object' } },
+          },
+        },
+        // ... other global schemas if any ...
       },
     },
     security: [
@@ -79,8 +90,9 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./modules/**/*.routes.ts", "./modules/**/*.model.ts"],
+  apis: ['./src/modules/**/*.routes.ts', './src/models/*.model.ts'],
 };
+
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
