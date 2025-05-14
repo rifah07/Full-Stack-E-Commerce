@@ -15,8 +15,24 @@ import updateProductDiscount from "./controller/updateProductDiscount";
 import askProductQuestion from "./controller/askProductQuestion";
 import getProductQA from "./controller/getProductQA";
 import answerProductQuestion from "./controller/answerProductQuestion";
+import { body, param, validationResult } from "express-validator";
+import { Request, Response, NextFunction } from "express";
+import { BadRequestError } from "../../utils/errors";
 
 const productRoutes = express.Router();
+
+// middleware to handle validation errors
+const validate = (req: Request, res: Response, next: NextFunction) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new BadRequestError(
+        "Validation failed: " + JSON.stringify(errors.array())
+      )
+    );
+  }
+  next();
+};
 
 //public routes
 productRoutes.get("/", getAllProducts);
@@ -37,14 +53,24 @@ productRoutes.get(
   getSoftDeletedProducts
 );
 
-//from here starts id as query parameter routes
-//public route but with query parameter
+//public route with id in query parameter
 productRoutes.get("/:productId", getSingleProduct);
 productRoutes.get("/:productId/questionsandanswers", getProductQA);
 
-productRoutes.post("/:productId/questions", auth, askProductQuestion);
+//protected route
+productRoutes.post(
+  "/:productId/questions",
+  auth,
+  authorize("buyer"),
+  [
+    param("productId").isMongoId().withMessage("Invalid product ID"),
+    body("question").notEmpty().trim().withMessage("Question cannot be empty"),
+  ],
+  validate,
+  askProductQuestion
+);
 
-//admin only routes
+//protected route
 productRoutes.patch(
   "/:productId/discount",
   auth,
@@ -52,8 +78,10 @@ productRoutes.patch(
   updateProductDiscount
 );
 
-// Seller-only route
+//protected route
 productRoutes.get("/myProducts", auth, authorize("seller"), myProducts);
+
+//protected route
 productRoutes.patch(
   "/seller/:productId/discount",
   auth,
@@ -61,16 +89,44 @@ productRoutes.patch(
   updateProductDiscount
 );
 
-//buyer only routes
+//protected route
+productRoutes.patch(
+  "/:productId/questions/:questionId/answer",
+  auth,
+  authorize("seller", "admin"),
+  [
+    param("productId").isMongoId().withMessage("Invalid product ID"),
+    param("questionId").isMongoId().withMessage("Invalid question ID"),
+    body("answer").notEmpty().trim().withMessage("Answer cannot be empty"),
+  ],
+  validate,
+  answerProductQuestion
+);
 
-//protected - Only sellers/admins can create/delete
-productRoutes.use(auth);
-productRoutes.use(authorize("seller", "admin"));
-
-productRoutes.patch('/:productId/questions/:questionId/answer', answerProductQuestion);
-productRoutes.patch("/:productId", updateProduct);
-productRoutes.delete("/moveToTrash/:productId", softDeleteProduct);
-productRoutes.patch("/restoreProduct/:productId", restoreProduct);
-productRoutes.delete("/completeDelete/:productId", deleteProduct);
+//protected route
+productRoutes.patch(
+  "/:productId",
+  auth,
+  authorize("seller", "admin"),
+  updateProduct
+);
+productRoutes.delete(
+  "/moveToTrash/:productId",
+  auth,
+  authorize("seller", "admin"),
+  softDeleteProduct
+);
+productRoutes.patch(
+  "/restoreProduct/:productId",
+  auth,
+  authorize("seller", "admin"),
+  restoreProduct
+);
+productRoutes.delete(
+  "/completeDelete/:productId",
+  auth,
+  authorize("seller", "admin"),
+  deleteProduct
+);
 
 export default productRoutes;
