@@ -224,5 +224,7 @@ use variables from model to add in req.body.
 129. getRevenue.ts is working. api: GET: "{{url}}/admin/revenue"
 130. Discount added, now seller, admin can add discount.
 131. Revenue is also implemented.
-132. Install point 16 for API Rate Limiting and Security Enhancements should be added.
+132. Install point 16 for API Rate Limiting and Security Enhancements.
 133. Install Swagger UI using 17,18 point above.
+134. You can now go "http://localhost:5000/api-docs/" and see api route UI.
+135. Pending: Now All routes need to be updated for validation and for UI codes need to be added in routes too.
