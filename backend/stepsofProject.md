@@ -16,7 +16,8 @@ Installation commands:
 14. npm install @paypal/checkout-server-sdk
 15. npm install moment
 16. npm install express-rate-limit
-17. npm install swagger-ui-express swagger-jsdoc
+17. npm install --save-dev @types/swagger-ui-express
+18. npm install --save-dev @types/swagger-jsdoc
 
 
 
@@ -224,4 +225,4 @@ use variables from model to add in req.body.
 130. Discount added, now seller, admin can add discount.
 131. Revenue is also implemented.
 132. Install point 16 for API Rate Limiting and Security Enhancements should be added.
-133. Install Swagger UI using 17 point above.
+133. Install Swagger UI using 17,18 point above.
