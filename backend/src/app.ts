@@ -1,4 +1,5 @@
 import express from "express";
+import { Request, Response, NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import cors from "cors";
@@ -17,9 +18,9 @@ import refundRoutes from "./modules/refund/refunds.routes";
 import couponRoutes from "./modules/coupon/coupons.routes";
 import adminRoutes from "./modules/admin/admin.routes";
 import sellerRoutes from "./modules/seller/seller.routes";
-import reviewRoute from "./modules/review/review.routes";
 import reviewRoutes from "./modules/review/review.routes";
-import { Request, Response, NextFunction } from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 
 dotenv.config();
 
@@ -30,7 +31,7 @@ app.use(cors({ origin: true, credentials: true }));
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again after 15 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -40,7 +41,7 @@ const limiter = rateLimit({
 });
 app.use("/api/", limiter); // apply to all /api routes
 
-// security headers
+// Security Headers
 app.use(helmet());
 
 app.use(express.json());
@@ -48,6 +49,41 @@ app.use(cookieParser());
 
 // Morgan HTTP logging into Winston
 app.use(morgan("combined", { stream: morganStream }));
+
+// Swagger UI Configuration
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Multi-Vendor E-commerce API by Rifah",
+      version: "1.0.0",
+      description: "API documentation for the multi-vendor e-commerce platform",
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT || 5000}/api`,
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  },
+  apis: ["./modules/**/*.routes.ts", "./modules/**/*.model.ts"],
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //add routes here
 app.use("/api/users", userRoutes);
