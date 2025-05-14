@@ -14,6 +14,7 @@ import restoreProduct from "./controller/restoreProduct";
 import updateProductDiscount from "./controller/updateProductDiscount";
 import askProductQuestion from "./controller/askProductQuestion";
 import getProductQA from "./controller/getProductQA";
+import answerProductQuestion from "./controller/answerProductQuestion";
 
 const productRoutes = express.Router();
 
@@ -66,6 +67,7 @@ productRoutes.patch(
 productRoutes.use(auth);
 productRoutes.use(authorize("seller", "admin"));
 
+productRoutes.patch('/:productId/questions/:questionId/answer', answerProductQuestion);
 productRoutes.patch("/:productId", updateProduct);
 productRoutes.delete("/moveToTrash/:productId", softDeleteProduct);
 productRoutes.patch("/restoreProduct/:productId", restoreProduct);
