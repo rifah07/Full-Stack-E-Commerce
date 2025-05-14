@@ -15,6 +15,7 @@ Installation commands:
 13. npm install stripe
 14. npm install @paypal/checkout-server-sdk
 15. npm install moment
+16. npm install express-rate-limit
 
 
 
@@ -221,4 +222,4 @@ use variables from model to add in req.body.
 129. getRevenue.ts is working. api: GET: "{{url}}/admin/revenue"
 130. Discount added, now seller, admin can add discount.
 131. Revenue is also implemented.
-132. API Rate Limiting and Security Enhancements should be added and Q/A for a product is also pending..
+132. nstall point 16 for API Rate Limiting and Security Enhancements should be added.
