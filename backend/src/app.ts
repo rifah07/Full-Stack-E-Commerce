@@ -1,6 +1,6 @@
 import express from "express";
-import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -19,20 +19,35 @@ import adminRoutes from "./modules/admin/admin.routes";
 import sellerRoutes from "./modules/seller/seller.routes";
 import reviewRoute from "./modules/review/review.routes";
 import reviewRoutes from "./modules/review/review.routes";
+import { Request, Response, NextFunction } from "express";
 
 dotenv.config();
 
 const app = express();
 
 app.use(cors({ origin: true, credentials: true }));
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again after 15 minutes.",
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req: Request, res: Response, next: NextFunction, options: any) => {
+    res.status(options.statusCode).send(options.message);
+  },
+});
+app.use("/api/", limiter); // apply to all /api routes
+
+// security headers
+app.use(helmet());
+
 app.use(express.json());
 app.use(cookieParser());
 
 // Morgan HTTP logging into Winston
 app.use(morgan("combined", { stream: morganStream }));
-
-//models initialization
-//require("./models/users.model");
 
 //add routes here
 app.use("/api/users", userRoutes);
@@ -46,7 +61,6 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/review", reviewRoutes);
-
 
 //end of routes
 
@@ -65,8 +79,9 @@ app.get("/", (req, res) => {
   res.send("Server started successfully!");
 });
 
-app.listen(5000, () => {
-  console.log("Server started successfully");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server started successfully on port ${PORT}`);
 });
 
 export default app;
