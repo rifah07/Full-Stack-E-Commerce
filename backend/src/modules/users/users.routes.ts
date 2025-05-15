@@ -36,6 +36,85 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // Public routes (no auth required)
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Users]
+ *     description: Create a new user account with name, email, password and confirm_password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - confirm_password
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "John Doe"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "a@gmail.com"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "123456"
+ *               confirm_password:
+ *                 type: string
+ *                 format: password
+ *                 example: "123456"
+ *               role:
+ *                 type: string
+ *                 enum: [admin, seller, buyer]
+ *                 default: buyer
+ *                 example: "Seller"
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "Registration successful! Please check your email to verify your account."
+ *       400:
+ *         description: Validation errors, password mismatch, or email already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     errors:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           path:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                           message:
+ *                             type: string
+ *                           code:
+ *                             type: string
+ *                 - $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 userRoutes.post(
   "/register",
   [

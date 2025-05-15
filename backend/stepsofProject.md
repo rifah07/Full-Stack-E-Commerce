@@ -228,4 +228,5 @@ use variables from model to add in req.body.
 133. Install Swagger UI using 17,18 point above.
 134. You can now go "http://localhost:5000/api-docs/" and see api route UI.
 135.  Now All routes need to be updated for for request body and parameter validation, ALhamdulillah.
-136. Pending: For UI, codes need to be added in routes too.
+136.  SWagger UI added for User Registration, see it in the link given in 134 point.
+137. Pending: For UI, codes need to be added in routes too.
