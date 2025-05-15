@@ -1,3 +1,69 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated MongoDB ID
+ *         name:
+ *           type: string
+ *           description: User's full name
+ *           example: "A Merrie"
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: User's email address
+ *           example: "a@gmail.com"
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: User's hashed password
+ *           example: "123456"
+ *         role:
+ *           type: string
+ *           enum: [admin, seller, buyer]
+ *           default: buyer
+ *           description: User's role in the system
+ *           example: "seller"
+ *         isBanned:
+ *           type: boolean
+ *           default: false
+ *           description: Whether user account is banned
+ *         image:
+ *           type: string
+ *           description: URL to user's profile image
+ *         address:
+ *           type: string
+ *           description: User's address
+ *         gender:
+ *           type: string
+ *           enum: [male, female, other]
+ *           description: User's gender
+ *         dateOfBirth:
+ *           type: string
+ *           format: date
+ *           description: User's date of birth
+ *         isVerified:
+ *           type: boolean
+ *           default: false
+ *           description: Whether user's email is verified
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when user was created
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when user was last updated
+ */
+
 import mongoose, { Document, Schema } from "mongoose";
 
 // In TypeScript, an interface defines the shape (or structure) of an object —
