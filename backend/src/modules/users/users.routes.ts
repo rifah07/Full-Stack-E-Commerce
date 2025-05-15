@@ -59,6 +59,7 @@ userRoutes.post(
       .isEmail()
       .normalizeEmail()
       .withMessage("Invalid email format"),
+    body("password").notEmpty().withMessage("Password is required"),
   ],
   validate,
   resendVerification
@@ -90,7 +91,7 @@ userRoutes.post(
   "/reset-password",
   [
     body("token").notEmpty().trim().withMessage("Token is required"),
-    body("password")
+    body("newPassword")
       .isLength({ min: 6 })
       .withMessage("New password must be at least 6 characters long"),
   ],
@@ -106,7 +107,7 @@ userRoutes.use(auth);
 userRoutes.post(
   "/change-password",
   [
-    body("oldPassword").notEmpty().withMessage("Old password is required"),
+    body("currentPassword").notEmpty().withMessage("Old password is required"),
     body("newPassword")
       .isLength({ min: 6 })
       .withMessage("New password must be at least 6 characters long"),
