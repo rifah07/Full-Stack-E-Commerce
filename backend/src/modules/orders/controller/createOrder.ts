@@ -15,11 +15,57 @@ import {
   processStripePayment,
 } from "../../../services/paymentService";
 import Coupon, { CouponStatus } from "../../../models/coupon.model";
+import { body } from "express-validator";
 
 interface DirectOrderItem {
   productId: string;
   quantity: number;
 }
+
+// Validation middleware for the createOrder route
+export const createOrderValidation = [
+  body("useCart")
+    .optional()
+    .isBoolean()
+    .withMessage("useCart must be a boolean"),
+  body("products")
+    .if((value, { req }) => !req.body.useCart)
+    .isArray({ min: 1 })
+    .withMessage(
+      "Products array must contain at least one item for direct order"
+    ),
+  body("products.*.productId")
+    .if((value, { req }) => !req.body.useCart)
+    .isMongoId()
+    .withMessage("Invalid product ID in products"),
+  body("products.*.quantity")
+    .if((value, { req }) => !req.body.useCart)
+    .isInt({ min: 1 })
+    .withMessage("Quantity in products must be at least 1"),
+  body("paymentMethod")
+    .notEmpty()
+    .isIn(["paypal", "stripe", "cod"])
+    .withMessage("Invalid payment method"),
+  body("paymentMethodId")
+    .if((value, { req }) => req.body.paymentMethod === "stripe")
+    .optional()
+    .notEmpty()
+    .withMessage("PaymentMethod ID is required for Stripe"),
+  body("shippingAddress")
+    .notEmpty()
+    .withMessage("Shipping address is required"),
+  body("couponCode").optional().trim(),
+  body("product")
+    .if((value, { req }) => req.body.useCart === true)
+    .optional()
+    .isMongoId()
+    .withMessage("Invalid product ID for single cart item order"),
+  body("quantity")
+    .if((value, { req }) => req.body.useCart === true)
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Quantity for single cart item order must be at least 1"),
+];
 
 const createOrder = async (
   req: AuthRequest,

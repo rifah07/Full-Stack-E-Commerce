@@ -21,7 +21,7 @@ export interface IOrder extends Document {
   totalPrice: number;
   paymentMethod: "cod" | "sslcommerz" | "stripe" | "paypal";
   paymentStatus: "unpaid" | "paid" | "refunded";
-  status: "pending" | "shipped" | "delivered" | "cancelled";
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   refundStatus: RefundStatus;
   couponCode?: string;
   discountAmount?: number;
@@ -79,7 +79,7 @@ const orderSchema = new Schema<IOrder>(
     },
     status: {
       type: String,
-      enum: ["pending", "shipped", "delivered", "cancelled"],
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
     refundStatus: {
