@@ -570,7 +570,65 @@ userRoutes.post("/refresh-token", refreshAccessToken);
 //Protected routes (require auth middleware)
 userRoutes.use(auth);
 
+
 // User actions
+
+/**
+ * @swagger
+ * /users/change-password:
+ *   patch:
+ *     summary: Change the password of a logged-in user
+ *     description: Authenticated users can change their password by providing the current password and a new password.
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # This assumes you're allowing Bearer token for Swagger UI testing
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - currentPassword
+ *               - newPassword
+ *             properties:
+ *               currentPassword:
+ *                 type: string
+ *                 example: oldpassword123
+ *               newPassword:
+ *                 type: string
+ *                 example: newSecurePassword!456
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Password updated successfully.
+ *       400:
+ *         description: Validation error or incorrect current password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       message:
+ *                         type: string
+ *       401:
+ *         description: Unauthorized - Missing or invalid token
+ *       404:
+ *         description: User not found
+ */
+
 userRoutes.post(
   "/change-password",
   [
