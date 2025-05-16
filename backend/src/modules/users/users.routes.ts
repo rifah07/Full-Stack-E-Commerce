@@ -427,6 +427,71 @@ userRoutes.post(
   validate,
   forgotPassword
 );
+
+/**
+ * @swagger
+ * /users/reset-password:
+ *   post:
+ *     summary: Reset user password
+ *     tags: [Users]
+ *     description: Resets the user's password using a valid reset token.
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Password reset token sent via email.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newPassword
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 example: "NewStrongPassword@123"
+ *     responses:
+ *       200:
+ *         description: Password has been reset successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Password has been reset successfully."
+ *       400:
+ *         description: Bad request (e.g. validation error, missing/invalid token).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       path:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                       message:
+ *                         type: string
+ *                       code:
+ *                         type: string
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 userRoutes.post(
   "/reset-password",
   [
