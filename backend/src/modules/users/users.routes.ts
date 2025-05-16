@@ -178,7 +178,72 @@ userRoutes.post(
  */
 
 userRoutes.get("/verify-email", verifyEmail);
-
+/**
+ * @swagger
+ * /users/resend-verification:
+ *   post:
+ *     summary: Resend email verification code
+ *     tags: [Users]
+ *     description: Resend a new email verification token to the user's email if not already verified.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "user@example.com"
+ *     responses:
+ *       200:
+ *         description: New verification token sent to email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A new verification code has been sent to your email."
+ *       400:
+ *         description: Validation error or email already verified
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     errors:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           path:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                           message:
+ *                             type: string
+ *                           code:
+ *                             type: string
+ *                 - $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 userRoutes.post(
   "/resend-verification",
   [
