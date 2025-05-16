@@ -503,6 +503,68 @@ userRoutes.post(
   validate,
   resetPassword
 );
+
+/**
+ * @swagger
+ * /users/refresh-token:
+ *   post:
+ *     summary: Refresh access token
+ *     tags: [Users]
+ *     description: Generates a new access token using a valid refresh token stored in cookies.
+ *     responses:
+ *       200:
+ *         description: Access token refreshed successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Access token refreshed"
+ *       401:
+ *         description: No refresh token provided.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No refresh token provided"
+ *       403:
+ *         description: Invalid or expired refresh token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid refresh token"
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found with this email."
+ *       500:
+ *         description: Internal server error during refresh token handling.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Failed to refresh token"
+ *                 error:
+ *                   type: object
+ */
 userRoutes.post("/refresh-token", refreshAccessToken);
 
 //Protected routes (require auth middleware)
