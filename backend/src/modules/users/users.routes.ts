@@ -35,7 +35,7 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-// Public routes (no auth required)
+// Public routes
 /**
  * @swagger
  * /users/register:
@@ -130,7 +130,55 @@ userRoutes.post(
   validate,
   register
 );
+
+/**
+ * @swagger
+ * /users/verify-email:
+ *   get:
+ *     summary: Verify user's email address
+ *     tags: [Users]
+ *     description: Verifies a user's email using a token sent to their email. The token must not be expired.
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Email verification token
+ *         example: "9cbeeeac-9934-4f1a-a771-627b9c7e78e0"
+ *     responses:
+ *       200:
+ *         description: Email successfully verified
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Your email has been successfully verified! You can now login."
+ *       400:
+ *         description: Token is missing or invalid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: No user found with the provided token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+
 userRoutes.get("/verify-email", verifyEmail);
+
 userRoutes.post(
   "/resend-verification",
   [
