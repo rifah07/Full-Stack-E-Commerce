@@ -11,7 +11,10 @@ export interface AuthRequest extends Request {
 
 const auth = catchAsync(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies.accessToken;
+    const accessToken =
+      req.cookies.accessToken ||
+      req.headers.authorization?.replace("Bearer ", "");
+
 
     // Bearer method
     // const accessToken = req.headers.authorization?.replace("Bearer ", "");
@@ -20,6 +23,19 @@ const auth = catchAsync(
       throw new UnauthorizedError("Unauthorized - No token provided.");
     }
 
+
+    interface CustomJwtPayload extends JwtPayload {
+      _id: string;
+      email: string;
+      role: string;
+    }
+
+    const decoded = jwt.verify(
+      accessToken,
+      process.env.JWT_SECRET as string
+    ) as CustomJwtPayload;   
+
+    /*
     let decoded: JwtPayload;
     try {
       decoded = jwt.verify(
@@ -30,6 +46,7 @@ const auth = catchAsync(
       logger.error("Invalid Token: " + (error as Error).message);
       throw new UnauthorizedError("Unauthorized - Invalid token.");
     }
+      */
 
     if (!decoded || !decoded._id) {
       throw new UnauthorizedError("Unauthorized - User ID missing in token.");
