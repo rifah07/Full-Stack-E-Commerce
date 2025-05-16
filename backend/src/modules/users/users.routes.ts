@@ -178,6 +178,7 @@ userRoutes.post(
  */
 
 userRoutes.get("/verify-email", verifyEmail);
+
 /**
  * @swagger
  * /users/resend-verification:
@@ -350,6 +351,71 @@ userRoutes.post(
   validate,
   login
 );
+
+/**
+ * @swagger
+ * /users/forgot-password:
+ *   post:
+ *     summary: Request password reset
+ *     tags: [Users]
+ *     description: Sends a password reset token to the user's email if the email exists.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "user@example.com"
+ *     responses:
+ *       200:
+ *         description: Password reset token sent successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Password reset code sent to your email."
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       path:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                       message:
+ *                         type: string
+ *                       code:
+ *                         type: string
+ *       404:
+ *         description: No user found with this email.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 userRoutes.post(
   "/forgot-password",
   [
