@@ -116,7 +116,6 @@ userRoutes.post(
   register
 );
 
-
 /**
  * @swagger
  * /users/verify-email:
@@ -247,7 +246,6 @@ userRoutes.post(
   validate,
   resendVerification
 );
-
 
 /**
  * @swagger
@@ -410,14 +408,15 @@ userRoutes.post(
  *   post:
  *     summary: Reset user password
  *     tags: [Users]
- *     description: Resets the user's password using a valid reset token.
+ *     description: Resets a user's password using a valid reset token
  *     parameters:
  *       - in: query
  *         name: token
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
- *         description: Password reset token sent via email.
+ *         description: Password reset token received via email
+ *         example: "f8b9a1c2d3e4f5g6h7i8j9k0"
  *     requestBody:
  *       required: true
  *       content:
@@ -425,14 +424,20 @@ userRoutes.post(
  *           schema:
  *             type: object
  *             required:
+ *               - token
  *               - newPassword
  *             properties:
+ *               token:
+ *                 type: string
+ *                 example: "f8b9a1c2d3e4f5g6h7i8j9k0"
  *               newPassword:
  *                 type: string
- *                 example: "NewStrongPassword@123"
+ *                 format: password
+ *                 minLength: 6
+ *                 example: "NewStrongPassword123"
  *     responses:
  *       200:
- *         description: Password has been reset successfully.
+ *         description: Password reset successful
  *         content:
  *           application/json:
  *             schema:
@@ -442,31 +447,33 @@ userRoutes.post(
  *                   type: string
  *                   example: "Password has been reset successfully."
  *       400:
- *         description: Bad request (e.g. validation error, missing/invalid token).
+ *         description: Validation error, missing token, or invalid/expired token
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       path:
- *                         type: array
- *                         items:
- *                           type: string
- *                       message:
- *                         type: string
- *                       code:
- *                         type: string
+ *               oneOf:
+ *                 - $ref: '#/components/schemas/Error400'
+ *                 - type: object
+ *                   properties:
+ *                     errors:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           path:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                           message:
+ *                             type: string
+ *                           code:
+ *                             type: string
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error500'
  */
 userRoutes.post(
   "/reset-password",
@@ -545,7 +552,6 @@ userRoutes.post("/refresh-token", refreshAccessToken);
 
 //Protected routes (require auth middleware)
 userRoutes.use(auth);
-
 
 // User actions
 
