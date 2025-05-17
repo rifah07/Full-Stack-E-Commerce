@@ -543,12 +543,12 @@ userRoutes.use(auth);
 /**
  * @swagger
  * /users/change-password:
- *   patch:
- *     summary: Change the password of a logged-in user
- *     description: Authenticated users can change their password by providing the current password and a new password.
+ *   post:
+ *     summary: Change user password
  *     tags: [Users]
+ *     description: Allows authenticated users to change their password by providing current password and new password
  *     security:
- *       - bearerAuth: []  # This assumes you're allowing Bearer token for Swagger UI testing
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -561,13 +561,16 @@ userRoutes.use(auth);
  *             properties:
  *               currentPassword:
  *                 type: string
- *                 example: oldpassword123
+ *                 format: password
+ *                 example: "CurrentPassword123"
  *               newPassword:
  *                 type: string
- *                 example: newSecurePassword!456
+ *                 format: password
+ *                 minLength: 6
+ *                 example: "NewStrongPassword456"
  *     responses:
  *       200:
- *         description: Password updated successfully
+ *         description: Password changed successfully
  *         content:
  *           application/json:
  *             schema:
@@ -575,27 +578,48 @@ userRoutes.use(auth);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Password updated successfully.
+ *                   example: "Password updated successfully."
  *       400:
- *         description: Validation error or incorrect current password
+ *         description: Validation error, incorrect current password, or new password same as old password
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       message:
- *                         type: string
+ *               oneOf:
+ *                 - $ref: '#/components/schemas/Error400'
+ *                 - type: object
+ *                   properties:
+ *                     errors:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           path:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                           message:
+ *                             type: string
+ *                           code:
+ *                             type: string
  *       401:
- *         description: Unauthorized - Missing or invalid token
+ *         description: Unauthorized - User not authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  *       404:
  *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
  */
-
 userRoutes.post(
   "/change-password",
   [
