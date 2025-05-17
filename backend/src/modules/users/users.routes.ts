@@ -332,9 +332,9 @@ userRoutes.post(
  * @swagger
  * /users/forgot-password:
  *   post:
- *     summary: Request password reset
+ *     summary: Send password reset code
  *     tags: [Users]
- *     description: Sends a password reset token to the user's email if the email exists.
+ *     description: Sends a password reset code to the user's email if the account exists.
  *     requestBody:
  *       required: true
  *       content:
@@ -350,7 +350,7 @@ userRoutes.post(
  *                 example: "user@example.com"
  *     responses:
  *       200:
- *         description: Password reset token sent successfully.
+ *         description: Password reset code sent successfully
  *         content:
  *           application/json:
  *             schema:
@@ -360,7 +360,7 @@ userRoutes.post(
  *                   type: string
  *                   example: "Password reset code sent to your email."
  *       400:
- *         description: Validation error
+ *         description: Validation errors
  *         content:
  *           application/json:
  *             schema:
@@ -380,17 +380,17 @@ userRoutes.post(
  *                       code:
  *                         type: string
  *       404:
- *         description: No user found with this email.
+ *         description: User not found with this email
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error404'
  *       500:
- *         description: Internal server error
+ *         description: Server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error500'
  */
 userRoutes.post(
   "/forgot-password",
