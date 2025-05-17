@@ -116,24 +116,24 @@ userRoutes.post(
   register
 );
 
+
 /**
  * @swagger
  * /users/verify-email:
  *   get:
- *     summary: Verify user's email address
+ *     summary: Verify user email address
  *     tags: [Users]
- *     description: Verifies a user's email using a token sent to their email. The token must not be expired.
+ *     description: Verifies a user's email address using a token sent to their email. The token must be passed as a query parameter.
  *     parameters:
  *       - in: query
  *         name: token
  *         schema:
  *           type: string
  *         required: true
- *         description: Email verification token
- *         example: "9cbeeeac-9934-4f1a-a771-627b9c7e78e0"
+ *         description: Email verification token sent via email
  *     responses:
  *       200:
- *         description: Email successfully verified
+ *         description: Email verified successfully
  *         content:
  *           application/json:
  *             schema:
@@ -143,25 +143,24 @@ userRoutes.post(
  *                   type: string
  *                   example: "Your email has been successfully verified! You can now login."
  *       400:
- *         description: Token is missing or invalid
+ *         description: Verification token is missing or invalid
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error400'
  *       404:
- *         description: No user found with the provided token
+ *         description: User not found or token expired
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error404'
  *       500:
- *         description: Server error
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error500'
  */
-
 userRoutes.get("/verify-email", verifyEmail);
 
 /**
