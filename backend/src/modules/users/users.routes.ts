@@ -9,7 +9,7 @@ import resendVerification from "./controller/resendVerification";
 import forgotPassword from "./controller/forgotPassword";
 import resetPassword from "./controller/resetPassword";
 import changePassword from "./controller/changePassword";
-import profile from "./controller/profile";
+import getProfile from "./controller/profile";
 import updateProfile from "./controller/updateProfile";
 import { deleteUser } from "./controller/deleteUser";
 import refreshAccessToken from "./controller/refreshAccessToken";
@@ -631,7 +631,7 @@ userRoutes.post(
   validate,
   changePassword
 );
-userRoutes.get("/profile", profile);
+userRoutes.get("/profile", getProfile);
 userRoutes.patch(
   "/editProfile",
   [

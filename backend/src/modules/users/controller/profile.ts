@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../../../models/user.model";
-//import AppError from "../../../utils/AppError";
 import { NotFoundError } from "../../../utils/errors";
 import catchAsync from "../../../utils/catchAsync";
 
