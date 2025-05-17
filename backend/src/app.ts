@@ -73,12 +73,108 @@ const swaggerOptions = {
         },
       },
       schemas: {
-        ErrorResponse: {
-          type: "object",
+        Error400: {
+          type: 'object',
           properties: {
-            status: { type: "string", example: "failed" },
-            message: { type: "string", example: "Something went wrong" },
-            errors: { type: "array", items: { type: "object" } },
+            message: {
+              type: 'string',
+              example: 'Bad Request',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 400,
+            },
+          },
+        },
+        Error401: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Unauthorized',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 401,
+            },
+          },
+        },
+        Error403: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Forbidden',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 403,
+            },
+          },
+        },
+        Error404: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Not Found',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 404,
+            },
+          },
+        },
+        Error409: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Conflict',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 409,
+            },
+          },
+        },
+        Error422: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Unprocessable Entity',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 422,
+            },
+          },
+        },
+        Error429: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Too Many Requests',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 429,
+            },
+          },
+        },
+        Error500: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Internal Server Error',
+            },
+            statusCode: {
+              type: 'integer',
+              example: 500,
+            },
           },
         },
         // ... other global schemas if any ...

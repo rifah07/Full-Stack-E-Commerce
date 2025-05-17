@@ -258,6 +258,7 @@ userRoutes.post(
   resendVerification
 );
 
+
 /**
  * @swagger
  * /users/login:
@@ -294,51 +295,36 @@ userRoutes.post(
  *                   type: string
  *                   example: "Login successful!"
  *       400:
- *         description: Validation error
+ *         description: Validation error (e.g., missing fields or invalid email)
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       path:
- *                         type: array
- *                         items:
- *                           type: string
- *                       message:
- *                         type: string
- *                       code:
- *                         type: string
+ *               $ref: '#/components/schemas/Error400'
  *       401:
  *         description: Email not verified or incorrect password
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error401'
  *       403:
  *         description: User is banned
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error403'
  *       404:
  *         description: User not found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error404'
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error500'
  */
-
 userRoutes.post(
   "/login",
   [
