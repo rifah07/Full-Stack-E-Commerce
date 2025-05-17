@@ -416,7 +416,7 @@ userRoutes.post(
  *         schema:
  *           type: string
  *         description: Password reset token received via email
- *         example: "f8b9a1c2d3e4f5g6h7i8j9k0"
+ *         example: "bae6eabdfd92c70e93bac5ebb82008aa7874915f867b1fbbad5d89d1387c2fe0"
  *     requestBody:
  *       required: true
  *       content:
@@ -424,12 +424,8 @@ userRoutes.post(
  *           schema:
  *             type: object
  *             required:
- *               - token
  *               - newPassword
  *             properties:
- *               token:
- *                 type: string
- *                 example: "f8b9a1c2d3e4f5g6h7i8j9k0"
  *               newPassword:
  *                 type: string
  *                 format: password
