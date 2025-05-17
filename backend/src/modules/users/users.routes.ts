@@ -218,6 +218,7 @@ userRoutes.get("/verify-email", verifyEmail);
  *                               type: string
  *                           message:
  *                             type: string
+ *                             example: "Email is already verified."
  *                           code:
  *                             type: string
  *                 - $ref: '#/components/schemas/Error400'
