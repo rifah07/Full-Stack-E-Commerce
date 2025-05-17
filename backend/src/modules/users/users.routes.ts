@@ -42,7 +42,7 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
  *   post:
  *     summary: Register a new user
  *     tags: [Users]
- *     description: Create a new user account with name, email, password and confirm_password
+ *     description: Create a new user account with name, email, password, confirm password, and optional role. Sends a verification email upon successful registration.
  *     requestBody:
  *       required: true
  *       content:
@@ -74,7 +74,7 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
  *                 type: string
  *                 enum: [admin, seller, buyer]
  *                 default: buyer
- *                 example: "Seller"
+ *                 example: "seller"
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -91,30 +91,15 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
  *         content:
  *           application/json:
  *             schema:
- *               oneOf:
- *                 - type: object
- *                   properties:
- *                     errors:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           path:
- *                             type: array
- *                             items:
- *                               type: string
- *                           message:
- *                             type: string
- *                           code:
- *                             type: string
- *                 - $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error400'
  *       500:
- *         description: Server error
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error500'
  */
+
 userRoutes.post(
   "/register",
   [

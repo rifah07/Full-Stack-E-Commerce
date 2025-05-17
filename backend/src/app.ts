@@ -73,106 +73,119 @@ const swaggerOptions = {
         },
       },
       schemas: {
-        Error400: {
-          type: 'object',
+        ErrorResponse: {
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Bad Request',
+              type: "string",
+              example: "Something went wrong",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
+              example: 500,
+            },
+          },
+        },
+        Error400: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+              example: "Bad Request",
+            },
+            statusCode: {
+              type: "integer",
               example: 400,
             },
           },
         },
         Error401: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Unauthorized',
+              type: "string",
+              example: "Unauthorized",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 401,
             },
           },
         },
         Error403: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Forbidden',
+              type: "string",
+              example: "Forbidden",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 403,
             },
           },
         },
         Error404: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Not Found',
+              type: "string",
+              example: "Not Found",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 404,
             },
           },
         },
         Error409: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Conflict',
+              type: "string",
+              example: "Conflict",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 409,
             },
           },
         },
         Error422: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Unprocessable Entity',
+              type: "string",
+              example: "Unprocessable Entity",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 422,
             },
           },
         },
         Error429: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Too Many Requests',
+              type: "string",
+              example: "Too Many Requests",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 429,
             },
           },
         },
         Error500: {
-          type: 'object',
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              example: 'Internal Server Error',
+              type: "string",
+              example: "Internal Server Error",
             },
             statusCode: {
-              type: 'integer',
+              type: "integer",
               example: 500,
             },
           },
