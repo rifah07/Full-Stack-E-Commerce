@@ -489,10 +489,11 @@ userRoutes.post(
  *   post:
  *     summary: Refresh access token
  *     tags: [Users]
- *     description: Generates a new access token using a valid refresh token stored in cookies.
+ *     description: Refreshes the user's access token using their refresh token (stored in cookies)
+ *     security: [] # No authorization required for this endpoint
  *     responses:
  *       200:
- *         description: Access token refreshed successfully.
+ *         description: Access token refreshed successfully and set in cookies
  *         content:
  *           application/json:
  *             schema:
@@ -502,37 +503,25 @@ userRoutes.post(
  *                   type: string
  *                   example: "Access token refreshed"
  *       401:
- *         description: No refresh token provided.
+ *         description: No refresh token provided
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "No refresh token provided"
+ *               $ref: '#/components/schemas/Error401'
  *       403:
- *         description: Invalid or expired refresh token.
+ *         description: Invalid or expired refresh token
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Invalid refresh token"
+ *               $ref: '#/components/schemas/Error403'
  *       404:
- *         description: User not found.
+ *         description: User not found
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "User not found with this email."
+ *               $ref: '#/components/schemas/Error404'
  *       500:
- *         description: Internal server error during refresh token handling.
+ *         description: Failed to refresh token
  *         content:
  *           application/json:
  *             schema:
