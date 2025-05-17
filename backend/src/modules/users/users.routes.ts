@@ -169,7 +169,7 @@ userRoutes.get("/verify-email", verifyEmail);
  *   post:
  *     summary: Resend email verification code
  *     tags: [Users]
- *     description: Resend a new email verification token to the user's email if not already verified.
+ *     description: Sends a new email verification token to the user if they haven't verified their account yet.
  *     requestBody:
  *       required: true
  *       content:
@@ -178,14 +178,19 @@ userRoutes.get("/verify-email", verifyEmail);
  *             type: object
  *             required:
  *               - email
+ *               - password
  *             properties:
  *               email:
  *                 type: string
  *                 format: email
  *                 example: "user@example.com"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "userpassword123"
  *     responses:
  *       200:
- *         description: New verification token sent to email
+ *         description: Verification email sent successfully
  *         content:
  *           application/json:
  *             schema:
@@ -195,7 +200,7 @@ userRoutes.get("/verify-email", verifyEmail);
  *                   type: string
  *                   example: "A new verification code has been sent to your email."
  *       400:
- *         description: Validation error or email already verified
+ *         description: Validation errors or email already verified
  *         content:
  *           application/json:
  *             schema:
@@ -215,19 +220,19 @@ userRoutes.get("/verify-email", verifyEmail);
  *                             type: string
  *                           code:
  *                             type: string
- *                 - $ref: '#/components/schemas/ErrorResponse'
+ *                 - $ref: '#/components/schemas/Error400'
  *       404:
- *         description: User not found
+ *         description: User not found with this email
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error404'
  *       500:
- *         description: Internal server error
+ *         description: Server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error500'
  */
 userRoutes.post(
   "/resend-verification",
