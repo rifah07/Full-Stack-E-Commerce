@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import User from "../../../models/user.model";
 import { ResetPasswordZodSchema } from "../../../validators/user.validator";
-//import AppError from "../../../utils/AppError";
 import { BadRequestError } from "../../../utils/errors";
 import catchAsync from "../../../utils/catchAsync";
 
@@ -34,7 +33,9 @@ const resetPassword = catchAsync(
 
     await user.save();
 
-    res.status(200).json({ message: "Password has been reset successfully." });
+    res.status(200).json({
+      message: "Password has been reset successfully.",
+    });
   }
 );
 
