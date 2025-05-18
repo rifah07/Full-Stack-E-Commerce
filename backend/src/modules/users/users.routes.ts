@@ -911,6 +911,43 @@ userRoutes.post("/logout", logout);
 userRoutes.delete("/delete-account", deleteUser);
 
 // Admin-only actions
+
+/**
+ * @swagger
+ * /users/all:
+ *   get:
+ *     summary: Get all users
+ *     tags: [Users]
+ *     description: Retrieves a list of all users. Admin access only.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Success
+ *                 totalUsers:
+ *                   type: integer
+ *                   example: 10
+ *                 users:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *       403:
+ *         description: Forbidden - user is not an admin
+ *       500:
+ *         description: Server error
+ */
+userRoutes.get("/all", authorize("admin"), getAllUsers);
+
 userRoutes.patch(
   "/ban/:userId",
   authorize("admin"),
@@ -925,6 +962,5 @@ userRoutes.patch(
   validate,
   unbanUser
 );
-userRoutes.get("/all", authorize("admin"), getAllUsers);
 
 export default userRoutes;
