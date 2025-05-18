@@ -631,6 +631,70 @@ userRoutes.post(
   validate,
   changePassword
 );
+
+/**
+ * @swagger
+ * /users/profile:
+ *   get:
+ *     summary: Get current user profile
+ *     tags: [Users]
+ *     description: Retrieves the profile information of the authenticated user. Requires a valid access token.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: "6646058b545183cf35b4639e"
+ *                 name:
+ *                   type: string
+ *                   example: "Jane Doe"
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                   example: "jane@example.com"
+ *                 role:
+ *                   type: string
+ *                   example: "buyer"
+ *                 isVerified:
+ *                   type: boolean
+ *                   example: true
+ *                 isBanned:
+ *                   type: boolean
+ *                   example: false
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2024-12-01T12:00:00.000Z"
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2025-05-16T09:30:00.000Z"
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
 userRoutes.get("/profile", getProfile);
 userRoutes.patch(
   "/editProfile",
