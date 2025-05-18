@@ -200,7 +200,7 @@ const swaggerOptions = {
     ],
     tags: [
       { name: "Users", description: "User management endpoints" },
-      //{ name: 'Products', description: 'Product management endpoints' },
+      { name: 'Products', description: 'Product management endpoints' },
       // ... other tags
     ],
   },
