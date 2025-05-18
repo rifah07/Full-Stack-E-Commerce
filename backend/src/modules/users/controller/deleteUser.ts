@@ -1,8 +1,6 @@
 import { Response } from "express";
 import User from "../../../models/user.model";
 import { AuthRequest } from "../../../middlewares/authMiddleware";
-import logger from "../../../utils/logger";
-//import AppError from "../../../utils/AppError";
 import { NotFoundError, UnauthorizedError } from "../../../utils/errors";
 import catchAsync from "../../../utils/catchAsync";
 
