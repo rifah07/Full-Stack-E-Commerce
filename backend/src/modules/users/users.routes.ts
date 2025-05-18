@@ -993,6 +993,46 @@ userRoutes.patch(
   validate,
   banUser
 );
+
+/**
+ * @swagger
+ * /users/unban/{userId}:
+ *   patch:
+ *     summary: Unban a user by ID
+ *     tags: [Users]
+ *     description: Removes the ban from a previously banned user.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: MongoDB ObjectId of the user to unban
+ *     responses:
+ *       200:
+ *         description: User unbanned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Success
+ *                 message:
+ *                   type: string
+ *                   example: User unbanned successfully.
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *       403:
+ *         description: Forbidden - user is not an admin
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
 userRoutes.patch(
   "/unban/:userId",
   authorize("admin"),
