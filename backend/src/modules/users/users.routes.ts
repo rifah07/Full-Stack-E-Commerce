@@ -948,6 +948,44 @@ userRoutes.delete("/delete-account", deleteUser);
  */
 userRoutes.get("/all", authorize("admin"), getAllUsers);
 
+/**
+ * @swagger
+ * /users/ban/{userId}:
+ *   patch:
+ *     summary: Ban a user by ID
+ *     tags: [Users]
+ *     description: Bans a user and soft-deletes their products if they are a seller.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: MongoDB ObjectId of the user to ban
+ *     responses:
+ *       200:
+ *         description: User banned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User (example@email.com) has been banned successfully.
+ *       400:
+ *         description: User is already banned
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *       403:
+ *         description: Forbidden - user is not an admin
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
 userRoutes.patch(
   "/ban/:userId",
   authorize("admin"),
