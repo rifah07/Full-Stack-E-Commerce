@@ -865,6 +865,49 @@ userRoutes.patch(
  *               $ref: '#/components/schemas/Error500'
  */
 userRoutes.post("/logout", logout);
+
+/**
+ * @swagger
+ * /users/delete-account:
+ *   delete:
+ *     summary: Delete the currently logged-in user's account
+ *     tags: [Users]
+ *     description: Permanently deletes the authenticated user's account from the database.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Account successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Your account has been permanently deleted. We’re sad to see you go 💔
+ *                 farewellNote:
+ *                   type: string
+ *                   example: If you change your mind, you're always welcome to rejoin!
+ *       401:
+ *         description: Unauthorized - user token is missing or invalid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
 userRoutes.delete("/delete-account", deleteUser);
 
 // Admin-only actions
