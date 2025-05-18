@@ -827,6 +827,43 @@ userRoutes.patch(
   validate,
   updateProfile
 );
+
+/**
+ * @swagger
+ * /users/logout:
+ *   post:
+ *     summary: Logout the user
+ *     tags: [Users]
+ *     description: Logs out the authenticated user by removing the refresh token from the database and clearing the authentication cookies.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logout successful, cookies cleared
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Success
+ *                 message:
+ *                   type: string
+ *                   example: Logged out successfully
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
 userRoutes.post("/logout", logout);
 userRoutes.delete("/delete-account", deleteUser);
 
