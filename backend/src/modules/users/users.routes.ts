@@ -696,6 +696,110 @@ userRoutes.post(
  *               $ref: '#/components/schemas/Error500'
  */
 userRoutes.get("/profile", getProfile);
+
+/**
+ * @swagger
+ * /users/editProfile:
+ *   patch:
+ *     summary: Update user profile
+ *     tags: [Users]
+ *     description: Authenticated users can update their profile fields such as name, image, address, gender, and date of birth.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Jane Doe"
+ *               image:
+ *                 type: string
+ *                 format: uri
+ *                 example: "https://example.com/images/jane.jpg"
+ *               address:
+ *                 type: string
+ *                 example: "123 Main St, Dhaka"
+ *               gender:
+ *                 type: string
+ *                 enum: [male, female, other]
+ *                 example: "female"
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *                 example: "1998-08-21"
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Profile updated successfully
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       example: Jane Doe
+ *                     email:
+ *                       type: string
+ *                       example: jane@example.com
+ *                     role:
+ *                       type: string
+ *                       example: buyer
+ *                     isBanned:
+ *                       type: boolean
+ *                       example: false
+ *                     image:
+ *                       type: string
+ *                       format: uri
+ *                       example: https://example.com/images/jane.jpg
+ *                     address:
+ *                       type: string
+ *                       example: 123 Main St, Dhaka
+ *                     gender:
+ *                       type: string
+ *                       example: female
+ *                     dateOfBirth:
+ *                       type: string
+ *                       format: date
+ *                       example: 1998-08-21
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid gender
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
 userRoutes.patch(
   "/editProfile",
   [
