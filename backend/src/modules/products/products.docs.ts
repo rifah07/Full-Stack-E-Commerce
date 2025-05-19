@@ -272,3 +272,36 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/deleted:
+ *   get:
+ *     summary: Get soft-deleted products
+ *     description: Returns soft-deleted products. Admins can see all, sellers see only their own.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Soft-deleted products fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Soft-deleted products fetched successfully
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *       401:
+ *         description: Unauthorized (missing or invalid token)
+ *       403:
+ *         description: Forbidden (not a seller or admin)
+ *       500:
+ *         description: Server error
+ */
