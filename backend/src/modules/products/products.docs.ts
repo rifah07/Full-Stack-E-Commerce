@@ -97,3 +97,33 @@
  *           format: date-time
  *           example: "2024-04-25T12:10:00.000Z"
  */
+
+/**
+ * @openapi
+ * /products:
+ *   get:
+ *     summary: Get all products
+ *     description: Returns a list of all available products that are not marked as deleted.
+ *     tags:
+ *       - Products
+ *     responses:
+ *       200:
+ *         description: List of products retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Success
+ *                 totalProducts:
+ *                   type: integer
+ *                   example: 3
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *       500:
+ *         description: Server error
+ */
