@@ -395,3 +395,74 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/{productId}/questions:
+ *   post:
+ *     summary: Ask a Question about a Product
+ *     description: Allows an authenticated buyer to ask a question about a specific product.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the product
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - question
+ *             properties:
+ *               question:
+ *                 type: string
+ *                 example: Is this product available in blue?
+ *     responses:
+ *       201:
+ *         description: Question submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Question submitted successfully.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     question:
+ *                       type: object
+ *                       properties:
+ *                         question:
+ *                           type: string
+ *                           example: Is this product available in blue?
+ *                         user:
+ *                           type: string
+ *                           example: 60c72b2f9b1d8b001c8e4df0
+ *                         seller:
+ *                           type: string
+ *                           example: 60c72b2f9b1d8b001c8e4dee
+ *                         createdAt:
+ *                           type: string
+ *                           format: date-time
+ *       400:
+ *         description: Invalid input (e.g., missing or empty question)
+ *       401:
+ *         description: Unauthorized (login required)
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Server error
+ */
