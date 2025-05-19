@@ -196,3 +196,79 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/addProduct:
+ *   post:
+ *     summary: Create a new product
+ *     description: Allows sellers or admins to create a new product.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *               - price
+ *               - category
+ *               - stock
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Wireless Bluetooth Headphones"
+ *               description:
+ *                 type: string
+ *                 example: "High-quality wireless headphones with noise cancellation."
+ *               price:
+ *                 type: number
+ *                 example: 129.99
+ *               category:
+ *                 type: string
+ *                 example: "Electronics"
+ *               stock:
+ *                 type: number
+ *                 example: 50
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "https://example.com/images/headphone1.jpg"
+ *               discount:
+ *                 type: object
+ *                 properties:
+ *                   type:
+ *                     type: string
+ *                     enum: [percentage, fixed]
+ *                     example: "percentage"
+ *                   value:
+ *                     type: number
+ *                     example: 10
+ *     responses:
+ *       201:
+ *         description: Product created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Product created successfully.
+ *                 data:
+ *                   $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized (missing or invalid token)
+ *       403:
+ *         description: Forbidden (user not seller or admin)
+ *       500:
+ *         description: Server error
+ */
