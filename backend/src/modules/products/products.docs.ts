@@ -127,3 +127,72 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/filteredProducts:
+ *   get:
+ *     summary: Get filtered products
+ *     description: Returns a list of products based on filters like search, category, and price range. Admin users can also see deleted products.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search term for product name (case-insensitive).
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Category to filter products by.
+ *       - in: query
+ *         name: priceMin
+ *         schema:
+ *           type: number
+ *         description: Minimum price to filter.
+ *       - in: query
+ *         name: priceMax
+ *         schema:
+ *           type: number
+ *         description: Maximum price to filter.
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number for pagination.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of products per page.
+ *     responses:
+ *       200:
+ *         description: Filtered list of products retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Success
+ *                 totalProducts:
+ *                   type: integer
+ *                   example: 25
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 3
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *       500:
+ *         description: Server error
+ */
