@@ -305,3 +305,37 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/{productId}:
+ *   get:
+ *     summary: Get a single product by ID
+ *     description: Returns the details of a specific product by its MongoDB ObjectId.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the product to retrieve
+ *     responses:
+ *       200:
+ *         description: Product retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Success
+ *                 product:
+ *                   $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Server error
+ */
