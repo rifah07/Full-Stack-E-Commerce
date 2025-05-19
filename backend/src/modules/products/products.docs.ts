@@ -339,3 +339,59 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/{productId}/questionsandanswers:
+ *   get:
+ *     summary: Get Questions and Answers for a Product
+ *     description: Retrieves the list of questions and answers associated with a product.
+ *     tags:
+ *       - Products
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the product
+ *     responses:
+ *       200:
+ *         description: List of product questions and answers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     qa:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           user:
+ *                             type: object
+ *                             properties:
+ *                               firstName:
+ *                                 type: string
+ *                               lastName:
+ *                                 type: string
+ *                           question:
+ *                             type: string
+ *                           answer:
+ *                             type: string
+ *                           createdAt:
+ *                             type: string
+ *                             format: date-time
+ *       400:
+ *         description: Invalid product ID
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Server error
+ */
