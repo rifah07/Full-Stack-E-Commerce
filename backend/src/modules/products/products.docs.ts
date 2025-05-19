@@ -466,3 +466,68 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/{productId}/discount:
+ *   patch:
+ *     summary: Update Product Discount
+ *     description: Admin can update or remove discount from a product.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [percentage, fixed]
+ *                 example: percentage
+ *               value:
+ *                 type: number
+ *                 example: 20
+ *             example:
+ *               type: fixed
+ *               value: 100
+ *     responses:
+ *       200:
+ *         description: Product discount updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Product discount updated successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                       $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Invalid input (e.g., invalid discount type or value)
+ *       401:
+ *         description: Unauthorized (login required)
+ *       403:
+ *         description: Forbidden (not admin or not owner)
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Server error
+ */
