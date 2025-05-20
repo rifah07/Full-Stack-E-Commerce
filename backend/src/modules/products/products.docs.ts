@@ -649,3 +649,82 @@
  *       404:
  *         description: Product not found.
  */
+
+/**
+ * @openapi
+ * /products/{productId}/questions/{questionId}/answer:
+ *   patch:
+ *     summary: Answer a question for a product
+ *     description: Allows the seller of the product or an admin to answer a specific customer question.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the product.
+ *       - in: path
+ *         name: questionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the question to answer.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - answer
+ *             properties:
+ *               answer:
+ *                 type: string
+ *                 description: The answer to the question.
+ *             example:
+ *               answer: This product comes with a 1-year warranty.
+ *     responses:
+ *       200:
+ *         description: Question answered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Question answered successfully.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     question:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: 6632d4f7ab3e8f001ec74b17
+ *                         question:
+ *                           type: string
+ *                           example: Does this support 4K resolution?
+ *                         answer:
+ *                           type: string
+ *                           example: Yes, it supports 4K at 60Hz.
+ *                         askedBy:
+ *                           type: string
+ *                           example: 6621a4ef8b0f1e23d0a81c5e
+ *       400:
+ *         description: Invalid product ID, question ID, or empty answer.
+ *       401:
+ *         description: Unauthorized or not logged in.
+ *       403:
+ *         description: Forbidden. User is not allowed to answer this question.
+ *       404:
+ *         description: Product or question not found.
+ */
