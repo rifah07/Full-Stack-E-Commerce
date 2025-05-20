@@ -728,3 +728,68 @@
  *       404:
  *         description: Product or question not found.
  */
+
+/**
+ * @openapi
+ * /products/{productId}:
+ *   patch:
+ *     summary: Update a product
+ *     description: Allows the seller who owns the product or an admin to update product details like name, description, price, etc.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the product to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Samsung Galaxy S24
+ *               description:
+ *                 type: string
+ *                 example: Latest flagship phone with AI camera.
+ *               price:
+ *                 type: number
+ *                 example: 1299.99
+ *               category:
+ *                 type: string
+ *                 example: Smartphones
+ *               stock:
+ *                 type: number
+ *                 example: 50
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]
+ *     responses:
+ *       200:
+ *         description: Product updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Product updated successfully.
+ *                 product:
+ *                   $ref: '#/components/schemas/Product'
+ *       401:
+ *         description: Unauthorized. User must be logged in.
+ *       403:
+ *         description: Forbidden. Only the seller who owns the product or an admin can update it.
+ *       404:
+ *         description: Product not found.
+ */
