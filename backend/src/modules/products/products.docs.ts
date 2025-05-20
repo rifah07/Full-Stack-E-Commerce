@@ -793,3 +793,58 @@
  *       404:
  *         description: Product not found.
  */
+
+/**
+ * @openapi
+ * /products/moveToTrash/{productId}:
+ *   delete:
+ *     summary: Soft delete a product (move to trash)
+ *     description: Marks a product as deleted without removing it from the database. Only accessible by the seller who owns the product or an admin.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to soft delete
+ *         example: "6639ac5f95d5896d2dfe15be"
+ *     responses:
+ *       200:
+ *         description: Product successfully marked as deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "Product deleted (soft delete) successfully."
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User is not the seller of this product or an admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
