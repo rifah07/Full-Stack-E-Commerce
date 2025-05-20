@@ -905,3 +905,58 @@
  *             schema:
  *               $ref: '#/components/schemas/Error500'
  */
+
+/**
+ * @openapi
+ * /products/completeDelete/{productId}:
+ *   delete:
+ *     summary: Permanently delete a product
+ *     description: Permanently removes a product from the database. Product must already be soft-deleted (in trash). Only accessible by the seller who owns the product or an admin.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to permanently delete
+ *         example: "6639ac5f95d5896d2dfe15be"
+ *     responses:
+ *       200:
+ *         description: Product permanently deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Product permanently deleted successfully"
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User is not the seller of this product or an admin, or product is not in trash
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
