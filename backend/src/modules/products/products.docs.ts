@@ -848,3 +848,60 @@
  *             schema:
  *               $ref: '#/components/schemas/Error500'
  */
+
+/**
+ * @openapi
+ * /products/restoreProduct/{productId}:
+ *   patch:
+ *     summary: Restore a soft-deleted product from trash
+ *     description: Restores a product that was previously marked as deleted. Only accessible by the seller who owns the product or an admin.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to restore
+ *         example: "6639ac5f95d5896d2dfe15be"
+ *     responses:
+ *       200:
+ *         description: Product successfully restored
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Product restored successfully"
+ *                 data:
+ *                   $ref: '#/components/schemas/Product'
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User is not the seller of this product or an admin, or product is not in trash
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
