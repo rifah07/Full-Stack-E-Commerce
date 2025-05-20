@@ -586,3 +586,66 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /products/seller/{productId}/discount:
+ *   patch:
+ *     summary: Update product discount
+ *     description: Allows a seller to update or remove the discount of a product they own. Admins can also update any product's discount.
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the product to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [percentage, fixed]
+ *                 description: The type of discount.
+ *               value:
+ *                 type: number
+ *                 description: The discount value. Must be a non-negative number. Use `null` to remove discount.
+ *             example:
+ *               type: percentage
+ *               value: 15
+ *     responses:
+ *       200:
+ *         description: Product discount updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                       $ref: '#/components/schemas/Product'
+ *                 message:
+ *                   type: string
+ *                   example: Product discount updated successfully
+ *       400:
+ *         description: Invalid input or product ID.
+ *       401:
+ *         description: Unauthorized or not logged in.
+ *       403:
+ *         description: Forbidden. User does not have permission to update this product.
+ *       404:
+ *         description: Product not found.
+ */
