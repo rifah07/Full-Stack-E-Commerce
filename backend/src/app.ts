@@ -201,6 +201,7 @@ const swaggerOptions = {
     tags: [
       { name: "Users", description: "User management endpoints" },
       { name: 'Products', description: 'Product management endpoints' },
+      { name: 'Cart', description: 'Cart management endpoints' },
       // ... other tags
     ],
   },

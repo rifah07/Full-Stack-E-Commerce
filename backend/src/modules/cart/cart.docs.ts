@@ -66,4 +66,72 @@
  *         defaultShippingAddress: "123 Main St, Anytown, USA"
  *         createdAt: "2023-01-01T00:00:00.000Z"
  *         updatedAt: "2023-01-02T00:00:00.000Z"
+ *
+ * /cart/add:
+ *   post:
+ *     summary: Add a product to the cart
+ *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
+ *     description: Adds a product to the user's cart. Creates a new cart if one doesn't exist.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - productId
+ *               - quantity
+ *             properties:
+ *               productId:
+ *                 type: string
+ *                 format: mongoose.ObjectId
+ *                 description: ID of the product to add to cart
+ *               quantity:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: Quantity of the product to add
+ *               shippingAddress:
+ *                 type: string
+ *                 description: Optional shipping address (used only when creating a new cart)
+ *           example:
+ *             productId: "60d21b4667d0d8992e610c87"
+ *             quantity: 2
+ *             shippingAddress: "456 Oak St, Anytown, USA"
+ *     responses:
+ *       200:
+ *         description: Product successfully added to cart
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Product added to cart
+ *                 cart:
+ *                   $ref: '#/components/schemas/Cart'
+ *       400:
+ *         description: Bad request - Invalid product ID, quantity, or insufficient stock
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Only 5 items in stock
+ *       401:
+ *         description: Unauthorized - User not authenticated or not a buyer
+ *       404:
+ *         description: Not found - Product or user not found
+ *       500:
+ *         description: Server error
  */
