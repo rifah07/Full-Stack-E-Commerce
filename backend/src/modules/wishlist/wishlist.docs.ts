@@ -44,7 +44,7 @@
 
 /**
  * @swagger
- * /api/wishlist:
+ * /wishlist:
  *   get:
  *     summary: Get the current user's wishlist
  *     tags: [Wishlist]
@@ -103,10 +103,11 @@
  *         description: Forbidden - User not authorized (not a buyer)
  *       500:
  *         description: Internal server error
- * 
- * /**
+ */
+
+/**
  * @swagger
- * /api/wishlist/add:
+ * /wishlist/add:
  *   post:
  *     summary: Add a product to the wishlist
  *     tags: [Wishlist]
