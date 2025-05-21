@@ -142,4 +142,15 @@
  *           type: string
  *           description: Coupon code to apply to the order
  *           example: "SUMMER25"
+ *
+ *     OrderStatusUpdate:
+ *       type: object
+ *       required:
+ *         - status
+ *       properties:
+ *         status:
+ *           type: string
+ *           enum: [pending, processing, shipped, delivered, cancelled]
+ *           description: New status for the order
+ *           example: "shipped"
  */
