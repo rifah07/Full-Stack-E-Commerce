@@ -44,7 +44,69 @@
 
 /**
  * @swagger
- * /wishlist/add:
+ * /api/wishlist:
+ *   get:
+ *     summary: Get the current user's wishlist
+ *     tags: [Wishlist]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user's wishlist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 totalItems:
+ *                   type: integer
+ *                   description: The total number of items in the wishlist
+ *                   example: 3
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     items:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "6638ec327fcfe5115a63c234"
+ *                           product:
+ *                             type: object
+ *                             properties:
+ *                               _id:
+ *                                 type: string
+ *                                 example: "6638e85e7fcfe5115a63b981"
+ *                               name:
+ *                                 type: string
+ *                                 example: "Smartphone X1"
+ *                               price:
+ *                                 type: number
+ *                                 example: 499.99
+ *                               images:
+ *                                 type: array
+ *                                 items:
+ *                                   type: string
+ *                                   example: "https://example.com/image1.jpg"
+ *                           addedAt:
+ *                             type: string
+ *                             format: date-time
+ *                             example: "2025-05-21T10:15:30.000Z"
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       403:
+ *         description: Forbidden - User not authorized (not a buyer)
+ *       500:
+ *         description: Internal server error
+ * 
+ * /**
+ * @swagger
+ * /api/wishlist/add:
  *   post:
  *     summary: Add a product to the wishlist
  *     tags: [Wishlist]
