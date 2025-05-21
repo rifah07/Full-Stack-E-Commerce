@@ -228,3 +228,63 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @openapi
+ * /cart/update/{productId}:
+ *   patch:
+ *     summary: Update the quantity of a product in the cart
+ *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: mongoose.ObjectId
+ *         description: ID of the product to update in the cart
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - quantity
+ *             properties:
+ *               quantity:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: New quantity of the product
+ *           example:
+ *             quantity: 3
+ *     responses:
+ *       200:
+ *         description: Cart item quantity updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Cart item quantity updated successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     cart:
+ *                       $ref: '#/components/schemas/Cart'
+ *       400:
+ *         description: Bad request - Invalid product ID or quantity
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       404:
+ *         description: Not found - Cart or product not found
+ *       500:
+ *         description: Server error
+ */
