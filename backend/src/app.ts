@@ -203,6 +203,7 @@ const swaggerOptions = {
       { name: 'Products', description: 'Product management endpoints' },
       { name: 'Cart', description: 'Cart management endpoints' },
       { name: 'Wishlist', description: 'Wishlist management routes' },
+      { name: 'Orders', description: 'Order management routes' },
       // ... other tags
     ],
   },
