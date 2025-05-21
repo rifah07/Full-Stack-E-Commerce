@@ -134,7 +134,7 @@
  *         description: Not found - Product or user not found
  *       500:
  *         description: Server error
- * 
+ *
  * /cart/my-cart:
  *   get:
  *     summary: Get the current user's cart
@@ -287,4 +287,47 @@
  *         description: Not found - Cart or product not found
  *       500:
  *         description: Server error
+ */
+
+/**
+ * @openapi
+ * /cart/remove/{productId}:
+ *   delete:
+ *     summary: Remove a product from the cart
+ *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: mongoose.ObjectId
+ *         description: ID of the product to remove from the cart
+ *     responses:
+ *       200:
+ *         description: Product removed from cart successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Product removed from cart successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     cart:
+ *                       $ref: '#/components/schemas/Cart'
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       404:
+ *         description: Product not found in cart
+ *       500:
+ *         description: Internal server error
  */
