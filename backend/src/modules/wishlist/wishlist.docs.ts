@@ -20,7 +20,7 @@
  *           type: string
  *           format: date-time
  *           example: "2025-05-21T10:15:30.000Z"
- * 
+ *
  *     Wishlist:
  *       type: object
  *       properties:
@@ -101,6 +101,55 @@
  *         description: Unauthorized - User not authenticated
  *       403:
  *         description: Forbidden - User not authorized (not a buyer)
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /wishlist/remove/{productId}:
+ *   delete:
+ *     summary: Remove a product from the wishlist
+ *     tags: [Wishlist]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to remove from wishlist
+ *         example: "6638e85e7fcfe5115a63b981"
+ *     responses:
+ *       200:
+ *         description: Product removed from wishlist successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 message:
+ *                   type: string
+ *                   example: "Product removed from wishlist"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     wishlist:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/WishlistItem'
+ *       400:
+ *         description: Bad request - Invalid product ID format
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       403:
+ *         description: Forbidden - User not authorized (not a buyer)
+ *       404:
+ *         description: Not found - Wishlist not found for this user
  *       500:
  *         description: Internal server error
  */
