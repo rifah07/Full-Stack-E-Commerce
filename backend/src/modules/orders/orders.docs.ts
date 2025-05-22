@@ -348,3 +348,87 @@
  *       500:
  *         description: Internal server error
  */
+
+/**
+ * @swagger
+ * /orders/seller/{orderId}:
+ *   get:
+ *     summary: Get a specific order by ID for the logged-in seller
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the order
+ *         example: 60df6c4f5d3c2f001c9ef123
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the seller's order
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 60df6c4f5d3c2f001c9ef123
+ *                     buyer:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: John Doe
+ *                         email:
+ *                           type: string
+ *                           example: john@example.com
+ *                     orderItems:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           product:
+ *                             type: object
+ *                             properties:
+ *                               name:
+ *                                 type: string
+ *                                 example: Phone Case
+ *                               price:
+ *                                 type: number
+ *                                 example: 19.99
+ *                           quantity:
+ *                             type: number
+ *                             example: 2
+ *                           seller:
+ *                             type: object
+ *                             properties:
+ *                               firstName:
+ *                                 type: string
+ *                                 example: Alice
+ *                               lastName:
+ *                                 type: string
+ *                                 example: Smith
+ *                     status:
+ *                       type: string
+ *                       example: delivered
+ *                     paymentStatus:
+ *                       type: string
+ *                       example: paid
+ *       400:
+ *         description: Invalid order ID
+ *       401:
+ *         description: Unauthorized – only authenticated sellers can access this route
+ *       404:
+ *         description: Order not found or does not belong to this seller
+ *       500:
+ *         description: Internal server error
+ */
