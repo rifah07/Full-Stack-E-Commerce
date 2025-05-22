@@ -84,7 +84,7 @@
 
 /**
  * @swagger
- * /api/orders/all:
+ * /orders/all:
  *   get:
  *     summary: Get all orders (Admin only)
  *     tags: [Orders]
