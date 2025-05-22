@@ -189,3 +189,85 @@
  *         description: Forbidden – not allowed to access this resource
  */
 
+/**
+ * @swagger
+ * /api/orders/my-orders:
+ *   get:
+ *     summary: Get all orders placed by the logged-in buyer
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved buyer's orders and summary
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 summary:
+ *                   type: object
+ *                   properties:
+ *                     totalOrders:
+ *                       type: integer
+ *                       example: 3
+ *                     activeOrders:
+ *                       type: integer
+ *                       example: 2
+ *                     cancelledOrders:
+ *                       type: integer
+ *                       example: 1
+ *                     totalPrice:
+ *                       type: number
+ *                       example: 150.00
+ *                     paidAmount:
+ *                       type: number
+ *                       example: 100.00
+ *                     refundedAmount:
+ *                       type: number
+ *                       example: 0.00
+ *                     unpaidPendingAmount:
+ *                       type: number
+ *                       example: 50.00
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 60df6c4f5d3c2f001c9ef123
+ *                       buyer:
+ *                         type: string
+ *                         example: 60df6c2a5d3c2f001c9ef101
+ *                       orderItems:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             product:
+ *                               type: object
+ *                               properties:
+ *                                 name:
+ *                                   type: string
+ *                                   example: "Laptop"
+ *                                 price:
+ *                                   type: number
+ *                                   example: 500.00
+ *                             quantity:
+ *                               type: number
+ *                               example: 1
+ *                       status:
+ *                         type: string
+ *                         example: pending
+ *                       paymentStatus:
+ *                         type: string
+ *                         example: paid
+ *       401:
+ *         description: Unauthorized (user is not logged in or not a buyer)
+ *       500:
+ *         description: Server error
+ */
