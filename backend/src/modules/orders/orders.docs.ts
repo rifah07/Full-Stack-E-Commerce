@@ -113,3 +113,79 @@
  *       403:
  *         description: Forbidden – not allowed to access this resource
  */
+
+/**
+ * @swagger
+ * /orders/placeOrder:
+ *   post:
+ *     summary: Place an order (Buyer only)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               useCart:
+ *                 type: boolean
+ *                 example: true
+ *               product:
+ *                 type: string
+ *                 description: Product ID for single cart item order
+ *                 example: "60d0fe4f5311236168a109ca"
+ *               quantity:
+ *                 type: integer
+ *                 description: Quantity for single cart item order
+ *                 example: 2
+ *               products:
+ *                 type: array
+ *                 description: Required if useCart is false
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     productId:
+ *                       type: string
+ *                       example: "60d0fe4f5311236168a109ca"
+ *                     quantity:
+ *                       type: integer
+ *                       example: 3
+ *               paymentMethod:
+ *                 type: string
+ *                 enum: [paypal, stripe, cod]
+ *                 example: "stripe"
+ *               paymentMethodId:
+ *                 type: string
+ *                 example: "pm_1Hh1YZ2eZvKYlo2CQ2Q0e2vL"
+ *               shippingAddress:
+ *                 type: string
+ *                 example: "123 Main St, City, Country"
+ *               couponCode:
+ *                 type: string
+ *                 example: "DISCOUNT10"
+ *     responses:
+ *       201:
+ *         description: Order placed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Order created successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/Order'
+ *       400:
+ *         description: Bad request – validation error or missing data
+ *       401:
+ *         description: Unauthorized – only buyers can access
+ *       403:
+ *         description: Forbidden – not allowed to access this resource
+ */
+
