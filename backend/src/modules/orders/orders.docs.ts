@@ -82,3 +82,34 @@
  *           format: date-time
  */
 
+/**
+ * @swagger
+ * /api/orders/all:
+ *   get:
+ *     summary: Get all orders (Admin only)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 totalOrders:
+ *                   type: integer
+ *                   example: 42
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Order'
+ *       401:
+ *         description: Unauthorized – only admins can access
+ *       403:
+ *         description: Forbidden – not allowed to access this resource
+ */
