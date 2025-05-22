@@ -191,7 +191,7 @@
 
 /**
  * @swagger
- * /api/orders/my-orders:
+ * /orders/my-orders:
  *   get:
  *     summary: Get all orders placed by the logged-in buyer
  *     tags: [Orders]
