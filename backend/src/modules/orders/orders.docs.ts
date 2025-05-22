@@ -271,3 +271,80 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @swagger
+ * /orders/seller/orders:
+ *   get:
+ *     summary: Get all orders that include products from the logged-in seller
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved seller's orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 totalOrders:
+ *                   type: integer
+ *                   example: 5
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 60df6c4f5d3c2f001c9ef123
+ *                       buyer:
+ *                         type: object
+ *                         properties:
+ *                           name:
+ *                             type: string
+ *                             example: John Doe
+ *                           email:
+ *                             type: string
+ *                             example: john@example.com
+ *                       orderItems:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             product:
+ *                               type: object
+ *                               properties:
+ *                                 name:
+ *                                   type: string
+ *                                   example: Phone Case
+ *                                 price:
+ *                                   type: number
+ *                                   example: 19.99
+ *                             quantity:
+ *                               type: number
+ *                               example: 2
+ *                             seller:
+ *                               type: object
+ *                               properties:
+ *                                 firstName:
+ *                                   type: string
+ *                                   example: Alice
+ *                                 lastName:
+ *                                   type: string
+ *                                   example: Smith
+ *                       status:
+ *                         type: string
+ *                         example: delivered
+ *                       paymentStatus:
+ *                         type: string
+ *                         example: paid
+ *       401:
+ *         description: Unauthorized – only authenticated sellers can access this route
+ *       500:
+ *         description: Internal server error
+ */
