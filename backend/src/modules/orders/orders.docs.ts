@@ -432,3 +432,67 @@
  *       500:
  *         description: Internal server error
  */
+
+/**
+ * @swagger
+ * /api/orders/{orderId}/status:
+ *   patch:
+ *     summary: Update the status of an order (admin or seller only)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the order to update
+ *         example: 60df6c4f5d3c2f001c9ef123
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [pending, processing, shipped, delivered, cancelled]
+ *                 example: shipped
+ *     responses:
+ *       200:
+ *         description: Successfully updated the order status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Order status updated to shipped
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 60df6c4f5d3c2f001c9ef123
+ *                     status:
+ *                       type: string
+ *                       example: shipped
+ *       400:
+ *         description: Invalid order ID or invalid status
+ *       401:
+ *         description: Unauthorized – only admin or seller can update the status
+ *       403:
+ *         description: Forbidden – seller tried to update status of unrelated order
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Internal server error
+ */
