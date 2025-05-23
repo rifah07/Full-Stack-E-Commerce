@@ -219,12 +219,107 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error400'
  *       401:
  *         description: Unauthorized – seller access only
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Error401'
  */
 
+/**
+ * @swagger
+ * /api/coupons:
+ *   post:
+ *     summary: Admin creates a coupon
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - code
+ *               - type
+ *               - value
+ *               - name
+ *             properties:
+ *               code:
+ *                 type: string
+ *                 example: "WELCOMEADMIN"
+ *               name:
+ *                 type: string
+ *                 example: "Admin Welcome Offer"
+ *               type:
+ *                 type: string
+ *                 enum: [percentage, fixed]
+ *                 example: "fixed"
+ *               value:
+ *                 type: number
+ *                 example: 100
+ *               usageCount:
+ *                 type: number
+ *                 example: 200
+ *               seller:
+ *                 type: string
+ *                 example: "66501212e74b1ab71a5c6d7c"
+ *               minOrderValue:
+ *                 type: number
+ *                 example: 500
+ *               productSpecific:
+ *                 type: boolean
+ *                 example: false
+ *               products:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "66501212e74b1ab71a5c6d7d"
+ *               categorySpecific:
+ *                 type: boolean
+ *                 example: false
+ *               categories:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "electronics"
+ *               status:
+ *                 type: string
+ *                 enum: [active, inactive]
+ *                 example: "active"
+ *               expiresAt:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-12-31T23:59:59Z"
+ *     responses:
+ *       201:
+ *         description: Coupon created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     coupon:
+ *                       $ref: '#/components/schemas/Coupon'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized – admin access only
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ */
