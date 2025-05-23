@@ -435,7 +435,7 @@
 
 /**
  * @swagger
- * /api/orders/{orderId}/status:
+ * /orders/{orderId}/status:
  *   patch:
  *     summary: Update the status of an order (admin or seller only)
  *     tags: [Orders]
@@ -499,7 +499,7 @@
 
 /**
  * @swagger
- * /api/orders/{orderId}/cancel:
+ * /orders/{orderId}/cancel:
  *   patch:
  *     summary: Cancel a pending order (buyer only)
  *     tags: [Orders]
