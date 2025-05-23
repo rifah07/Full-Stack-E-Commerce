@@ -204,6 +204,7 @@ const swaggerOptions = {
       { name: 'Cart', description: 'Cart management endpoints' },
       { name: 'Wishlist', description: 'Wishlist management routes' },
       { name: 'Orders', description: 'Order management routes' },
+      { name: 'Coupons', description: 'Coupon management endpoints' },
       // ... other tags
     ],
   },
