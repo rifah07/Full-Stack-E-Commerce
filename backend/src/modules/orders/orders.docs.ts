@@ -496,3 +496,58 @@
  *       500:
  *         description: Internal server error
  */
+
+/**
+ * @swagger
+ * /api/orders/{orderId}/cancel:
+ *   patch:
+ *     summary: Cancel a pending order (buyer only)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the order to cancel
+ *         example: 60df6c4f5d3c2f001c9ef123
+ *     responses:
+ *       200:
+ *         description: Successfully cancelled the order
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Order cancelled successfully and refund processed (if applicable)
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 60df6c4f5d3c2f001c9ef123
+ *                     status:
+ *                       type: string
+ *                       example: cancelled
+ *                     paymentStatus:
+ *                       type: string
+ *                       example: refunded
+ *                     cancelledAt:
+ *                       type: string
+ *                       format: date-time
+ *       400:
+ *         description: Only pending orders can be cancelled
+ *       401:
+ *         description: Unauthorized – only buyers can cancel their orders
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Internal server error
+ */
