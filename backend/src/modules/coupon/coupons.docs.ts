@@ -67,7 +67,7 @@
 
 /**
  * @swagger
- * /api/coupons:
+ * /coupons:
  *   get:
  *     summary: Get coupons (admin gets all, seller gets own)
  *     tags: [Coupons]
