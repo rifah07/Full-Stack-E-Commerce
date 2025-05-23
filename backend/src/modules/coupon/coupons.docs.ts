@@ -1,0 +1,66 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Coupon:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "6651f1789b5f47001d99cc9d"
+ *         code:
+ *           type: string
+ *           example: "WELCOME10"
+ *         description:
+ *           type: string
+ *           example: "10% off for new users"
+ *         type:
+ *           type: string
+ *           enum: [percentage, fixed]
+ *           example: "percentage"
+ *         value:
+ *           type: number
+ *           example: 10
+ *         minOrderValue:
+ *           type: number
+ *           example: 100
+ *         usageLimit:
+ *           type: number
+ *           example: 50
+ *         usageCount:
+ *           type: number
+ *           example: 15
+ *         expiresAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2025-12-31T23:59:59.000Z"
+ *         status:
+ *           type: string
+ *           enum: [active, inactive, expired]
+ *           example: "active"
+ *         seller:
+ *           type: string
+ *           example: "6651f0110b5b37001d2bc998"
+ *         productSpecific:
+ *           type: boolean
+ *           example: true
+ *         products:
+ *           type: array
+ *           items:
+ *             type: string
+ *             example: "6651f17b9b5f47001d99cc99"
+ *         categorySpecific:
+ *           type: boolean
+ *           example: false
+ *         categories:
+ *           type: array
+ *           items:
+ *             type: string
+ *             example: "electronics"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
