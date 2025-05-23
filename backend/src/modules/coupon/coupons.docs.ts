@@ -230,7 +230,7 @@
 
 /**
  * @swagger
- * /api/coupons:
+ * /coupons:
  *   post:
  *     summary: Admin creates a coupon
  *     tags: [Coupons]
