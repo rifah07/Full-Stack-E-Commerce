@@ -134,3 +134,97 @@
  *                   type: string
  *                   example: "Authentication required."
  */
+
+/**
+ * @swagger
+ * /coupons/seller/create:
+ *   post:
+ *     summary: Seller creates a coupon
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - code
+ *               - type
+ *               - value
+ *               - expiresAt
+ *             properties:
+ *               code:
+ *                 type: string
+ *                 example: "NEWYEAR2025"
+ *               type:
+ *                 type: string
+ *                 enum: [fixed, percentage]
+ *                 example: "percentage"
+ *               value:
+ *                 type: number
+ *                 example: 20
+ *               expiresAt:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-12-31T23:59:59Z"
+ *               minOrderValue:
+ *                 type: number
+ *                 example: 100
+ *               usageCount:
+ *                 type: number
+ *                 example: 50
+ *               productSpecific:
+ *                 type: boolean
+ *                 example: true
+ *               products:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "60f8a36e865fdc1a88f31723"
+ *               categorySpecific:
+ *                 type: boolean
+ *                 example: false
+ *               categories:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "electronics"
+ *               status:
+ *                 type: string
+ *                 enum: [active, inactive]
+ *                 example: "active"
+ *     responses:
+ *       201:
+ *         description: Coupon created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Coupon created successfully.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     coupon:
+ *                       $ref: '#/components/schemas/Coupon'
+ *       400:
+ *         description: Bad request – validation failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Unauthorized – seller access only
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+
