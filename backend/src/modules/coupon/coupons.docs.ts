@@ -64,3 +64,73 @@
  *           type: string
  *           format: date-time
  */
+
+/**
+ * @swagger
+ * /api/coupons:
+ *   get:
+ *     summary: Get coupons (admin gets all, seller gets own)
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Coupons retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     status:
+ *                       type: string
+ *                       example: "success"
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         coupons:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Coupon'
+ *                         totalCoupons:
+ *                           type: number
+ *                           example: 5
+ *                 - type: object
+ *                   properties:
+ *                     status:
+ *                       type: string
+ *                       example: "success"
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         adminCoupons:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Coupon'
+ *                         totalAdminCoupons:
+ *                           type: number
+ *                           example: 2
+ *                         sellerCoupons:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Coupon'
+ *                         totalSellerCoupons:
+ *                           type: number
+ *                           example: 3
+ *                         totalCoupons:
+ *                           type: number
+ *                           example: 5
+ *       401:
+ *         description: Unauthorized - Authentication required or access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Authentication required."
+ */
