@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Coupons
+ *   description: Coupon management endpoints
+ */
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     Coupon:
