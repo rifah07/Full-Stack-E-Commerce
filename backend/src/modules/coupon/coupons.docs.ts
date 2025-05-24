@@ -323,3 +323,56 @@
  *             schema:
  *               $ref: '#/components/schemas/Error401'
  */
+
+/**
+ * @swagger
+ * /coupons/{code}:
+ *   get:
+ *     summary: Get a coupon by its code (admin and seller only)
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Coupon code to fetch
+ *         example: "WELCOME10"
+ *     responses:
+ *       200:
+ *         description: Coupon retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     coupon:
+ *                       $ref: '#/components/schemas/Coupon'
+ *       401:
+ *         description: Unauthorized – admin or seller access only
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: Coupon not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Coupon not found"
+ */
