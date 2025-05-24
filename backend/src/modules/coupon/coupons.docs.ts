@@ -376,3 +376,106 @@
  *                   type: string
  *                   example: "Coupon not found"
  */
+
+/**
+ * @swagger
+ * /coupons/{code}:
+ *   patch:
+ *     summary: Update a coupon by code (admin only)
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The code of the coupon to update
+ *         example: "WELCOME10"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [percentage, fixed]
+ *                 example: "percentage"
+ *               value:
+ *                 type: number
+ *                 example: 15
+ *               usageCount:
+ *                 type: integer
+ *                 example: 100
+ *               isActive:
+ *                 type: boolean
+ *                 example: true
+ *               name:
+ *                 type: string
+ *                 example: "Updated Coupon Name"
+ *               minOrderValue:
+ *                 type: number
+ *                 example: 200
+ *               productSpecific:
+ *                 type: boolean
+ *                 example: true
+ *               products:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "6651f17b9b5f47001d99cc99"
+ *               categorySpecific:
+ *                 type: boolean
+ *                 example: false
+ *               categories:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   example: "6651f17b9b5f47001d99cc99"
+ *               status:
+ *                 type: string
+ *                 enum: [active, inactive]
+ *                 example: "active"
+ *               expiresAt:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-12-31T23:59:59Z"
+ *     responses:
+ *       200:
+ *         description: Coupon updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     coupon:
+ *                       $ref: '#/components/schemas/Coupon'
+ *       401:
+ *         description: Unauthorized – admin access only
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: Coupon not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Coupon not found"
+ */
