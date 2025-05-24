@@ -479,3 +479,43 @@
  *                   type: string
  *                   example: "Coupon not found"
  */
+
+/**
+ * @swagger
+ * /coupons/{code}:
+ *   delete:
+ *     summary: Delete a coupon by code (admin only)
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Coupon code to delete
+ *         example: "WELCOME10"
+ *     responses:
+ *       204:
+ *         description: Coupon successfully deleted (No content)
+ *       401:
+ *         description: Unauthorized – admin access required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: Coupon not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Coupon not found"
+ */
