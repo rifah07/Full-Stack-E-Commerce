@@ -622,3 +622,53 @@
  *             schema:
  *               $ref: '#/components/schemas/Error404'
  */
+/**
+ * @swagger
+ * /coupons/seller/{couponId}:
+ *   delete:
+ *     summary: Delete a coupon by its ID (seller only)
+ *     tags: [Coupons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: couponId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: The MongoDB ID of the coupon to delete
+ *         example: "6646fbd9f062a2b5085d1a7e"
+ *     responses:
+ *       200:
+ *         description: Coupon deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Coupon deleted successfully.
+ *       400:
+ *         description: Invalid coupon ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized – seller access required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       404:
+ *         description: Coupon not found or not owned by seller
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ */
