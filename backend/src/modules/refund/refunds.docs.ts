@@ -64,8 +64,8 @@
  *     security:
  *       - bearerAuth: []
  *     description: |
- *       Retrieves a list of refund requests. 
- *       - **Admin** users get all refund requests.  
+ *       Retrieves a list of refund requests.
+ *       - **Admin** users get all refund requests.
  *       - **Sellers** only get their own refund requests.
  *     responses:
  *       200:
@@ -293,6 +293,84 @@
  *               $ref: '#/components/schemas/Error401'
  *       403:
  *         description: Forbidden. Only admin or seller can access.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Refund request not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ */
+/**
+ * @swagger
+ * /refunds/{refundId}:
+ *   patch:
+ *     summary: Update the status of a refund request
+ *     tags:
+ *       - Refunds
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: refundId
+ *         in: path
+ *         required: true
+ *         description: The ID of the refund request to update
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refundStatus
+ *             properties:
+ *               refundStatus:
+ *                 type: string
+ *                 enum: [pending, approved, rejected, refunded]
+ *                 example: approved
+ *     description: |
+ *       Allows **admin** or **seller** to update the status of a refund request.
+ *       - If status is set to `approved`, a refund can be initiated via the payment gateway.
+ *       - Automatically updates the associated order’s refund status as well.
+ *     responses:
+ *       200:
+ *         description: Refund status updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Refund request updated to approved
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     refund:
+ *                       $ref: '#/components/schemas/Refund'
+ *       400:
+ *         description: Invalid refund ID or invalid status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized. Authentication required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden. Only admin or seller can perform this action.
  *         content:
  *           application/json:
  *             schema:
