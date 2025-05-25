@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /api/payment/stripe:
+ * /payment/stripe:
  *   post:
  *     summary: Create and confirm a Stripe payment
  *     tags:
@@ -62,7 +62,7 @@
  */
 /**
  * @swagger
- * /api/payment/paypal:
+ * /payment/paypal:
  *   post:
  *     summary: Create a PayPal payment order
  *     tags:
