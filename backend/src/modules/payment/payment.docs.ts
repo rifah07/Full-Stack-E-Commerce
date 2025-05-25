@@ -60,3 +60,60 @@
  *             schema:
  *               $ref: '#/components/schemas/Error400'
  */
+/**
+ * @swagger
+ * /api/payment/paypal:
+ *   post:
+ *     summary: Create a PayPal payment order
+ *     tags:
+ *       - Payments
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - amount
+ *               - currency
+ *             properties:
+ *               amount:
+ *                 type: number
+ *                 example: 49.99
+ *                 description: Payment amount in the main currency unit
+ *               currency:
+ *                 type: string
+ *                 example: USD
+ *                 description: 3-letter ISO currency code (e.g., USD, EUR)
+ *     responses:
+ *       200:
+ *         description: PayPal order created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: PayPal order created
+ *                 order:
+ *                   type: object
+ *                   description: The full PayPal order response
+ *       401:
+ *         description: Unauthorized or invalid role
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ */
