@@ -54,3 +54,59 @@
  *           format: date-time
  *           example: "2025-05-22T12:35:10.000Z"
  */
+/**
+ * @swagger
+ * /refunds:
+ *   get:
+ *     summary: Get all refund requests
+ *     tags:
+ *       - Refunds
+ *     security:
+ *       - bearerAuth: []
+ *     description: |
+ *       Retrieves a list of refund requests. 
+ *       - **Admin** users get all refund requests.  
+ *       - **Sellers** only get their own refund requests.
+ *     responses:
+ *       200:
+ *         description: List of refund requests retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 totalRefundRequests:
+ *                   type: integer
+ *                   example: 5
+ *                 statusCounts:
+ *                   type: object
+ *                   additionalProperties:
+ *                     type: integer
+ *                   example:
+ *                     pending: 2
+ *                     approved: 1
+ *                     rejected: 1
+ *                     refunded: 1
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     refunds:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Refund'
+ *       401:
+ *         description: Unauthorized or invalid role
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden. User does not have permission.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ */
