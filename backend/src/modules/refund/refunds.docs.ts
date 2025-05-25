@@ -242,3 +242,65 @@
  *             schema:
  *               $ref: '#/components/schemas/Error404'
  */
+/**
+ * @swagger
+ * /refunds/{refundId}:
+ *   get:
+ *     summary: Get details of a specific refund request
+ *     tags:
+ *       - Refunds
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: refundId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The MongoDB ID of the refund request to retrieve.
+ *     description: |
+ *       Retrieves detailed information about a specific refund request.
+ *       - **Admin** users can access any refund request.
+ *       - **Sellers** can access refund requests relevant to their products.
+ *     responses:
+ *       200:
+ *         description: Refund request retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     refund:
+ *                       $ref: '#/components/schemas/Refund'
+ *       400:
+ *         description: Invalid refund ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized. Login required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden. Only admin or seller can access.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Refund request not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ */
