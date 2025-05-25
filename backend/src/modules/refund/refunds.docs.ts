@@ -110,3 +110,57 @@
  *             schema:
  *               $ref: '#/components/schemas/Error403'
  */
+
+/**
+ * @swagger
+ * /refunds/me:
+ *   get:
+ *     summary: Get refund requests for the logged-in buyer
+ *     tags:
+ *       - Refunds
+ *     security:
+ *       - bearerAuth: []
+ *     description: |
+ *       Retrieves refund requests made by the currently logged-in **buyer**.
+ *     responses:
+ *       200:
+ *         description: Refund requests retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 totalRefundRequests:
+ *                   type: integer
+ *                   example: 3
+ *                 statusCounts:
+ *                   type: object
+ *                   additionalProperties:
+ *                     type: integer
+ *                   example:
+ *                     pending: 1
+ *                     approved: 1
+ *                     refunded: 1
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     refunds:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Refund'
+ *       401:
+ *         description: Unauthorized. Missing or invalid token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden. Only buyers can access this route.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ */
