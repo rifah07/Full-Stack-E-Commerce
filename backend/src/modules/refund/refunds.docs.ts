@@ -164,3 +164,81 @@
  *             schema:
  *               $ref: '#/components/schemas/Error403'
  */
+
+/**
+ * @swagger
+ * /refunds/request/{orderId}:
+ *   post:
+ *     summary: Submit a refund request for an order
+ *     tags:
+ *       - Refunds
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: orderId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The MongoDB ID of the order to refund.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - reason
+ *             properties:
+ *               reason:
+ *                 type: string
+ *                 example: Received a damaged product
+ *     description: |
+ *       Allows a **buyer** to request a refund for one of their orders.
+ *       - Prevents duplicate requests with status `pending`.
+ *       - Automatically sets refund status on the order.
+ *     responses:
+ *       201:
+ *         description: Refund request submitted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Refund request submitted successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     refund:
+ *                       $ref: '#/components/schemas/Refund'
+ *       400:
+ *         description: Invalid input, duplicate request, or bad order ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized. Login required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden. Only buyers can access this route.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Order not found or does not belong to the user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ */
