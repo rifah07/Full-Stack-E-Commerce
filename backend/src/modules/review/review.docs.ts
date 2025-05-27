@@ -42,3 +42,76 @@
  *           description: Timestamp when the review was last updated.
  *           example: 2025-05-22T12:00:00.000Z
  */
+
+/**
+ * @swagger
+ * /reviews/{productId}/reviews:
+ *   get:
+ *     summary: Get reviews for a specific product
+ *     tags:
+ *       - Reviews
+ *     description: |
+ *       Retrieves all reviews for the given product. Supports pagination and returns metadata including total pages, current page, and average rating.
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         required: true
+ *         description: ID of the product to get reviews for
+ *         schema:
+ *           type: string
+ *           example: 6649e1095f11313fbd7cce40
+ *       - name: page
+ *         in: query
+ *         required: false
+ *         description: Page number for pagination (default is 1)
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *       - name: limit
+ *         in: query
+ *         required: false
+ *         description: Number of reviews per page (default is 10)
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *     responses:
+ *       200:
+ *         description: List of reviews for the specified product
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     reviews:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Review'
+ *                     totalReviews:
+ *                       type: integer
+ *                       example: 20
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 2
+ *                     currentPage:
+ *                       type: integer
+ *                       example: 1
+ *                     averageRating:
+ *                       type: number
+ *                       format: float
+ *                       example: 4.2
+ *                     numberOfReviews:
+ *                       type: integer
+ *                       example: 20
+ *       400:
+ *         description: Invalid product ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ */
