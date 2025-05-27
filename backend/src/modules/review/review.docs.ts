@@ -115,3 +115,80 @@
  *             schema:
  *               $ref: '#/components/schemas/Error400'
  */
+
+/**
+ * @swagger
+ * /reviews/{productId}/reviews:
+ *   post:
+ *     summary: Submit a review for a product
+ *     tags:
+ *       - Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     description: |
+ *       Allows a logged-in buyer to submit a review for a specific product.
+ *       Each user can review a product only once. The review includes a rating and comment.
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         required: true
+ *         description: The ID of the product being reviewed
+ *         schema:
+ *           type: string
+ *           example: 6649e1095f11313fbd7cce40
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - rating
+ *               - comment
+ *             properties:
+ *               rating:
+ *                 type: integer
+ *                 minimum: 1
+ *                 maximum: 5
+ *                 example: 4
+ *               comment:
+ *                 type: string
+ *                 example: "Excellent quality and fast delivery!"
+ *     responses:
+ *       201:
+ *         description: Review submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Review submitted successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     review:
+ *                       $ref: '#/components/schemas/Review'
+ *       400:
+ *         description: Invalid input, duplicate review, or product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized (e.g., not logged in)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden (e.g., not a buyer)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ */
