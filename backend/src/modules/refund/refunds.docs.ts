@@ -180,7 +180,7 @@
  *         required: true
  *         schema:
  *           type: string
- *           format: uuid
+ *           format: ObjectId
  *         description: The MongoDB ID of the order to refund.
  *     requestBody:
  *       required: true
@@ -257,7 +257,7 @@
  *         required: true
  *         schema:
  *           type: string
- *           format: uuid
+ *           format: ObjectId
  *         description: The MongoDB ID of the refund request to retrieve.
  *     description: |
  *       Retrieves detailed information about a specific refund request.
@@ -320,7 +320,7 @@
  *         description: The ID of the refund request to update
  *         schema:
  *           type: string
- *           format: uuid
+ *           format: ObjectId
  *     requestBody:
  *       required: true
  *       content:
