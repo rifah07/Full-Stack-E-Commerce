@@ -279,3 +279,70 @@
  *             schema:
  *               $ref: '#/components/schemas/Error404'
  */
+
+/**
+ * @swagger
+ * /reviews/{productId}/reviews/{reviewId}:
+ *   delete:
+ *     summary: Delete a review for a product
+ *     tags:
+ *       - Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     description: |
+ *       Allows a logged-in buyer or admin to delete a review for a specific product.
+ *       Buyers can delete only their own reviews. Admins can delete any review.
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         required: true
+ *         description: ID of the product the review is associated with
+ *         schema:
+ *           type: string
+ *           example: 6649e1095f11313fbd7cce40
+ *       - name: reviewId
+ *         in: path
+ *         required: true
+ *         description: ID of the review to delete
+ *         schema:
+ *           type: string
+ *           example: 6652f1095f11313fbd7ccf12
+ *     responses:
+ *       200:
+ *         description: Review deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Review deleted successfully
+ *       400:
+ *         description: Invalid product ID or review ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized (not logged in)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden (not the author or admin)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Review not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ */
