@@ -652,3 +652,157 @@
  *                   type: integer
  *                   example: 500
  */
+
+/**
+ * @swagger
+ * /review/{productId}/reviews/{reviewId}:
+ *   delete:
+ *     summary: Delete a review
+ *     description: Delete a review for a specific product. Users can delete their own reviews, and admins can delete any review. Automatically recalculates product rating statistics after deletion.
+ *     tags:
+ *       - Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: MongoDB ObjectId of the product
+ *         example: "6631c0ab0d3d8a37f9df231a"
+ *       - in: path
+ *         name: reviewId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: MongoDB ObjectId of the review to delete
+ *         example: "6631c10e0d3d8a37f9df2321"
+ *     responses:
+ *       200:
+ *         description: Review deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 message:
+ *                   type: string
+ *                   example: "Review deleted successfully"
+ *       400:
+ *         description: Bad Request - Invalid product ID or review ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid product ID or review ID"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 400
+ *       401:
+ *         description: Unauthorized - Authentication required or user not authorized to delete this review
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   oneOf:
+ *                     - example: "Unauthorized"
+ *                     - example: "You are not authorized to delete this review"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 401
+ *       403:
+ *         description: Forbidden - User must have buyer role (for own reviews) or admin role (for any review)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Forbidden"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 403
+ *       404:
+ *         description: Not Found - Review does not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Review not found"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 404
+ *       422:
+ *         description: Validation Error - Invalid MongoDB ID format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Validation failed"
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                         example: "reviewId"
+ *                       message:
+ *                         type: string
+ *                         example: "Review ID must be a valid MongoDB ID."
+ *                   example:
+ *                     - field: "productId"
+ *                       message: "Product ID must be a valid MongoDB ID."
+ *                     - field: "reviewId"
+ *                       message: "Review ID must be a valid MongoDB ID."
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 500
+ */
