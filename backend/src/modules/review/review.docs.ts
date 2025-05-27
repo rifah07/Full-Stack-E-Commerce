@@ -192,3 +192,90 @@
  *             schema:
  *               $ref: '#/components/schemas/Error403'
  */
+
+/**
+ * @swagger
+ * /reviews/{productId}/reviews/{reviewId}:
+ *   patch:
+ *     summary: Update a review for a product
+ *     tags:
+ *       - Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     description: |
+ *       Allows a logged-in buyer to update their own review for a specific product.
+ *       Only the author of the review can update it. Supports partial updates.
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         required: true
+ *         description: ID of the product the review is associated with
+ *         schema:
+ *           type: string
+ *           example: 6649e1095f11313fbd7cce40
+ *       - name: reviewId
+ *         in: path
+ *         required: true
+ *         description: ID of the review to be updated
+ *         schema:
+ *           type: string
+ *           example: 6652f1095f11313fbd7ccf12
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               rating:
+ *                 type: integer
+ *                 minimum: 1
+ *                 maximum: 5
+ *                 example: 5
+ *               comment:
+ *                 type: string
+ *                 example: "Updated comment: Still love the product!"
+ *     responses:
+ *       200:
+ *         description: Review updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Review updated successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     review:
+ *                       $ref: '#/components/schemas/Review'
+ *       400:
+ *         description: Invalid input (e.g., malformed IDs or rating)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error400'
+ *       401:
+ *         description: Unauthorized (not logged in)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden (not the author of the review)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       404:
+ *         description: Review not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error404'
+ */
