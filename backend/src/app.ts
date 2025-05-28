@@ -207,6 +207,7 @@ const swaggerOptions = {
       { name: "Payments", description: "Payment management endpoints" },
       { name: "Refunds", description: "Refund management endpoints" },
       { name: "Reviews", description: "Review management endpoints" },
+      { name: "Revenue", description: "Revenue management endpoints" },
       // ... other tags
     ],
   },
