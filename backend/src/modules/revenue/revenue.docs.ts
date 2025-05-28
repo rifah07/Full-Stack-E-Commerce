@@ -274,7 +274,7 @@
  * @swagger
  * /revenue/monthly:
  *   get:
- *     summary: Get monthly revenue for current month
+ *     summary: Get monthly revenue for current month (Only Admin)
  *     description: Retrieves the total revenue from all paid orders for the current month, grouped by month. Only accessible by admin users.
  *     tags:
  *       - Revenue
