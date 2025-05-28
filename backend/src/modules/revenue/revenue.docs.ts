@@ -194,7 +194,7 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error500'
- * 
+ *
  */
 
 /**
@@ -262,6 +262,79 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error403'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
+
+/**
+ * @swagger
+ * /revenue/monthly:
+ *   get:
+ *     summary: Get monthly revenue for current month
+ *     description: Retrieves the total revenue from all paid orders for the current month, grouped by month. Only accessible by admin users.
+ *     tags:
+ *       - Revenue
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved monthly revenue
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     monthlyRevenue:
+ *                       type: array
+ *                       description: Array of monthly revenue data for current month
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             description: Month identifier in YYYY-MM format
+ *                             example: "2025-05"
+ *                           monthlyTotal:
+ *                             type: number
+ *                             description: Total revenue for the specific month
+ *                             example: 25480.75
+ *             examples:
+ *               with_revenue:
+ *                 summary: Monthly revenue found
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     monthlyRevenue:
+ *                       - _id: "2025-05"
+ *                         monthlyTotal: 25480.75
+ *               no_revenue:
+ *                 summary: No revenue for current month
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     monthlyRevenue: []
+ *       401:
+ *         description: Unauthorized - Invalid or missing authentication token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User does not have admin privileges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               t$ref: '#/components/schemas/Error403'
  *       500:
  *         description: Internal server error
  *         content:
