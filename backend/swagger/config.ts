@@ -38,7 +38,6 @@ export const swaggerOptions: Options = {
         },
       },
       schemas: {
-        // Import schemas from separate file
         ...require("./schemas").default,
       },
     },
