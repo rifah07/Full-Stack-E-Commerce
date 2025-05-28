@@ -5,7 +5,7 @@
  *     summary: Get seller's total revenue
  *     description: Calculate and retrieve the total revenue for the authenticated seller from all paid orders. Only includes revenue from the seller's own products.
  *     tags:
- *       - Seller
+ *       - Revenue
  *     security:
  *       - bearerAuth: []
  *     responses:
