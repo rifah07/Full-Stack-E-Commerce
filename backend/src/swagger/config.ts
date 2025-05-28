@@ -9,14 +9,16 @@ export const swaggerOptions: Options = {
       version: "1.0.0",
       description:
         "API documentation for ShopSphere which is a multi-vendor e-commerce platform",
-      contact: {
-        name: "ShopSphere API Support",
-        email: "support@shopsphere.com",
-      },
+      /*contact: {
+        //name: "ShopSphere API Support",
+        //email: "support@shopsphere.com",
+      },*/
+      /*
       license: {
         name: "MIT",
         url: "https://opensource.org/licenses/MIT",
       },
+      */
     },
     servers: [
       {

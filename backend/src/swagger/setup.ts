@@ -4,17 +4,11 @@ import swaggerJsdoc from "swagger-jsdoc";
 import { swaggerOptions } from "./config";
 
 export const setupSwagger = (app: Application): void => {
-  //generate swagger specification
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
-  // Swagger UI options
   const swaggerUiOptions = {
-    customCss: `
-      .swagger-ui .topbar { display: none; }
-      .swagger-ui .info .title { color: #3b82f6; }
-    `,
     customSiteTitle: "ShopSphere API Documentation",
-    customfavIcon: "/favicon.ico",
+    //customfavIcon: "/favicon.ico",
     swaggerOptions: {
       persistAuthorization: true,
       displayRequestDuration: true,
@@ -38,7 +32,7 @@ export const setupSwagger = (app: Application): void => {
   });
 
   console.log(
-    `📚 Swagger documentation available at: http://localhost:${
+    `Swagger documentation available at: http://localhost:${
       process.env.PORT || 5000
     }/api-docs`
   );

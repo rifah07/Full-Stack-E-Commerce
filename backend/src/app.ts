@@ -18,8 +18,7 @@ import refundRoutes from "./modules/refund/refunds.routes";
 import couponRoutes from "./modules/coupon/coupons.routes";
 import reviewRoutes from "./modules/review/review.routes";
 import revenueRoutes from "./modules/revenue/revenue.routes";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
+import { setupSwagger } from "./swagger/setup";
 
 dotenv.config();
 
@@ -43,183 +42,16 @@ app.use("/api/", limiter); // apply to all /api routes
 // Security Headers
 app.use(helmet());
 
-app.use(express.json());
+// Body parsing middleware
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
 // Morgan HTTP logging into Winston
 app.use(morgan("combined", { stream: morganStream }));
 
-// Swagger UI Configuration
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: "3.0.0",
-    info: {
-      title: "ShopSphere: A-Complete-World-for-Shopping",
-      version: "1.0.0",
-      description: "API documentation for ShopSphere which is a multi-vendor e-commerce platform",
-    },
-    servers: [
-      {
-        url: `http://localhost:${process.env.PORT || 5000}/api`,
-      },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-      schemas: {
-        ErrorResponse: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Something went wrong",
-            },
-            statusCode: {
-              type: "integer",
-              example: 500,
-            },
-          },
-        },
-        Error400: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Bad Request",
-            },
-            statusCode: {
-              type: "integer",
-              example: 400,
-            },
-          },
-        },
-        Error401: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Unauthorized",
-            },
-            statusCode: {
-              type: "integer",
-              example: 401,
-            },
-          },
-        },
-        Error403: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Forbidden",
-            },
-            statusCode: {
-              type: "integer",
-              example: 403,
-            },
-          },
-        },
-        Error404: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Not Found",
-            },
-            statusCode: {
-              type: "integer",
-              example: 404,
-            },
-          },
-        },
-        Error409: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Conflict",
-            },
-            statusCode: {
-              type: "integer",
-              example: 409,
-            },
-          },
-        },
-        Error422: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Unprocessable Entity",
-            },
-            statusCode: {
-              type: "integer",
-              example: 422,
-            },
-          },
-        },
-        Error429: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Too Many Requests",
-            },
-            statusCode: {
-              type: "integer",
-              example: 429,
-            },
-          },
-        },
-        Error500: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              example: "Internal Server Error",
-            },
-            statusCode: {
-              type: "integer",
-              example: 500,
-            },
-          },
-        },
-        // ... other global schemas if any ...
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
-    tags: [
-      { name: "Users", description: "User management endpoints" },
-      { name: "Products", description: "Product management endpoints" },
-      { name: "Cart", description: "Cart management endpoints" },
-      { name: "Wishlist", description: "Wishlist management routes" },
-      { name: "Orders", description: "Order management routes" },
-      { name: "Coupons", description: "Coupon management endpoints" },
-      { name: "Payments", description: "Payment management endpoints" },
-      { name: "Refunds", description: "Refund management endpoints" },
-      { name: "Reviews", description: "Review management endpoints" },
-      { name: "Revenue", description: "Revenue management endpoints" },
-      // ... other tags
-    ],
-  },
-  apis: [
-    "./src/modules/**/*.routes.ts",
-    "./src/modules/**/*.docs.ts",
-    "./src/models/*.model.ts",
-  ],
-};
-
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Setup Swagger Documentation
+setupSwagger(app);
 
 //add routes here
 app.use("/api/users", userRoutes);
@@ -235,24 +67,47 @@ app.use("/api/review", reviewRoutes);
 
 //end of routes
 
+// Welcome route
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({
+    status: "success",
+    message: "Welcome to ShopSphere API!",
+    version: "1.0.0",
+    documentation: `http://localhost:${process.env.PORT || 5000}/api-docs`,
+    endpoints: {
+      users: "/api/users",
+      products: "/api/products",
+      orders: "/api/orders",
+      cart: "/api/cart",
+      wishlist: "/api/wishlist",
+      payments: "/api/payment",
+      refunds: "/api/refunds",
+      coupons: "/api/coupons",
+      revenue: "/api/revenue",
+      reviews: "/api/review",
+    },
+  });
+});
+
+
 /*
-app.all("*", (req, res, next) => {
+app.all("*", (req: Request, res: Response) => {
   res.status(404).json({
-    status: "failed",
-    message: "Not Found!",
+    status: "error",
+    message: `Cannot ${req.method} ${req.originalUrl}. Route not found!`,
+    statusCode: 404,
   });
 });
 */
 
 app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  res.send("Server started successfully!");
-});
-
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server started successfully on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`API Documentation: http://localhost:${PORT}/api-docs`);
 });
 
 export default app;
