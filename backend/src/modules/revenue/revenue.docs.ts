@@ -201,7 +201,7 @@
  * @swagger
  * /revenue/weekly:
  *   get:
- *     summary: Get weekly revenue for current week
+ *     summary: Get weekly revenue for current week (Only Admin)
  *     description: Retrieves the total revenue from all paid orders for the current week, grouped by week. Only accessible by admin users.
  *     tags:
  *       - Revenue
@@ -396,6 +396,124 @@
  *                   status: "success"
  *                   data:
  *                     yearlyRevenue: []
+ *       401:
+ *         description: Unauthorized - Invalid or missing authentication token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User does not have admin privileges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
+
+/**
+ * @swagger
+ * /revenue/range:
+ *   get:
+ *     summary: Get revenue by custom date range (Only Admin)
+ *     description: Retrieves the total revenue from all paid orders within a specified date range, grouped by day. Only accessible by admin users.
+ *     tags:
+ *       - Revenue
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: startDate
+ *         in: query
+ *         required: true
+ *         description: Start date for the revenue range (YYYY-MM-DD format)
+ *         schema:
+ *           type: string
+ *           format: date
+ *           example: "2025-05-01"
+ *       - name: endDate
+ *         in: query
+ *         required: true
+ *         description: End date for the revenue range (YYYY-MM-DD format)
+ *         schema:
+ *           type: string
+ *           format: date
+ *           example: "2025-05-31"
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved revenue by date range
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     revenueByRange:
+ *                       type: array
+ *                       description: Array of daily revenue data within the specified range
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             format: date
+ *                             description: Date in YYYY-MM-DD format
+ *                             example: "2025-05-15"
+ *                           dailyTotal:
+ *                             type: number
+ *                             description: Total revenue for the specific day
+ *                             example: 750.25
+ *             examples:
+ *               with_revenue:
+ *                 summary: Revenue found within date range
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     revenueByRange:
+ *                       - _id: "2025-05-01"
+ *                         dailyTotal: 1200.50
+ *                       - _id: "2025-05-02"
+ *                         dailyTotal: 980.75
+ *                       - _id: "2025-05-03"
+ *                         dailyTotal: 1540.25
+ *               no_revenue:
+ *                 summary: No revenue found in date range
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     revenueByRange: []
+ *       400:
+ *         description: Bad Request - Missing or invalid date parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *             examples:
+ *               missing_dates:
+ *                 summary: Missing required date parameters
+ *                 value:
+ *                   status: "error"
+ *                   message: "startDate and endDate are required"
+ *               invalid_format:
+ *                 summary: Invalid date format
+ *                 value:
+ *                   status: "error"
+ *                   message: "Invalid date format for startDate or endDate"
  *       401:
  *         description: Unauthorized - Invalid or missing authentication token
  *         content:
