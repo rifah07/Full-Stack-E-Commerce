@@ -194,4 +194,78 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error500'
+ * 
+ */
+
+/**
+ * @swagger
+ * /revenue/weekly:
+ *   get:
+ *     summary: Get weekly revenue for current week
+ *     description: Retrieves the total revenue from all paid orders for the current week, grouped by week. Only accessible by admin users.
+ *     tags:
+ *       - Revenue
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved weekly revenue
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     weeklyRevenue:
+ *                       type: array
+ *                       description: Array of weekly revenue data for current week
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             description: Week identifier in YYYY-W{week_number} format
+ *                             example: "2025-W21"
+ *                           weeklyTotal:
+ *                             type: number
+ *                             description: Total revenue for the specific week
+ *                             example: 8750.50
+ *             examples:
+ *               with_revenue:
+ *                 summary: Weekly revenue found
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     weeklyRevenue:
+ *                       - _id: "2025-W21"
+ *                         weeklyTotal: 8750.50
+ *               no_revenue:
+ *                 summary: No revenue for current week
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     weeklyRevenue: []
+ *       401:
+ *         description: Unauthorized - Invalid or missing authentication token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User does not have admin privileges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
  */
