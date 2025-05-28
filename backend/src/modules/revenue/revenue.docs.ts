@@ -45,35 +45,35 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: "error"
- *                 message:
- *                   type: string
- *                   example: "Unauthorized"
- *                 statusCode:
- *                   type: integer
- *                   example: 401
+ *               $ref: '#/components/schemas/Error401'
  *       403:
  *         description: Forbidden - User must have seller role
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: "error"
- *                 message:
- *                   type: string
- *                   example: "Forbidden"
- *                 statusCode:
- *                   type: integer
- *                   example: 403
+ *               $ref: '#/components/schemas/Error403'
  *       500:
  *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
+
+/**
+ * @swagger
+ * /revenue/total:
+ *   get:
+ *     summary: Get platform-wide total revenue (Only by Admin)
+ *     description: Retrieves the total revenue from all paid orders across the platform. Only accessible by admin users.
+ *     tags:
+ *       - Revenue
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved total revenue
  *         content:
  *           application/json:
  *             schema:
@@ -81,11 +81,43 @@
  *               properties:
  *                 status:
  *                   type: string
- *                   example: "error"
- *                 message:
- *                   type: string
- *                   example: "Internal Server Error"
- *                 statusCode:
- *                   type: integer
- *                   example: 500
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     totalRevenue:
+ *                       type: number
+ *                       description: Total revenue from all paid orders
+ *                       example: 15750.99
+ *             examples:
+ *               success:
+ *                 summary: Successful response
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     totalRevenue: 15750.99
+ *               no_revenue:
+ *                 summary: No revenue found
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     totalRevenue: 0
+ *       401:
+ *         description: Unauthorized - Invalid or missing authentication token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User does not have admin privileges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
  */
