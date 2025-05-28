@@ -54,9 +54,9 @@ const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Multi-Vendor E-commerce API by Rifah",
+      title: "ShopSphere: A-Complete-World-for-Shopping",
       version: "1.0.0",
-      description: "API documentation for the multi-vendor e-commerce platform",
+      description: "API documentation for ShopSphere which is a multi-vendor e-commerce platform",
     },
     servers: [
       {
