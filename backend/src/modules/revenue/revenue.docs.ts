@@ -342,3 +342,76 @@
  *             schema:
  *               $ref: '#/components/schemas/Error500'
  */
+
+/**
+ * @swagger
+ * /revenue/yearly:
+ *   get:
+ *     summary: Get yearly revenue for current year (Only Admin)
+ *     description: Retrieves the total revenue from all paid orders for the current year, grouped by year. Only accessible by admin users.
+ *     tags:
+ *       - Revenue
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved yearly revenue
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     yearlyRevenue:
+ *                       type: array
+ *                       description: Array of yearly revenue data for current year
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             description: Year identifier in YYYY format
+ *                             example: "2025"
+ *                           yearlyTotal:
+ *                             type: number
+ *                             description: Total revenue for the specific year
+ *                             example: 156240.85
+ *             examples:
+ *               with_revenue:
+ *                 summary: Yearly revenue found
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     yearlyRevenue:
+ *                       - _id: "2025"
+ *                         yearlyTotal: 156240.85
+ *               no_revenue:
+ *                 summary: No revenue for current year
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     yearlyRevenue: []
+ *       401:
+ *         description: Unauthorized - Invalid or missing authentication token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User does not have admin privileges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
