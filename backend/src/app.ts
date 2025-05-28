@@ -16,9 +16,8 @@ import paymentRoutes from "./modules/payment/payment.route";
 import wishlistRoutes from "./modules/wishlist/wishlist.routes";
 import refundRoutes from "./modules/refund/refunds.routes";
 import couponRoutes from "./modules/coupon/coupons.routes";
-import adminRoutes from "./modules/admin/admin.routes";
-import sellerRoutes from "./modules/seller/seller.routes";
 import reviewRoutes from "./modules/review/review.routes";
+import revenueRoutes from "./modules/revenue/revenue.routes";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 
@@ -200,14 +199,14 @@ const swaggerOptions = {
     ],
     tags: [
       { name: "Users", description: "User management endpoints" },
-      { name: 'Products', description: 'Product management endpoints' },
-      { name: 'Cart', description: 'Cart management endpoints' },
-      { name: 'Wishlist', description: 'Wishlist management routes' },
-      { name: 'Orders', description: 'Order management routes' },
-      { name: 'Coupons', description: 'Coupon management endpoints' },
-      { name: 'Payments', description: 'Payment management endpoints' },
-      { name: 'Refunds', description: 'Refund management endpoints' },
-      { name: 'Reviews', description: 'Review management endpoints' },
+      { name: "Products", description: "Product management endpoints" },
+      { name: "Cart", description: "Cart management endpoints" },
+      { name: "Wishlist", description: "Wishlist management routes" },
+      { name: "Orders", description: "Order management routes" },
+      { name: "Coupons", description: "Coupon management endpoints" },
+      { name: "Payments", description: "Payment management endpoints" },
+      { name: "Refunds", description: "Refund management endpoints" },
+      { name: "Reviews", description: "Review management endpoints" },
       // ... other tags
     ],
   },
@@ -230,8 +229,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/refunds", refundRoutes);
 app.use("/api/coupons", couponRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/seller", sellerRoutes);
+app.use("/api/revenue", revenueRoutes);
 app.use("/api/review", reviewRoutes);
 
 //end of routes
