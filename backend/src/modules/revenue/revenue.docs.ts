@@ -121,3 +121,77 @@
  *             schema:
  *               $ref: '#/components/schemas/Error500'
  */
+
+/**
+ * @swagger
+ * /revenue/daily:
+ *   get:
+ *     summary: Get daily revenue for current day (Only by Admin)
+ *     description: Retrieves the total revenue from all paid orders for the current day, grouped by date. Only accessible by admin users.
+ *     tags:
+ *       - Revenue
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved daily revenue
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     dailyRevenue:
+ *                       type: array
+ *                       description: Array of daily revenue data for current day
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             format: date
+ *                             description: Date in YYYY-MM-DD format
+ *                             example: "2025-05-29"
+ *                           dailyTotal:
+ *                             type: number
+ *                             description: Total revenue for the specific day
+ *                             example: 1250.75
+ *             examples:
+ *               with_revenue:
+ *                 summary: Daily revenue found
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     dailyRevenue:
+ *                       - _id: "2025-05-29"
+ *                         dailyTotal: 1250.75
+ *               no_revenue:
+ *                 summary: No revenue for current day
+ *                 value:
+ *                   status: "success"
+ *                   data:
+ *                     dailyRevenue: []
+ *       401:
+ *         description: Unauthorized - Invalid or missing authentication token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ *       403:
+ *         description: Forbidden - User does not have admin privileges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error403'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error500'
+ */
