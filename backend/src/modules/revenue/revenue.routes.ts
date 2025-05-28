@@ -19,12 +19,12 @@ revenueRoutes.use(auth);
 revenueRoutes.get("/", authorize("seller"), getSellerRevenue);
 
 //routes for admin only
-revenueRoutes.get("/total",authorize("admin"), getRevenue);
-revenueRoutes.get("/daily", getDailyRevenue);
-revenueRoutes.get("/weekly", getWeeklyRevenue);
-revenueRoutes.get("/monthly", getMonthlyRevenue);
-revenueRoutes.get("/yearly", getYearlyRevenue);
-revenueRoutes.get("/range", getRevenueByDateRange);
-revenueRoutes.get("/sellers", getRevenuePerSeller);
+revenueRoutes.get("/total", authorize("admin"), getRevenue);
+revenueRoutes.get("/daily", authorize("admin"), getDailyRevenue);
+revenueRoutes.get("/weekly", authorize("admin"), getWeeklyRevenue);
+revenueRoutes.get("/monthly", authorize("admin"), getMonthlyRevenue);
+revenueRoutes.get("/yearly", authorize("admin"), getYearlyRevenue);
+revenueRoutes.get("/range", authorize("admin"), getRevenueByDateRange);
+revenueRoutes.get("/sellers", authorize("admin"), getRevenuePerSeller);
 
 export default revenueRoutes;
