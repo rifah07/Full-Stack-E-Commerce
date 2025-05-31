@@ -107,7 +107,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started successfully on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
-  console.log(`API Documentation: http://localhost:${PORT}/api-docs`);
+  //console.log(`API Documentation: http://localhost:${PORT}/api-docs`);
 });
 
 export default app;

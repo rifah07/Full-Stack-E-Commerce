@@ -32,7 +32,7 @@ export const setupSwagger = (app: Application): void => {
   });
 
   console.log(
-    `Swagger documentation available at: http://localhost:${
+    `Swagger (API) documentation available at: http://localhost:${
       process.env.PORT || 5000
     }/api-docs`
   );
