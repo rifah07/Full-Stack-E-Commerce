@@ -129,7 +129,7 @@ backend/
 
 ## 🧪 API Testing
 Use Swagger for easy testing:
--📄 Swagger UI: [https://shopsphere-a-complete-world-for-shopping.onrender.com/api-docs]([url](https://shopsphere-a-complete-world-for-shopping.onrender.com/api-docs/))
+-📄 Swagger UI: [https://shopsphere-a-complete-world-for-shopping.onrender.com/api-docs](https://shopsphere-a-complete-world-for-shopping.onrender.com/api-docs/)
 
 
 ## ✨ Upcoming (Frontend - In Sha Allah)
