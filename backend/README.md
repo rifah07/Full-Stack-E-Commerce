@@ -3,7 +3,7 @@
 ### 🔹 1. Clone the Repository
 ```bash
 git clone https://github.com/rifah07/ShopSphere__A-Complete-World-for-Shopping__Backend.git
-cd ShopSphere__A-Complete-World-for-Shopping__Backend
+cd ShopSphere__A-Complete-World-for-Shopping__Backend/backend
 ```
 
 ### 🔹 2. Install Dependencies
