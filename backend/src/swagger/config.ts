@@ -22,12 +22,12 @@ export const swaggerOptions: Options = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT || 5000}/api`,
-        description: "Development server",
+        url: "https://shopsphere-a-complete-world-for-shopping.onrender.com/api",
+        description: "Production server",
       },
       {
-        url: "https://api.shopsphere.com/api",
-        description: "Production server",
+        url: `http://localhost:${process.env.PORT || 5000}/api`,
+        description: "Development server",
       },
     ],
     components: {
